@@ -5,6 +5,7 @@
     <title>Welcome to LoanDaddy</title>
     <link rel="stylesheet" href="../css/hamburgerstyle.css">
     <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/slideshow.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
@@ -14,16 +15,6 @@
         <input type="checkbox">
     </label>
 
-    <aside class="sidebar">
-        <nav>
-            <div>Home</div>
-            <div>Menu 1</div>
-            <div>Menu 2</div>
-            <div>Logout</div>
-        </nav>
-
-        
-    </aside>
 
     <nav>
         <div class="navbar">
@@ -41,5 +32,23 @@
         </div>
 
     </nav>
+
+    <div class="slideshow-container">
+        <div class="mySlides fade">
+            <img src="../images/slideshow1.png" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="../images/slideshow2.png" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="../images/slideshow3.png" style="width:100%">
+        </div>
+
+        <!-- Add navigation arrows -->
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    </div>
+
+    <script src="../js/slideshow.js"></script>
 </body>
 </html>

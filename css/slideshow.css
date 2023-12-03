@@ -1,0 +1,41 @@
+/* slideshow.css */
+.slideshow-container {
+    position: relative;
+    max-width: 100%;
+    margin: 50px auto 0;
+    overflow: hidden; /* Ensure overflow is hidden for smooth sliding */
+}
+
+.mySlides {
+    display: flex;
+    transition: transform 1s ease; 
+    display: block;
+}
+
+.mySlides img {
+    width: 100%;
+    height: auto;
+}
+
+/* Navigation arrows */
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    width: auto;
+    margin-top: -30px;
+    padding: 16px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.prev {
+    left: 0;
+}
+
+.next {
+    right: 0;
+}
