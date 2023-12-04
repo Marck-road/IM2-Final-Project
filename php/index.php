@@ -1,3 +1,15 @@
+<?php
+    session_start();
+
+    $con = mysqli_connect('localhost', 'root', 'Furina de Fontaine');  //Change according to your settings
+    mysqli_select_db($con, 'loanapp');
+
+    // $sort = "ASC";
+    $s = " SELECT * FROM lender ";
+    $result = mysqli_query($con, $s); 
+    
+?>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
