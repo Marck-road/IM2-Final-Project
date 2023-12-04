@@ -1,0 +1,76 @@
+body{
+    background-color: #F6F1F1;
+}
+
+.main-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.ListView{
+    padding-left: 30px;
+    padding-right: 30px; 
+    padding-bottom: 30px;      
+    width: 80%;
+    background-color: #F6F1F1;
+}
+
+.loan_container{
+    background-color: #AFD3E2;
+    margin-top: 20px;
+}
+
+.loan_container {
+    display: flex;
+    background-color: #AFD3E2;
+    margin-top: 20px;
+}
+
+.company_logo{
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.column {
+    flex: 1;
+    padding: 10px;
+}
+
+.centered_column {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.row_value {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.row {
+    margin-bottom: 10px;
+}
+
+h3{
+    text-align: center;
+}
+
+button {
+    background-color: #146C94;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover{
+    background-color: #19A7CE;
+}
