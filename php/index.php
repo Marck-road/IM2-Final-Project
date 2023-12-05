@@ -92,7 +92,7 @@
             <p class="adv_label">Advanced Search</p>
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
-                <label for="amt_borrowed">Amount Borrowed</label>
+                <label for="amt_borrowed">Loan Amount</label>
                 <input type="number" name="amt_borrowed" id="amt_borrowed" value="<?php echo isset($_POST['amt_borrowed']) ? $_POST['amt_borrowed'] : '60000'; ?>" step="any"><br>
 
                 <label for="interest">Interest Rate (per tenure)</label>
@@ -103,7 +103,7 @@
                     <option value="1" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '1') ? 'selected' : ''; ?>>1 Month</option>
                     <option value="2" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '2') ? 'selected' : ''; ?>>3 Months</option>
                     <option value="3" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '3') ? 'selected' : ''; ?>>6 Months</option>
-                    <option value="4" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '4') ? 'selected' : 'selected'; ?>>1 Year</option>
+                    <option value="4" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '4') ? 'selected' : ''; ?>>1 Year</option>
                     <option value="5" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '5') ? 'selected' : ''; ?>>2 Years</option>
                 </select>
 
@@ -111,7 +111,7 @@
                 <select name="pay_sched" id="pay_sched">
                     <option value="1" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '1') ? 'selected' : ''; ?>>Weekly</option>
                     <option value="2" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '2') ? 'selected' : ''; ?>>Semi-Monthly</option>
-                    <option value="3" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '3') ? 'selected' : 'selected'; ?>>Monthly</option>
+                    <option value="3" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '3') ? 'selected' : ''; ?>>Monthly</option>
                     <option value="4" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '4') ? 'selected' : ''; ?>>Quarterly</option>
                 </select>
                       <br>

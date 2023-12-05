@@ -4,7 +4,6 @@
     $con = mysqli_connect('localhost', 'root', 'Furina de Fontaine');  //Change according to your settings
     mysqli_select_db($con, 'loanapp');
 
-    // $sort = "ASC";
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $amt_borrowed = $_POST["amt_borrowed"];
         $interest_rate = $_POST["interest"];
@@ -43,6 +42,7 @@
     <link rel="stylesheet" href="../css/index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -53,15 +53,15 @@
             </div>
             <ul class="menu">
                 <li><a href="#">Home</a></li>
-                <li><a href="#PetServices">Join our Team</a></li>
+                <li><a href="#PetServices">Active Loans</a></li>
                 <li><a href="About Us/About Us.html">Contact Us</a></li>
                 <li><a href="#footer">About Us</a></li>
                 <li><a href="#footer">FAQs</a></li>
                 <li class="user-profile">
-                    <a class="dropdown">User Profile<i class="fa fa-caret-down"></i></a>
+                    <a class="dropdown"><i class="fa-solid fa-user"></i></a>
                         <div class="dropdown-content" id="dropdown-content">
-                            <a id="dp-option">View Profile</a>
-                            <a id="dp-option" href="logout.php" onclick="return confirm('Are you sure you want to logout?')">Logout</a>
+                            <a id="dp-option"><i class="fa-regular fa-user"></i> View Profile</a>
+                            <a id="dp-option" href="logout.php" onclick="return confirm('Are you sure you want to logout?')"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                         </div>
                 </li>
             </ul>
@@ -98,7 +98,7 @@
             <p class="adv_label">Advanced Search</p>
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
-                <label for="amt_borrowed">Amount Borrowed</label>
+                <label for="amt_borrowed">Loan Amount</label>
                 <input type="number" name="amt_borrowed" id="amt_borrowed" value="<?php echo isset($_POST['amt_borrowed']) ? $_POST['amt_borrowed'] : '60000'; ?>" step="any"><br>
 
                 <label for="interest">Interest Rate (per tenure)</label>
@@ -109,7 +109,7 @@
                     <option value="1" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '1') ? 'selected' : ''; ?>>1 Month</option>
                     <option value="2" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '2') ? 'selected' : ''; ?>>3 Months</option>
                     <option value="3" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '3') ? 'selected' : ''; ?>>6 Months</option>
-                    <option value="4" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '4') ? 'selected' : 'selected'; ?>>1 Year</option>
+                    <option value="4" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '4') ? 'selected' : ''; ?>>1 Year</option>
                     <option value="5" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '5') ? 'selected' : ''; ?>>2 Years</option>
                 </select>
 
@@ -117,7 +117,7 @@
                 <select name="pay_sched" id="pay_sched">
                     <option value="1" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '1') ? 'selected' : ''; ?>>Weekly</option>
                     <option value="2" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '2') ? 'selected' : ''; ?>>Semi-Monthly</option>
-                    <option value="3" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '3') ? 'selected' : 'selected'; ?>>Monthly</option>
+                    <option value="3" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '3') ? 'selected' : ''; ?>>Monthly</option>
                     <option value="4" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '4') ? 'selected' : ''; ?>>Quarterly</option>
                 </select>
                       <br>
@@ -135,34 +135,16 @@
             $index = 1;
             while($row = mysqli_fetch_array($result))
             {
-             $lender_ir = "SELECT Interest_Rate FROM lender_interest_rates
+            $lender_ir = "SELECT Interest_Rate FROM lender_interest_rates
               WHERE Lender_ID = '" . $row["Lender_ID"] . "' AND Tenure_ID = '" . $tenure . "'";
+            $paysched = "SELECT Frequency FROM payment_sched
+              WHERE Schedule_ID = '" . $pay_schedule . "'";
             
             $modalId = "infoModal_" . $index;
             $overlayId = "overlay_" . $index;
-            $ir_query = mysqli_query($con, $lender_ir);
-            $ir_result = mysqli_fetch_array($ir_query);
-            $interest_payable = ($amt_borrowed * $ir_result["Interest_Rate"]);
             
-            $ir_result["Interest_Rate"] = 100 * $ir_result["Interest_Rate"];
-            $total_payable = $interest_payable + $amt_borrowed;
-
-            if($tenure == 1){
-                $monthly_interest = $ir_result["Interest_Rate"];
-                $monthly_payable = number_format($total_payable, 2, '.', ',');
-            } else if ($tenure == 2){
-                $monthly_interest = round($ir_result["Interest_Rate"] / 2, 2);
-                $monthly_payable = number_format($total_payable / 2, 2, '.', ',');
-            } else if ($tenure == 3){
-                $monthly_interest = round($ir_result["Interest_Rate"] / 6, 2);
-                $monthly_payable = number_format($total_payable / 6, 2, '.', ',');
-            } else if ($tenure == 4){
-                $monthly_interest = round($ir_result["Interest_Rate"] / 12, 2);
-                $monthly_payable= number_format($total_payable / 12, 2, '.', ',');
-            } else if ($tenure == 5){
-                $monthly_interest = round($ir_result["Interest_Rate"] / 24, 2);
-                $monthly_payable= number_format($total_payable / 24, 2, '.', ',');
-            } 
+            $loanDetails = calculateLoanDetails($con, $amt_borrowed, $lender_ir, $tenure, $paysched);
+        
                 
             ?>
                 <div class="loan_container">
@@ -187,7 +169,7 @@
                         <h3>Interest Rate</h3>
                     </div>
                     <div class="row_value">
-                        <p><?php echo $monthly_interest;?>%</p>
+                        <p><?php echo $loanDetails['monthly_interest'];?>%</p>
                     </div>
                     <div class="row">
                         <h3>per month</h3>
@@ -200,55 +182,116 @@
                         <h3>Monthly Repayment</h3>
                     </div>
                     <div class="row_value">
-                        <p>₱<?php echo $monthly_payable;?></p>
+                        <p>₱<?php echo $loanDetails['monthly_payable'];?></p>
                     </div>
                 </div>
 
                 <!-- Column 5: Apply Now Button, More Info Button -->
                 <div class="centered_column">
-                    <a href="../html/Loginpage.html">
-                        <div class="row">
-                            <button>Apply Now</button>
-                        </div>
-                    </a>
+   
+                    <div class="row">
+                        <button onclick="openModal('<?php echo $modalId; ?>apply', '<?php echo $overlayId; ?>')">Apply Now</button>
+                    </div>
+               
                     <div class="row">
                         <button onclick="openModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">More Info</button>
                     </div>
                 </div>
 
                 <div id="<?php echo $overlayId; ?>" class="overlay" onclick="closeModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')"></div>
-            
-                <div id="<?php echo $modalId; ?>" class="modal">
-                <h2>
-                    <div class="row">
-                        <?php echo $row['Lender_Name'];?>
-                    </div>
-                </h2>
-
-
-                <?php 
-                    $getTenure = "SELECT * FROM tenure WHERE Tenure_ID = $tenure";
-                    $resultTenure = mysqli_query($con, $getTenure);
-
-                    $selectedTenure = mysqli_fetch_array($resultTenure);
-                ?>
-
-                <p>Email Address: <?php echo $row['Email']; ?></p>
-                <p>Contact Number: <?php echo $row['Contact_Number']; ?></p>
-                <p>Minimum Salary Required: ₱<?php echo number_format($row['MinSalary_Required'], 2, '.', ','); ?></p>
-                <p>Loan Amount: ₱<?php echo number_format($amt_borrowed, 2, '.', ','); ?></p>
-                <p>Tenure Selected: <?php echo $selectedTenure['Duration'];?></p>
-                <p>Interest: <?php echo number_format($ir_result["Interest_Rate"], 2, '.', ','); ?>%</p>
-                <p>Interest Payable: ₱<?php echo number_format($interest_payable, 2, '.', ','); ?></p>
-                <p>Monthly Payment: ₱<?php echo $monthly_payable;?></p>
-                <p>Total Payable: ₱<?php echo number_format($total_payable, 2, '.', ','); ?></p>
                 
-               
-                <button onclick="closeModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">Close</button>
-                <a href="../html/Loginpage.html">
-                    <button>Apply Now</button>
-                </a>
+                <div id="<?php echo $modalId; ?>" class="modal">
+                    <h2>
+                        <div class="row">
+                            <?php echo $row['Lender_Name'];?>
+                        </div>
+                    </h2>
+
+
+                    <?php 
+                        $getTenure = "SELECT * FROM tenure WHERE Tenure_ID = $tenure";
+                        $resultTenure = mysqli_query($con, $getTenure);
+
+                        $selectedTenure = mysqli_fetch_array($resultTenure);
+                    ?>
+
+                    <p>Email Address: <?php echo $row['Email']; ?></p>
+                    <p>Contact Number: <?php echo $row['Contact_Number']; ?></p>
+                    <p>Minimum Salary Required: ₱<?php echo number_format($row['MinSalary_Required'], 2, '.', ','); ?></p>
+                    <p>Loan Amount: ₱<?php echo number_format($amt_borrowed, 2, '.', ','); ?></p>
+                    <p>Tenure Selected: <?php echo $selectedTenure['Duration'];?></p>
+                    <p>Interest: <?php echo number_format($loanDetails['ir_result'], 2, '.', ','); ?>%</p>
+                    <p>Interest Payable: ₱<?php echo number_format($loanDetails['interest_payable'], 2, '.', ','); ?></p>
+                    <p>Monthly Payment: ₱<?php echo $loanDetails['monthly_payable'];?></p>
+                    <p>Total Payable: ₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ','); ?></p>
+                    
+                
+                    <button onclick="closeModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">Close</button>
+                    <button onclick="closeOpenModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">Apply Now</button>
+                   
                 </div>
+
+                <div id="<?php echo $modalId; ?>apply" class="modal">
+                    <h2>
+                        <div class="row">
+                            APPLY NOW
+                        </div>
+                        <?php echo $row['Lender_Name'];?>
+                    </h2>
+                    <form id="loanConfirmationForm" method="post" action="applyLoan.php">
+
+                        <?php 
+                            $getTenure = "SELECT * FROM tenure WHERE Tenure_ID = $tenure";
+                            $resultTenure = mysqli_query($con, $getTenure);
+
+                            $selectedTenure = mysqli_fetch_array($resultTenure);
+                        ?>
+
+                            <label for="amt_borrowed">Loan Amount</label>
+                            <input type="number" name="amt_borrowed" id="amt_borrowed" value="<?php echo $amt_borrowed?>" step="any" readonly><br>
+
+                            <label for="tenure">Tenure:</label>
+                            <select name="tenure" id="tenure" disabled>
+                                <option value="1" <?php echo ($tenure == '1') ? 'selected' : ''; ?>>1 Month</option>
+                                <option value="2" <?php echo ($tenure == '2') ? 'selected' : ''; ?>>3 Months</option>
+                                <option value="3" <?php echo ($tenure == '3') ? 'selected' : ''; ?>>6 Months</option>
+                                <option value="4" <?php echo ($tenure == '4') ? 'selected' : ''; ?>>1 Year</option>
+                                <option value="5" <?php echo ($tenure == '5') ? 'selected' : ''; ?>>2 Years</option>
+                            </select>
+
+                            <label for="pay_sched">Payment Schedule:</label>
+                            <select name="pay_sched" id="pay_sched" disabled>
+                                <option value="1" <?php echo ($pay_schedule == '1') ? 'selected' : ''; ?>>Weekly</option>
+                                <option value="2" <?php echo ($pay_schedule == '2') ? 'selected' : ''; ?>>Semi-Monthly</option>
+                                <option value="3" <?php echo ($pay_schedule == '3') ? 'selected' : ''; ?>>Monthly</option>
+                                <option value="4" <?php echo ($pay_schedule == '4') ? 'selected' : ''; ?>>Quarterly</option>
+                            </select>
+                                <br>
+
+                                Confirm Details:
+                            <p>Loan Amount: ₱<?php echo number_format($amt_borrowed, 2, '.', ','); ?></p>
+                            <p>Tenure Selected: <?php echo $selectedTenure['Duration'];?></p>
+                            <p>Payment Schedule: <?php echo $loanDetails['payment_schedule'];?></p>
+                            <p>Interest: <?php echo number_format($loanDetails['ir_result'], 2, '.', ','); ?>%</p>
+                            <p>Interest Payable: ₱<?php echo number_format($loanDetails['interest_payable'], 2, '.', ','); ?></p>
+                            <p>Monthly Payment: ₱<?php echo $loanDetails['monthly_payable'];?></p>
+                            <p>Total Payable: ₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ','); ?></p>
+                            
+                            <input type="hidden" name="userID" value="<?php echo $_SESSION['id']; ?>">
+                            <input type="hidden" name="lenderID" value="<?php echo $row['Lender_ID']; ?>">
+                            <input type="hidden" name="scheduleID" value="<?php echo $pay_schedule; ?>">
+                            <input type="hidden" name="tenureID" value="<?php echo $tenure; ?>">
+                            <input type="hidden" name="loanAmt" value="<?php echo $amt_borrowed; ?>">
+                                
+                            <div class="button-container">
+                                <button onclick="closeModal('<?php echo $modalId; ?>apply', '<?php echo $overlayId; ?>')">Cancel</button>
+                                <button>Confirm</button> 
+                            </div>
+                    </form>
+                </div>
+
+            
+
             </div>
 
           
@@ -261,10 +304,59 @@
 
     </div>
 
-   
-
-           
+    <script src="https://kit.fontawesome.com/e140ca9b66.js" crossorigin="anonymous"></script>       
     <script src="../js/modal.js"></script>
     <script src="../js/slideshow.js"></script>
 </body>
 </html>
+
+<?php
+    function calculateLoanDetails($con, $amt_borrowed, $lender_ir, $tenure, $paysched)
+    {
+        $ir_query = mysqli_query($con, $lender_ir);
+        $ir_result = mysqli_fetch_array($ir_query);
+
+        $sched_query = mysqli_query($con, $paysched);
+        $sched_result = mysqli_fetch_array($sched_query);
+
+        $interest_payable = ($amt_borrowed * $ir_result["Interest_Rate"]);
+        
+        $ir_result["Interest_Rate"] = 100 * $ir_result["Interest_Rate"];
+        $total_payable = $interest_payable + $amt_borrowed;
+    
+        switch ($tenure) {
+            case 1:
+                $monthly_interest = $ir_result["Interest_Rate"];
+                $monthly_payable = number_format($total_payable, 2, '.', ',');
+                break;
+            case 2:
+                $monthly_interest = round($ir_result["Interest_Rate"] / 2, 2);
+                $monthly_payable = number_format($total_payable / 2, 2, '.', ',');
+                break;
+            case 3:
+                $monthly_interest = round($ir_result["Interest_Rate"] / 6, 2);
+                $monthly_payable = number_format($total_payable / 6, 2, '.', ',');
+                break;
+            case 4:
+                $monthly_interest = round($ir_result["Interest_Rate"] / 12, 2);
+                $monthly_payable= number_format($total_payable / 12, 2, '.', ',');
+                break;
+            case 5:
+                $monthly_interest = round($ir_result["Interest_Rate"] / 24, 2);
+                $monthly_payable= number_format($total_payable / 24, 2, '.', ',');
+                break;
+            default:
+                break;
+        }
+    
+        return [
+            'ir_result' => $ir_result["Interest_Rate"],
+            'interest_payable' => $interest_payable,
+            'monthly_interest' => $monthly_interest,
+            'monthly_payable' => $monthly_payable,
+            'total_payable' => $total_payable,
+            'payment_schedule' => $sched_result["Frequency"]
+        ];
+    }
+
+?>

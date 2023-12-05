@@ -64,6 +64,8 @@ nav .navbar .menu {
 
 .user-profile{
     overflow: hidden;
+    border-radius: 40px;
+
 }
 
 .dropdown-content {
@@ -74,6 +76,11 @@ nav .navbar .menu {
     z-index: 3;
     color: #146C94;
     font-size: 16px;
+}
+
+.dropdown{
+    border-radius: 25px;
+    padding: 30px;
 }
 
 #dropdown-content {

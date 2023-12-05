@@ -26,7 +26,8 @@ $result = mysqli_query($con, $s);
 $num = mysqli_num_rows($result); 
 
 while($row = mysqli_fetch_array($result)){
-    $_SESSION['SESSIONID_VALUE'] = session_id(); 
+    $_SESSION['SESSIONID_VALUE'] = session_id();
+    $_SESSION['id'] = $row['User_ID'];
     $_SESSION['fname'] = $row['First_Name'];
     $_SESSION['mname'] = $row['Middle_Name'];
     $_SESSION['lname'] = $row['Last_Name'];
