@@ -11,18 +11,22 @@
         $tenure = $_POST["tenure"];
         $pay_schedule = $_POST["pay_sched"];
     } else{
-        $amt_borrowed = 200000;
-        $interest_rate = "";
+        $amt_borrowed = 60000;
+        $interest_rate = 1;
         $tenure = 4;
-        $pay_schedule = "Monthly";
+        $pay_schedule = 3;
     }
     
     $s = "SELECT DISTINCT * 
       FROM lender 
       RIGHT JOIN lender_interest_rates ON lender.Lender_ID = lender_interest_rates.Lender_ID
+      RIGHT JOIN lender_payment_scheds ON lender.Lender_ID = lender_payment_scheds.Lender_ID
       WHERE lender_interest_rates.Tenure_ID = $tenure
+        AND lender_payment_scheds.Schedule_ID = $pay_schedule
         AND $amt_borrowed >= MinLoan_Amt
-        AND $amt_borrowed <= MaxLoan_Amt";
+        AND $amt_borrowed <= MaxLoan_Amt
+        -- AND lender_interest_rates.Interest_Rate <= $interest_rate 
+        ";
 
     $result = mysqli_query($con, $s);
 ?>
@@ -86,17 +90,17 @@
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
                 <label for="amt_borrowed">Amount Borrowed</label>
-                <input type="number" name="amt_borrowed" id="amt_borrowed" value="<?php echo isset($_POST['amt_borrowed']) ? $_POST['amt_borrowed'] : '200000'; ?>"><br>
+                <input type="number" name="amt_borrowed" id="amt_borrowed" value="<?php echo isset($_POST['amt_borrowed']) ? $_POST['amt_borrowed'] : '60000'; ?>" step="any"><br>
 
-                <label for="interest">Interest Rate (per month)</label>
-                <input type="number" name="interest" id="interest" value="<?php echo isset($_POST['interest']) ? $_POST['interest'] : ''; ?>"><br>
+                <label for="interest">Interest Rate (per tenure)</label>
+                <input type="number" name="interest" id="interest" value="<?php echo isset($_POST['interest']) ? $_POST['interest'] : '1'; ?>" step="any"><br>
 
                 <label for="tenure">Tenure:</label>
                 <select name="tenure" id="tenure">
                     <option value="1" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '1') ? 'selected' : ''; ?>>1 Month</option>
                     <option value="2" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '2') ? 'selected' : ''; ?>>3 Months</option>
                     <option value="3" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '3') ? 'selected' : ''; ?>>6 Months</option>
-                    <option value="4" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '4') ? 'selected' : ''; ?>>1 Year</option>
+                    <option value="4" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '4') ? 'selected' : 'selected'; ?>>1 Year</option>
                     <option value="5" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '5') ? 'selected' : ''; ?>>2 Years</option>
                 </select>
 
@@ -104,7 +108,7 @@
                 <select name="pay_sched" id="pay_sched">
                     <option value="1" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '1') ? 'selected' : ''; ?>>Weekly</option>
                     <option value="2" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '2') ? 'selected' : ''; ?>>Semi-Monthly</option>
-                    <option value="3" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '3') ? 'selected' : ''; ?>>Monthly</option>
+                    <option value="3" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '3') ? 'selected' : 'selected'; ?>>Monthly</option>
                     <option value="4" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '4') ? 'selected' : ''; ?>>Quarterly</option>
                 </select>
                       <br>
