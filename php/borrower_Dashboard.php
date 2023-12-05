@@ -35,7 +35,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to LoanDaddy</title>
+    <title>Borrower Dashboard</title>
     <link rel="stylesheet" href="../css/hamburgerstyle.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/slideshow.css">
@@ -57,7 +57,13 @@
                 <li><a href="About Us/About Us.html">Contact Us</a></li>
                 <li><a href="#footer">About Us</a></li>
                 <li><a href="#footer">FAQs</a></li>
-                <li><a href="../html/Loginpage.html">Login</a></li>
+                <li class="user-profile">
+                    <a class="dropdown">User Profile<i class="fa fa-caret-down"></i></a>
+                        <div class="dropdown-content" id="dropdown-content">
+                            <a id="dp-option">View Profile</a>
+                            <a id="dp-option" href="logout.php" onclick="return confirm('Are you sure you want to logout?')">Logout</a>
+                        </div>
+                </li>
             </ul>
         </div>
 
@@ -157,9 +163,6 @@
                 $monthly_interest = round($ir_result["Interest_Rate"] / 24, 2);
                 $monthly_payable= number_format($total_payable / 24, 2, '.', ',');
             } 
-            
-                // $lender_ir = $lender_ir * 100;
-
                 
             ?>
                 <div class="loan_container">
@@ -261,7 +264,6 @@
    
 
            
-
     <script src="../js/modal.js"></script>
     <script src="../js/slideshow.js"></script>
 </body>

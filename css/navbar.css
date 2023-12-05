@@ -62,6 +62,53 @@ nav .navbar .menu {
     transition: 0.5s;
 }
 
+.user-profile{
+    overflow: hidden;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #AFD3E2;
+    min-width: 160px;
+    z-index: 3;
+    color: #146C94;
+    font-size: 16px;
+}
+
+#dropdown-content {
+    background-color: #146C94;
+    color: #146C94;
+}
+
+#dp-option{
+    font-size: 18px;
+}
+
+.dropdown-content a{
+    float: none;
+    color: #146C94;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+  
+.dropdown-content a:hover {
+    background-color: #146C94;
+    font-weight: 400;
+    color: #AFD3E2;
+}
+
+#dropdown-content a:hover {
+    background-color: #AFD3E2;
+    color: #146C94;
+}
+
+  
+.user-profile:hover .dropdown-content {
+    display: block;
+}
+
 @media only screen and (max-width: 768px) {
     nav .navbar {
         flex-direction: column;
