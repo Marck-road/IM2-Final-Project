@@ -57,11 +57,14 @@
                 <li><a href="About Us/About Us.html">Contact Us</a></li>
                 <li><a href="#footer">About Us</a></li>
                 <li><a href="#footer">FAQs</a></li>
-                <li><a href="#footer">Login</a></li>
+                <li><a href="../html/Loginpage.html">Login</a></li>
             </ul>
         </div>
 
     </nav>
+
+    
+
 
     <div class="slideshow-container">
         <div class = "dot-container">
@@ -123,11 +126,14 @@
                 <h1>Available Loans</h1>
             </div>
             <?php
+            $index = 1;
             while($row = mysqli_fetch_array($result))
             {
              $lender_ir = "SELECT Interest_Rate FROM lender_interest_rates
               WHERE Lender_ID = '" . $row["Lender_ID"] . "' AND Tenure_ID = '" . $tenure . "'";
             
+            $modalId = "infoModal_" . $index;
+            $overlayId = "overlay_" . $index;
             $ir_query = mysqli_query($con, $lender_ir);
             $ir_result = mysqli_fetch_array($ir_query);
             $interest_payable = ($amt_borrowed * $ir_result["Interest_Rate"]);
@@ -197,27 +203,66 @@
 
                 <!-- Column 5: Apply Now Button, More Info Button -->
                 <div class="centered_column">
+                    <a href="../html/Loginpage.html">
+                        <div class="row">
+                            <button>Apply Now</button>
+                        </div>
+                    </a>
                     <div class="row">
-                        <button>Apply Now</button>
+                        <button onclick="openModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">More Info</button>
                     </div>
+                </div>
+
+                <div id="<?php echo $overlayId; ?>" class="overlay" onclick="closeModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')"></div>
+            
+                <div id="<?php echo $modalId; ?>" class="modal">
+                <h2>
                     <div class="row">
-                        <button>More Info</button>
+                        <?php echo $row['Lender_Name'];?>
                     </div>
+                </h2>
+
+
+                <?php 
+                    $getTenure = "SELECT * FROM tenure WHERE Tenure_ID = $tenure";
+                    $resultTenure = mysqli_query($con, $getTenure);
+
+                    $selectedTenure = mysqli_fetch_array($resultTenure);
+                ?>
+
+                <p>Email Address: <?php echo $row['Email']; ?></p>
+                <p>Contact Number: <?php echo $row['Contact_Number']; ?></p>
+                <p>Minimum Salary Required: ₱<?php echo number_format($row['MinSalary_Required'], 2, '.', ','); ?></p>
+                <p>Loan Amount: ₱<?php echo number_format($amt_borrowed, 2, '.', ','); ?></p>
+                <p>Tenure Selected: <?php echo $selectedTenure['Duration'];?></p>
+                <p>Interest: ₱<?php echo number_format($ir_result["Interest_Rate"], 2, '.', ','); ?>%</p>
+                <p>Interest Payable: ₱<?php echo number_format($interest_payable, 2, '.', ','); ?></p>
+                <p>Monthly Payment: ₱<?php echo $monthly_payable;?></p>
+                <p>Total Payable: ₱<?php echo number_format($total_payable, 2, '.', ','); ?></p>
+                
+               
+                <button onclick="closeModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">Close</button>
+                <a href="../html/Loginpage.html">
+                    <button>Apply Now</button>
+                </a>
                 </div>
             </div>
 
+          
+
             <?php
+            $index++;
             }
             ?>
         </div>
 
     </div>
 
-    <script>
+   
 
-    </script>
+           
 
-
+    <script src="../js/modal.js"></script>
     <script src="../js/slideshow.js"></script>
 </body>
 </html>
