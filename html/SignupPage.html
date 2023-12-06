@@ -1,0 +1,136 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create an Account for Free!</title>
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/signup.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <label class="hamburger_menu">
+        <input type="checkbox">
+    </label>
+
+
+    <nav>
+        <div class="navbar">
+            <div class="logo">
+                <a href="../php/index.php"><img src="../images/ldaddy.png" class="logo"></a>
+            </div>
+            <ul class="menu">
+                <li><a href="../php/index.php">Home</a></li>
+                <li><a href="#PetServices">Join our Team</a></li>
+                <li><a href="About Us/About Us.html">Contact Us</a></li>
+                <li><a href="#footer">About Us</a></li>
+                <li><a href="#footer">FAQs</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="content-container">
+        <div class="register-container">
+            <form action="../php/registrationAction.php" method="post">
+                <h3>Registration</h3>
+                
+                <!-- First and Middle Name in the same row -->
+                <div class="row-container">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" placeholder="Enter First Name" name="firstName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="middleName">Middle Name</label>
+                        <input type="text" id="middleName" placeholder="Enter Middle Name" name="middleName">
+                    </div>
+                </div>
+        
+                <!-- Last Name -->
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" placeholder="Enter Last Name" name="lastName" required>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter Email Address" name="email" required>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter Password" name="password" required>
+                </div>
+
+                <div class="row-container">
+                     <!-- Contact Number -->
+                    <div class="form-group">
+                        <label for="contactNumber">Contact Number</label>
+                        <input type="tel" id="contactNumber" placeholder="Enter Contact Number" name="contactNumber" required>
+                    </div>
+            
+                    <!-- Birthday -->
+                    <div class="form-group">
+                        <label for="birthday">Birthday</label>
+                        <input type="date" id="birthday" name="birthday" required>
+                    </div>
+                </div>
+        
+               
+
+                <div class="row-container">
+                    <!-- City -->
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" placeholder="Enter City" name="city" required>
+                    </div>
+            
+                    <!-- Province -->
+                    <div class="form-group">
+                        <label for="province">Province</label>
+                        <input type="text" id="province" placeholder="Enter Province" name="province" required>
+                    </div>
+                </div>
+        
+                
+        
+                <!-- Zip Code -->
+                <div class="form-group">
+                    <label for="zipCode">Zip Code</label>
+                    <input type="text" id="zipCode" placeholder="Enter Zip Code" name="zipCode" required>
+                </div>
+        
+                <!-- Monthly Income -->
+                <div class="form-group">
+                    <label for="monthlyIncome">Monthly Income</label>
+                    <input type="number" id="monthlyIncome" placeholder="Enter Monthly Income" name="monthlyIncome" required>
+                </div>
+        
+                <!-- Employment Status Dropdown -->
+                <div class="form-group">
+                    <label for="employmentStatus">Employment Status</label>
+                    <select id="employmentStatus" name="employmentStatus" required>
+                        <option value="employed">Employed</option>
+                        <option value="self-employed">Self-Employed</option>
+                        <option value="unemployed">Unemployed</option>
+                    </select>
+                </div>
+        
+                <!-- Submit Button -->
+                <div class="button-container">
+                    <button type="submit">Register</button>
+                </div>
+        
+                <p class="login-link">Already have an account? <a href="LoginPage.html">Login</a></p>
+            </form>
+        </div>
+    </div>
+    
+    
+
+</body>
+</html>
