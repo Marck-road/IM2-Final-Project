@@ -70,7 +70,9 @@
         </div>
     </div>
     
-    
+    <?php
+        include '../html/footer.html';
+    ?>
 
 </body>
 </html>

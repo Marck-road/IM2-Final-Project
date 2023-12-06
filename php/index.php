@@ -258,7 +258,9 @@
 
     </div>
 
-   
+    <?php
+        include '../html/footer.html';
+    ?>
 
            
 
