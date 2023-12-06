@@ -24,7 +24,8 @@
         AND lender_payment_scheds.Schedule_ID = $pay_schedule
         AND $amt_borrowed >= MinLoan_Amt
         AND $amt_borrowed <= MaxLoan_Amt
-        AND lender_interest_rates.Interest_Rate <= $interest_rate 
+        AND lender_interest_rates.Interest_Rate <= $interest_rate
+        -- AND lender.Verified_at != NULL
         ";
 
     $result = mysqli_query($con, $s);
@@ -44,6 +45,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+    <script src="../js/modal.js"></script>
 </head>
 <body>
     <nav>
@@ -53,7 +55,7 @@
             </div>
             <ul class="menu">
                 <li><a href="#">Home</a></li>
-                <li><a href="#PetServices">Active Loans</a></li>
+                <li><a href="viewLoans.php">View Loans</a></li>
                 <li><a href="About Us/About Us.html">Contact Us</a></li>
                 <li><a href="#footer">About Us</a></li>
                 <li><a href="#footer">FAQs</a></li>
@@ -109,17 +111,19 @@
                     <option value="1" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '1') ? 'selected' : ''; ?>>1 Month</option>
                     <option value="2" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '2') ? 'selected' : ''; ?>>3 Months</option>
                     <option value="3" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '3') ? 'selected' : ''; ?>>6 Months</option>
-                    <option value="4" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '4') ? 'selected' : ''; ?>>1 Year</option>
+                    <option value="4" <?php echo (!isset($_POST['tenure']) || (isset($_POST['tenure']) && $_POST['tenure'] == '4')) ? 'selected' : ''; ?>>1 Year</option>
                     <option value="5" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '5') ? 'selected' : ''; ?>>2 Years</option>
                 </select>
+
 
                 <label for="pay_sched">Payment Schedule:</label>
                 <select name="pay_sched" id="pay_sched">
                     <option value="1" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '1') ? 'selected' : ''; ?>>Weekly</option>
                     <option value="2" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '2') ? 'selected' : ''; ?>>Semi-Monthly</option>
-                    <option value="3" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '3') ? 'selected' : ''; ?>>Monthly</option>
+                    <option value="3" <?php echo (!isset($_POST['pay_sched']) || (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '3')) ? 'selected' : ''; ?>>Monthly</option>
                     <option value="4" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '4') ? 'selected' : ''; ?>>Quarterly</option>
                 </select>
+
                       <br>
                     <div class="button-container">
                         <input type="submit" value="Submit"> 
@@ -238,6 +242,8 @@
                         </div>
                         <?php echo $row['Lender_Name'];?>
                     </h2>
+
+                    
                     <form id="loanConfirmationForm" method="post" action="applyLoan.php">
 
                         <?php 
@@ -268,7 +274,7 @@
                             </select>
                                 <br>
 
-                                Confirm Details:
+                            Confirm Details:
                             <p>Loan Amount: ₱<?php echo number_format($amt_borrowed, 2, '.', ','); ?></p>
                             <p>Tenure Selected: <?php echo $selectedTenure['Duration'];?></p>
                             <p>Payment Schedule: <?php echo $loanDetails['payment_schedule'];?></p>
@@ -277,6 +283,7 @@
                             <p>Monthly Payment: ₱<?php echo $loanDetails['monthly_payable'];?></p>
                             <p>Total Payable: ₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ','); ?></p>
                             
+                            <!-- hiddedn values to be submitted -->
                             <input type="hidden" name="userID" value="<?php echo $_SESSION['id']; ?>">
                             <input type="hidden" name="lenderID" value="<?php echo $row['Lender_ID']; ?>">
                             <input type="hidden" name="scheduleID" value="<?php echo $pay_schedule; ?>">
@@ -284,12 +291,38 @@
                             <input type="hidden" name="loanAmt" value="<?php echo $amt_borrowed; ?>">
                                 
                             <div class="button-container">
-                                <button onclick="closeModal('<?php echo $modalId; ?>apply', '<?php echo $overlayId; ?>')">Cancel</button>
+                                <button type="button" onclick="closeModal('<?php echo $modalId; ?>apply', '<?php echo $overlayId; ?>')">Cancel</button>
                                 <button>Confirm</button> 
                             </div>
                     </form>
                 </div>
 
+           
+                    <?php
+                        $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+                        if(strpos($fullUrl, "success=application") == true) {
+                            echo '<script>';
+                                echo 'openModal("successModal", "successOverlay");';
+                            echo '</script>';
+                            ?>
+                                
+                            <?php
+                        }
+                    ?>
+
+                    
+               
+                <div id="successOverlay" class="overlay" onclick="closeModal('successModal', 'successOverlay')"></div>
+                    
+                <div id="successModal" class="modal">
+                    <div class="row">
+                        Successfully applied loan! Please dont hesitate to contact the 
+                        lender through email for more discussion and follow-ups. You will
+                        be notified if your loan is approved! 
+                    </div>
+                    <button id="successBtn" type="button" onclick="closeModal('successModal', 'successOverlay')">Okay</button>
+                </div>           
             
 
             </div>
@@ -305,7 +338,7 @@
     </div>
 
     <script src="https://kit.fontawesome.com/e140ca9b66.js" crossorigin="anonymous"></script>       
-    <script src="../js/modal.js"></script>
+    
     <script src="../js/slideshow.js"></script>
 </body>
 </html>

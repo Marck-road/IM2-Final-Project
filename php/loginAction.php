@@ -17,49 +17,81 @@ mysqli_select_db($con, 'loanapp');
 $email= $_POST['email'];  
 $pass = $_POST['password']; 
 $final_hashed = md5($pass);
-
-echo $final_hashed;
+$userType;
 
 $s = " select * from admin where username = '$email' && password = '$final_hashed'"; //data will be used
-
+    
 $result = mysqli_query($con, $s); 
 $num = mysqli_num_rows($result); 
 
-while($row = mysqli_fetch_array($result)){
-    $_SESSION['SESSIONID_VALUE'] = session_id();
-    $_SESSION['id'] = $row['User_ID'];
-    $_SESSION['fname'] = $row['First_Name'];
-    $_SESSION['mname'] = $row['Middle_Name'];
-    $_SESSION['lname'] = $row['Last_Name'];
-    $_SESSION['email'] = $row['Email'];
-    $_SESSION['password'] = $row['Password'];
-    $_SESSION['monthly_Income'] = $row['Monthly_Income'];
-    $_SESSION['birthday'] = $row['Birthday'];
-    $_SESSION['city'] = $row['City'];
-    $_SESSION['province'] = $row['Province'];
-    $_SESSION['zip_Code'] = $row['ZIP_Code'];
-    $_SESSION['number'] = $row['Contact_Number'];
-    $_SESSION['employStatus'] = $row['Employment_Status'];
-    $_SESSION['income_docx'] = $row['Income_Document'];
-    $_SESSION['validID_1'] = $row['ValidID_1'];
-    $_SESSION['validID_2'] = $row['ValidID_2'];
-    $_SESSION['util_bill'] = $row['Utility_Bill'];
-}
+if($num != 0){
+    // if admin
+    while($row = mysqli_fetch_array($result)){
+        $_SESSION['SESSIONID_VALUE'] = session_id();
+        $_SESSION['id'] = $row['username'];
+    }
+    if($num == 1){  
+        // header('location:borrower_Dashboard.php');
+    } else{
+        header("location:../html/Loginpage.html?login=error");
+    }
+} else {
+    $s = " select * from lender where Email = '$email' && Password = '$final_hashed'"; 
+    
+    $result = mysqli_query($con, $s); 
+    $num = mysqli_num_rows($result); 
+    if($num != 0){
+        // if lender
+        while($row = mysqli_fetch_array($result)){
+            $_SESSION['SESSIONID_VALUE'] = session_id();
+            $_SESSION['id'] = $row['Lender_ID'];
+            $_SESSION['email'] = $row['Email'];
+        }
+        if($num == 1){  
+            // header('location:borrower_Dashboard.php');
+        } else{
+            header("location:../html/Loginpage.html?login=error");
+        }
+    } else{
+        // If normal User
+        $s = " select * from user where Email = '$email' && Password = '$final_hashed'"; 
+    
+        $result = mysqli_query($con, $s); 
+        $num = mysqli_num_rows($result); 
 
-if($num == 1){  //checks if how many were retrieved
-    header('location:borrower_Dashboard.php');
-    // if($_SESSION['role'] == "User"){
-    //     header('location:home.php');
-    // }
+        
+        if ($num != 0) {
+            while($row = mysqli_fetch_array($result)){
+                $_SESSION['SESSIONID_VALUE'] = session_id();
+                $_SESSION['id'] = $row['User_ID'];
+                $_SESSION['fname'] = $row['First_Name'];
+                $_SESSION['mname'] = $row['Middle_Name'];
+                $_SESSION['lname'] = $row['Last_Name'];
+                $_SESSION['email'] = $row['Email'];
+                $_SESSION['password'] = $row['Password'];
+                $_SESSION['monthly_Income'] = $row['Monthly_Income'];
+                $_SESSION['birthday'] = $row['Birthday'];
+                $_SESSION['city'] = $row['City'];
+                $_SESSION['province'] = $row['Province'];
+                $_SESSION['zip_Code'] = $row['ZIP_Code'];
+                $_SESSION['number'] = $row['Contact_Number'];
+            }
 
-    // else if($_SESSION['role'] == "Admin"){
-    //     header('location:adminpanel/adminpanel.php');
-    // }
+            if($num == 1){  
+                header('location:borrower_Dashboard.php');
+    
+            
+            } else{
+                header("location:../html/Loginpage.html?login=error");
+            }
+            
 
-}
+        }
 
-else{
-    header("location:../html/Loginpage.html?login=error");
+        
+    
+        
+    }
 }
 
 ?>

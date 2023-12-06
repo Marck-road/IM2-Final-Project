@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 
@@ -19,11 +18,18 @@ $scheduleID = $_POST['scheduleID'];
 $tenureID = $_POST['tenureID'];
 $loanAmt = $_POST['loanAmt'];
 
+echo $userID;
+echo $lenderID;
+echo $scheduleID;
+echo $tenureID;
+echo $loanAmt;
+
+
 if($isValid)
     {   
-        $reg= " INSERT INTO loan_application (User_ID, Lender_ID, Schedule_ID, Loan_Amt, Tenure_ID) 
+        $reg= " INSERT INTO loan_application (User_ID, Lender_ID, Schedule_ID, Tenure_ID, Loan_Amt) 
         VALUES ('$userID', '$lenderID', '$scheduleID', '$tenureID', '$loanAmt')";
         mysqli_query($con, $reg);
-        header('location:borrower_Dashboard.php?success=register');
+        header('location:borrower_Dashboard.php?success=application');
     }
 ?>

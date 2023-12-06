@@ -40,6 +40,7 @@ if ($isValid && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit();
 }
 
+echo $contactNum;
 //Checks if any email duplications
 $s = " select * from user where Email = '$email'"; //select query
 

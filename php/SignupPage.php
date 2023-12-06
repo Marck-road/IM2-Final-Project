@@ -79,7 +79,7 @@
                         <!-- Contact Number -->
                         <div class="form-group">
                             <label for="contactNum">Contact Number</label>
-                            <input type="tel" id="contactNum" placeholder="Enter Contact Number" name="contactNum" required>
+                            <input type="text" id="contactNum" placeholder="Enter Contact Number" name="contactNum" required>
                         </div>
                 
                         <!-- Birthday -->
@@ -170,6 +170,10 @@
             </form>
         </div>
     </div>
+    <?php
+        include '../html/footer.html';
+ ?>
+
     <script src="../js/signup.js"></script>
 </body>
 </html>
