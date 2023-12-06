@@ -53,11 +53,11 @@
             </div>
             <ul class="menu">
                 <li><a href="#">Home</a></li>
-                <li><a href="#PetServices">Join our Team</a></li>
+                <li><a href="applyLender.php">Join our Team</a></li>
                 <li><a href="About Us/About Us.html">Contact Us</a></li>
                 <li><a href="#footer">About Us</a></li>
                 <li><a href="#footer">FAQs</a></li>
-                <li><a href="../html/Loginpage.html">Login</a></li>
+                <li><a href="Loginpage.php">Login</a></li>
             </ul>
         </div>
 
@@ -203,7 +203,7 @@
 
                 <!-- Column 5: Apply Now Button, More Info Button -->
                 <div class="centered_column">
-                    <a href="../html/Loginpage.html">
+                    <a href="Loginpage.php">
                         <div class="row">
                             <button>Apply Now</button>
                         </div>
@@ -242,7 +242,7 @@
                 
                
                 <button onclick="closeModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">Close</button>
-                <a href="../html/Loginpage.html">
+                <a href="Loginpage.php">
                     <button>Apply Now</button>
                 </a>
                 </div>

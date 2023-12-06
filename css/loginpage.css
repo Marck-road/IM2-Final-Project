@@ -87,3 +87,10 @@ p{
 .register_link{
     font-size: 16px;
 }
+
+.success{
+    color: #146C94;
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: bolder;
+}

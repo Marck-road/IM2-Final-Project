@@ -21,8 +21,8 @@ $loanAmt = $_POST['loanAmt'];
 
 if($isValid)
     {   
-        $reg= " insert into loan_application (User_ID, Lender_ID, Schedule_ID, Loan_Amt, Tenure_ID) 
-        Balues ('$userID', '$lenderID', '$scheduleID', '$tenureID', '$loanAmt')";
+        $reg= " INSERT INTO loan_application (User_ID, Lender_ID, Schedule_ID, Loan_Amt, Tenure_ID) 
+        VALUES ('$userID', '$lenderID', '$scheduleID', '$tenureID', '$loanAmt')";
         mysqli_query($con, $reg);
         header('location:borrower_Dashboard.php?success=register');
     }

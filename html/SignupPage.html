@@ -32,26 +32,26 @@
     
     <div class="content-container">
         <div class="register-container">
-            <form action="../php/registrationAction.php" method="post">
+            <form action="../php/userRegister.php" method="post">
                 <h3>Registration</h3>
                 
                 <!-- First and Middle Name in the same row -->
                 <div class="row-container">
                     <div class="form-group">
-                        <label for="firstName">First Name</label>
-                        <input type="text" id="firstName" placeholder="Enter First Name" name="firstName" required>
+                        <label for="fname">First Name</label>
+                        <input type="text" id="fname" placeholder="Enter First Name" name="fname" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="middleName">Middle Name</label>
-                        <input type="text" id="middleName" placeholder="Enter Middle Name" name="middleName">
+                        <label for="mname">Middle Name</label>
+                        <input type="text" id="mname" placeholder="Enter Middle Name" name="mname">
                     </div>
                 </div>
         
                 <!-- Last Name -->
                 <div class="form-group">
-                    <label for="lastName">Last Name</label>
-                    <input type="text" id="lastName" placeholder="Enter Last Name" name="lastName" required>
+                    <label for="lname">Last Name</label>
+                    <input type="text" id="lname" placeholder="Enter Last Name" name="lname" required>
                 </div>
 
                 <!-- Email -->
@@ -65,12 +65,16 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" placeholder="Enter Password" name="password" required>
                 </div>
+                <div class="form-group">
+                    <label for="confPassword">Confirm Password</label>
+                    <input type="password" id="confPassword" placeholder="Enter Password" name="confPassword" required>
+                </div>
 
                 <div class="row-container">
                      <!-- Contact Number -->
                     <div class="form-group">
-                        <label for="contactNumber">Contact Number</label>
-                        <input type="tel" id="contactNumber" placeholder="Enter Contact Number" name="contactNumber" required>
+                        <label for="contactNum">Contact Number</label>
+                        <input type="tel" id="contactNum" placeholder="Enter Contact Number" name="contactNum" required>
                     </div>
             
                     <!-- Birthday -->
@@ -79,8 +83,6 @@
                         <input type="date" id="birthday" name="birthday" required>
                     </div>
                 </div>
-        
-               
 
                 <div class="row-container">
                     <!-- City -->
