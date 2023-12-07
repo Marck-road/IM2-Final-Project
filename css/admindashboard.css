@@ -1,64 +1,81 @@
-.advanced-search {
-    position: fixed;
-    top: 75px;
-    left: 0px;
-    bottom: 0px;
-    background-color: #AFD3E2;
-    padding: 20px;
+.dashboard {
+    display: flex;
+    flex-direction: column; 
+    margin: 20px;
+}
+
+.box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
     border: 1px solid #ccc;
-    border-radius: 0px;
-    width: calc(25% - 40px); 
-    max-width: 300px;
-    z-index: 1;
-}
-
-.advanced-search label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-.advanced-search input[type="text"],
-.advanced-search button {
-    padding: 8px;
-    margin-bottom: 10px;
-    width: 100%;
-}
-
-.advanced-search button {
+    margin: 20px;
+    margin-top: 100px;
+    padding: 30px;
+    width: 100px;
+    height: 300px;
+    text-align: center;
     background-color: #146C94;
     color: white;
-    border: none;
-    border-radius: 0px;
-    cursor: pointer;
-    width: 30%;
+    border-radius: 20px;
+    position: relative;
 }
 
-.advanced-search button:hover {
-    background-color: #0056b3;
-}
-
-.navbar h1 {
-    color: white;
-}
-
-table {
-    width: 50%;
-    border-collapse: collapse;
-    margin-top: 130px;
+.notif-badge {
     position: absolute;
-    left: 450px;
-    z-index: 0;
+    top: -10px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    font-size: 18px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
 }
 
-table th,
-table td {
+a{
+    text-decoration: none;
+}
+
+.box:last-child {
+    margin-right: 0;
+}
+
+.top-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.bottom-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -30px;
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+.top-row .box,
+.bottom-row .box {
+    flex-basis: calc(50% - 20px); 
     border: 1px solid #ccc;
-    padding: 15px;
+    padding: 20px;
     text-align: center;
+    box-sizing: border-box;
 }
 
-table th {
-    background-color: #f2f2f2;
+.box:hover {
+    transform: scale(1.1);
 }
 
 table tbody tr:nth-child(even) {
