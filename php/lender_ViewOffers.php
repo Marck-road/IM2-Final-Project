@@ -52,7 +52,8 @@
     <script src="../js/modal.js"></script>
 </head>
 <body>
-    <nav>
+<div class="wrapper">
+<nav>
         <div class="navbar">
             <div class="logo">
                 <a href="#"><img src="../images/ldaddy.png" class="logo"></a>
@@ -60,9 +61,9 @@
             <ul class="menu">
                 <li><a href="lender_Dashboard.php">Home</a></li>
                 <li><a href="lender_ViewOffers.php">New Offers</a></li>
-                <li><a href="About Us/About Us.html">Contact Us</a></li>
-                <li><a href="#footer">About Us</a></li>
-                <li><a href="#footer">FAQs</a></li>
+                <li><a href="#footer">Contact Us</a></li>
+                <li><a href="AboutUsPage(Lenders).php">About Us</a></li>
+                <li><a href="FAQsPage(Lenders).php">FAQs</a></li>
                 <li class="user-profile">
                     <a class="dropdown"><i class="fa-solid fa-user"></i></a>
                         <div class="dropdown-content" id="dropdown-content">
@@ -216,6 +217,9 @@
     
     </div>
 
+    <?php
+        include '../html/footer(Lenders).html';
+    ?>
 
     <script src="https://kit.fontawesome.com/e140ca9b66.js" crossorigin="anonymous"></script>       
     <script src="../js/slideshow.js"></script>

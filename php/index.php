@@ -46,17 +46,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
 </head>
 <body>
+<div class="wrapper">
     <nav>
         <div class="navbar">
             <div class="logo">
                 <a href="#"><img src="../images/ldaddy.png" class="logo"></a>
             </div>
             <ul class="menu">
-                <li><a href="#">Home</a></li>
+                <li><a href="index.php">Home</a></li>
                 <li><a href="applyLender.php">Join our Team</a></li>
-                <li><a href="About Us/About Us.html">Contact Us</a></li>
-                <li><a href="#footer">About Us</a></li>
-                <li><a href="#footer">FAQs</a></li>
+                <li><a href="#footer">Contact Us</a></li>
+                <li><a href="AboutUsPage.php">About Us</a></li>
+                <li><a href="FAQsPage.php">FAQs</a></li>
                 <li><a href="Loginpage.php">Login</a></li>
             </ul>
         </div>

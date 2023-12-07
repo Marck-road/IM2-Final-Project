@@ -48,17 +48,18 @@
     <script src="../js/modal.js"></script>
 </head>
 <body>
+<div class="wrapper">
     <nav>
         <div class="navbar">
             <div class="logo">
                 <a href="#"><img src="../images/ldaddy.png" class="logo"></a>
             </div>
             <ul class="menu">
-                <li><a href="#">Home</a></li>
+                <li><a href="borrower_Dashboard.php">Home</a></li>
                 <li><a href="viewLoans.php">View Loans</a></li>
-                <li><a href="About Us/About Us.html">Contact Us</a></li>
-                <li><a href="#footer">About Us</a></li>
-                <li><a href="#footer">FAQs</a></li>
+                <li><a href="#footer">Contact Us</a></li>
+                <li><a href="AboutUsPage(Borrowers).php">About Us</a></li>
+                <li><a href="FAQsPage(Borrowers).php">FAQs</a></li>
                 <li class="user-profile">
                     <a class="dropdown"><i class="fa-solid fa-user"></i></a>
                         <div class="dropdown-content" id="dropdown-content">
@@ -337,6 +338,10 @@
         </div>
 
     </div>
+
+    <?php
+        include '../html/footer.html';
+    ?>
 
     <script src="https://kit.fontawesome.com/e140ca9b66.js" crossorigin="anonymous"></script>       
     
