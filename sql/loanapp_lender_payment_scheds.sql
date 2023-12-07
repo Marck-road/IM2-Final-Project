@@ -31,7 +31,7 @@ CREATE TABLE `lender_payment_scheds` (
   KEY `Lender_ID_idx` (`Lender_ID`),
   CONSTRAINT `Lender_ID` FOREIGN KEY (`Lender_ID`) REFERENCES `lender` (`Lender_ID`),
   CONSTRAINT `Schedule_ID` FOREIGN KEY (`Schedule_ID`) REFERENCES `payment_sched` (`Schedule_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-05 20:00:12
+-- Dump completed on 2023-12-07 23:00:35

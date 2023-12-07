@@ -34,7 +34,7 @@ CREATE TABLE `user` (
   `City` varchar(45) NOT NULL,
   `Province` varchar(45) NOT NULL,
   `ZIP_Code` int NOT NULL,
-  `Contact_Number` int NOT NULL,
+  `Contact_Number` varchar(45) NOT NULL,
   `Employment_Status` enum('Employed','Unemployed','Self-Employed') NOT NULL,
   `Income_Document` blob,
   `ValidID_1` blob,
@@ -44,7 +44,7 @@ CREATE TABLE `user` (
   `Verified_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`User_ID`),
   UNIQUE KEY `User_ID_UNIQUE` (`User_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -53,6 +53,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'asdf@gmail.com','912ec803b2ce49e4a541068d495ab570','asdf','adsf','asdf',2321321,'2222-02-22','asdf','afdsfa',21313,'213213','Employed',NULL,NULL,NULL,NULL,'2023-12-06 02:33:16',NULL),(2,'fdsa@email.com','fc2baa1a20b4d5190b122b383d7449fd','fdsa','fdsa','fdsa',232312,'1122-12-12','dsfsadf','fsdafsdaf',223,'32323','Unemployed',NULL,NULL,NULL,NULL,'2023-12-06 02:36:49',NULL),(3,'user1@gmail.com','81dc9bdb52d04dc20036dbd8313ed055','User1','is','Auser',40000,'1998-06-04','Cebu City','Cebu',6000,'09472659123','Employed',NULL,NULL,NULL,NULL,'2023-12-06 12:49:01',NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -65,4 +66,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-05 20:00:13
+-- Dump completed on 2023-12-07 23:00:36

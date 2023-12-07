@@ -29,7 +29,9 @@ CREATE TABLE `loan_application` (
   `Schedule_ID` int NOT NULL,
   `Loan_Amt` float NOT NULL,
   `Tenure_ID` int NOT NULL,
-  `Status` enum('Accepted','Denied','Pending') DEFAULT 'Pending',
+  `Status` enum('Approved','Denied','Pending') DEFAULT 'Pending',
+  `Created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `Updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`LoanApp_ID`),
   KEY `User_ID` (`User_ID`),
   KEY `Lender_ID` (`Lender_ID`),
@@ -39,7 +41,7 @@ CREATE TABLE `loan_application` (
   CONSTRAINT `loan_application_ibfk_2` FOREIGN KEY (`Lender_ID`) REFERENCES `lender` (`Lender_ID`),
   CONSTRAINT `loan_application_ibfk_3` FOREIGN KEY (`Schedule_ID`) REFERENCES `payment_sched` (`Schedule_ID`),
   CONSTRAINT `loan_application_ibfk_4` FOREIGN KEY (`Tenure_ID`) REFERENCES `tenure` (`Tenure_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,6 +50,7 @@ CREATE TABLE `loan_application` (
 
 LOCK TABLES `loan_application` WRITE;
 /*!40000 ALTER TABLE `loan_application` DISABLE KEYS */;
+INSERT INTO `loan_application` VALUES (7,3,2,3,60000,4,'Pending','2023-12-07 02:32:52','2023-12-07 02:32:52'),(8,3,6,3,60000,4,'Pending','2023-12-07 02:32:52','2023-12-07 02:32:52'),(10,3,1,3,60000,4,'Approved','2023-12-07 07:03:22','2023-12-07 07:03:22'),(11,3,1,3,25000,4,'Denied','2023-12-07 07:03:41','2023-12-07 07:03:41'),(12,3,1,3,30000,4,'Approved','2023-12-07 12:41:41','2023-12-07 12:41:41');
 /*!40000 ALTER TABLE `loan_application` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -60,4 +63,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-05 20:00:12
+-- Dump completed on 2023-12-07 23:00:34

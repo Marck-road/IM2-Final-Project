@@ -24,17 +24,18 @@ DROP TABLE IF EXISTS `loan`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `loan` (
   `Loan_ID` int NOT NULL AUTO_INCREMENT,
-  `LoanApp_ID` int NOT NULL,
+  `LoanApp_ID` int DEFAULT NULL,
   `LoanReference_ID` int DEFAULT NULL,
-  `TotalAmt_Payable` float DEFAULT NULL,
+  `Status` enum('Open','Closed') DEFAULT 'Open',
   `Created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `Updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`Loan_ID`),
-  KEY `LoanApp_ID` (`LoanApp_ID`),
+  UNIQUE KEY `LoanApp_ID_UNIQUE` (`LoanApp_ID`),
+  UNIQUE KEY `LoanReference_ID_UNIQUE` (`LoanReference_ID`),
   KEY `LoanReference_ID_idx` (`LoanReference_ID`),
   CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`LoanApp_ID`) REFERENCES `loan_application` (`LoanApp_ID`),
   CONSTRAINT `LoanReference_ID` FOREIGN KEY (`LoanReference_ID`) REFERENCES `loan` (`Loan_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,6 +44,7 @@ CREATE TABLE `loan` (
 
 LOCK TABLES `loan` WRITE;
 /*!40000 ALTER TABLE `loan` DISABLE KEYS */;
+INSERT INTO `loan` VALUES (1,10,NULL,'Open','2023-12-07 07:05:11','2023-12-07 07:05:11'),(2,12,NULL,'Open','2023-12-07 12:42:04','2023-12-07 12:42:04');
 /*!40000 ALTER TABLE `loan` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-05 20:00:13
+-- Dump completed on 2023-12-07 23:00:35

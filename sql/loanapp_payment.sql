@@ -27,8 +27,9 @@ CREATE TABLE `payment` (
   `LBPeriod_ID` int DEFAULT NULL,
   `Amount_Paid` float DEFAULT NULL,
   `Screenshot` blob,
-  `Payment Channel` varchar(255) DEFAULT NULL,
-  `Status` enum('Success','Failed','Pending') DEFAULT NULL,
+  `Payment_Channel` varchar(255) DEFAULT NULL,
+  `Status` enum('Success','Failed','Pending') DEFAULT 'Pending',
+  `Created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`Payment_ID`),
   KEY `LBPeriod_ID_idx` (`LBPeriod_ID`),
   CONSTRAINT `LBPeriod_ID` FOREIGN KEY (`LBPeriod_ID`) REFERENCES `loanbilling_period` (`LBPeriod_ID`)
@@ -53,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-05 20:00:12
+-- Dump completed on 2023-12-07 23:00:35

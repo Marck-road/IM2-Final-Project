@@ -26,12 +26,12 @@ CREATE TABLE `loanbilling_period` (
   `LBPeriod_ID` int NOT NULL AUTO_INCREMENT,
   `Loan_ID` int NOT NULL,
   `Amount` float NOT NULL,
-  `Date_start` datetime DEFAULT NULL,
+  `Date_start` datetime DEFAULT CURRENT_TIMESTAMP,
   `Date_end` datetime DEFAULT NULL,
   PRIMARY KEY (`LBPeriod_ID`),
   KEY `Loan_ID_idx` (`Loan_ID`),
   CONSTRAINT `Loan_basis` FOREIGN KEY (`Loan_ID`) REFERENCES `loan` (`Loan_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,6 +40,7 @@ CREATE TABLE `loanbilling_period` (
 
 LOCK TABLES `loanbilling_period` WRITE;
 /*!40000 ALTER TABLE `loanbilling_period` DISABLE KEYS */;
+INSERT INTO `loanbilling_period` VALUES (1,2,3067,'2023-12-07 13:57:24','2023-12-07 13:57:24');
 /*!40000 ALTER TABLE `loanbilling_period` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-05 20:00:13
+-- Dump completed on 2023-12-07 23:00:36

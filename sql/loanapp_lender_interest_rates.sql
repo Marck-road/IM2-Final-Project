@@ -32,7 +32,7 @@ CREATE TABLE `lender_interest_rates` (
   KEY `Lender_ID` (`Lender_ID`),
   CONSTRAINT `lender_interest_rates_ibfk_1` FOREIGN KEY (`Tenure_ID`) REFERENCES `tenure` (`Tenure_ID`),
   CONSTRAINT `lender_interest_rates_ibfk_2` FOREIGN KEY (`Lender_ID`) REFERENCES `lender` (`Lender_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-05 20:00:12
+-- Dump completed on 2023-12-07 23:00:34
