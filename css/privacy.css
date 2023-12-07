@@ -1,0 +1,49 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.content-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+}
+
+.faqs-container {
+    width: 80%;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: left;
+    margin-top: 40px;
+}
+
+.faqs-container h2 {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.faqs-container h3 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.faqs-container h4 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.faqs-container p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.faqs-container ul {
+    margin-bottom: 15px;
+}
