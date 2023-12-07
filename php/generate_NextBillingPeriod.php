@@ -10,91 +10,112 @@
         $status = 400; 
 
     $payment_id = $_POST["Payment_ID"];
+    $bp_id = $_POST["BillingPeriod_id"];
+    $loan_id = $_POST["Loan_ID"];
     $status = $_POST['status']; 
     $loanDetails = json_decode($_POST['loanDetails'], true);
     $userDetails = json_decode($_POST['userDetails'], true);
+    $excess = false;
 
+    // Update payment status to approved or denied
     $sql = "UPDATE payment
                 SET Status = '$status'
                 WHERE Payment_ID = $payment_id";
     mysqli_query($con, $sql);
+
+    //get payment details
+    $paymentsql = "SELECT * FROM payment
+    WHERE Payment_ID = $payment_id";
+    $paymentResult = mysqli_query($con, $paymentsql);
+    $payment_details = mysqli_fetch_array($paymentResult);
+
+    $bpsql = "SELECT * FROM loanbilling_period
+    WHERE LBPeriod_ID = $bp_id";
+    $bpresult = mysqli_query($con, $bpsql);
+    $bp_details = mysqli_fetch_array($bpresult);
    
     if($status == "Approved"){
+        //if wa kaabot sa payment needed sa lbperiod, then dont do anything
+        if($payment_details['Amount_Paid'] > $bp_details['Amount']){
+            $excess = true;
+        }
             // if approve, need to check if naa pay balance nabilin
-            // if ever naa, calculate next pay date and generate new bill period.
-            //      if ever nay sobra, subtract next bill period with excess
-            // if ever wa nay balance, end it and change status of loan to closed
+            if(checkBalance($con, $loan_id, $status)){
+                // if ever naa, calculate next pay date and generate new bill period.
+                create_billPeriod($con, $loan_id, $loanDetails, $payment_details, $excess, $bp_details);
+
+            }else{
+                // if ever wa nay balance, end it and change status of loan to closed
+                $closesql = "UPDATE loan
+                        SET Status = 'Closed'
+                        WHERE Loan_ID = $loan_id";
+                mysqli_query($con, $closesql);
+            }
     }else{
         // header('location:lender_Dashboard.php?update=success');
     }
 
+function checkBalance($con, $loan_id, $loanDetails){
+    $totalPayable = $loanDetails['total_payable'];
 
-function calculateLoanDetails($con, $amt_borrowed, $lender_ir, $selectTenure, $paysched){
-    $ir_query = mysqli_query($con, $lender_ir);
-    $ir_result = mysqli_fetch_array($ir_query);
+    // Fetch all payments linked to loanbilling_period that is linked to the specified loan_id
+    $sql = "SELECT SUM(Amount_Paid) AS totalPaid
+            FROM payment
+            INNER JOIN loanbilling_period ON payment.LBPeriod_ID = loanbilling_period.LBPeriod_ID
+            WHERE loanbilling_period.Loan_ID = $loan_id";
 
-    $sched_query = mysqli_query($con, $paysched);
-    $sched_result = mysqli_fetch_array($sched_query);
+    $result = mysqli_query($con, $sql);
 
-    $tenure_query = mysqli_query($con, $selectTenure);
-    $tenure_result = mysqli_fetch_array($tenure_query);
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        $totalPaid = $row['totalPaid'];
 
+        // Calculate the balance
+        $balance = $totalPayable - $totalPaid;
 
-    $interest_payable = ($amt_borrowed * $ir_result["Interest_Rate"]);
-    
-    $ir_result["Interest_Rate"] = 100 * $ir_result["Interest_Rate"];
-    $total_payable = $interest_payable + $amt_borrowed;
-
-    switch ($tenure_result["Tenure_ID"]) {
-        case 1:
-            $monthly_interest = $ir_result["Interest_Rate"];
-            $monthly_payable = number_format($total_payable, 2, '.', ',');
-            break;
-        case 2:
-            $monthly_interest = round($ir_result["Interest_Rate"] / 2, 2);
-            $monthly_payable = number_format($total_payable / 2, 2, '.', ',');
-            break;
-        case 3:
-            $monthly_interest = round($ir_result["Interest_Rate"] / 6, 2);
-            $monthly_payable = number_format($total_payable / 6, 2, '.', ',');
-            break;
-        case 4:
-            $monthly_interest = round($ir_result["Interest_Rate"] / 12, 2);
-            $monthly_payable= number_format($total_payable / 12, 2, '.', ',');
-            break;
-        case 5:
-            $monthly_interest = round($ir_result["Interest_Rate"] / 24, 2);
-            $monthly_payable= number_format($total_payable / 24, 2, '.', ',');
-            break;
-        default:
-            break;
+        // Return the calculated balance
+        return $balance;
+    } else {
+        // Handle query error
+        echo "Error in query: " . mysqli_error($con);
+        return false;
     }
-
-    return [
-        'ir_result' => $ir_result["Interest_Rate"],
-        'interest_payable' => $interest_payable,
-        'monthly_interest' => $monthly_interest,
-        'monthly_payable' => $monthly_payable,
-        'total_payable' => $total_payable,
-        'loan_tenure' => $tenure_result["Duration"],
-        'payment_schedule' => $sched_result["Frequency"]
-    ];
 }
+    function create_billPeriod($con, $loan_id, $loanDetails, $payment_details, $excess, $bp_details){
+        $startTimestamp = $bp_details['Date_end'];
+        $endDateTimestamp = time();
+        $loanBP_Amt = $loanDetails['monthly_payable'];
 
-    function getUserDetails($con, $user_id){
-        $s = "SELECT * FROM user 
-                WHERE User_ID = $user_id";
+        switch ($loanDetails['payment_schedule']) {
+            case 1:
+                $loanBP_Amt = $loanDetails['monthly_payable'] / 4;
+                $endDateTimestamp = strtotime('+1 week', $startTimestamp);
+                break;
+            case 2:
+                $loanBP_Amt = $loanDetails['monthly_payable'] / 2;
+                $endDateTimestamp = strtotime('+15 days', $startTimestamp);
+                break;
+            case 3:
+                $loanBP_Amt = $loanDetails['monthly_payable'];
+                $endDateTimestamp = strtotime('+1 month', $startTimestamp);
+                break;
+            case 4:
+                $loanBP_Amt = $loanDetails['monthly_payable'] * 4;
+                $endDateTimestamp = strtotime('+4 months', $startTimestamp);
+                break;
+        }
 
-        $user_query = mysqli_query($con, $s);
-        $user = mysqli_fetch_array($user_query);
+        // removes commas since it causes errors
+        $loanBP_Amt = str_replace(',', '', $loanBP_Amt);
+        $endDate = date('Y-m-d H:i:s', $endDateTimestamp);
 
-        return[
-            'userEmail' => $user['Email'],
-            'userFname' => $user['First_Name'],
-            'userMname' => $user['Middle_Name'],
-            'userLname' => $user['Last_Name'],
-            'userMI'=> $user['Monthly_Income'],
-            'userContact'=> $user['Contact_Number']
-        ];
+        //subtract amt of next billing period if there is excess
+        if($excess){
+            $loanBP_Amt = $loanBP_Amt - ($loanBP_Amt - $payment_details['Amount_Paid']); 
+        }
+
+        $regBP= "INSERT INTO loanbilling_period (Loan_ID, Amount, Date_start, Date_end) 
+        VALUES('$loan_id', '$loanBP_Amt', '$startTimestamp', '$endDate')";
+        mysqli_query($con, $regBP);
     }
 ?>
