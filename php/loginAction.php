@@ -32,8 +32,10 @@ if($num != 0){
     }
     if($num == 1){  
         // header('location:borrower_Dashboard.php');
+        exit;
     } else{
         header("location:../html/Loginpage.html?login=error");
+        exit;
     }
 } else {
     $s = " select * from lender where Email = '$email' && Password = '$final_hashed'"; 
@@ -49,8 +51,10 @@ if($num != 0){
         }
         if($num == 1){  
             header('location:lender_Dashboard.php');
+            exit;
         } else{
             header("location:../html/Loginpage.html?login=error");
+            exit;
         }
     } else{
         // If normal User
@@ -79,10 +83,11 @@ if($num != 0){
 
             if($num == 1){  
                 header('location:borrower_Dashboard.php');
-    
+                exit;
             
             } else{
                 header("location:../html/Loginpage.html?login=error");
+                exit;
             }
             
 

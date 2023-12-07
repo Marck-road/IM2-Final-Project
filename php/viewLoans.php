@@ -6,14 +6,17 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
         if($_POST["loansFilter"] == 1){
-            $s = "SELECT * 
+            $s = "SELECT loan_application.*, loan.Loan_ID
             FROM loan_application
+            LEFT JOIN loan ON loan.LoanApp_ID = loan_application.LoanApp_ID
             WHERE User_ID = '{$_SESSION['id']}'";
         } else if ($_POST["loansFilter"] == 2){
-            $s = "SELECT * 
+            $s = "SELECT loan_application.*, loan.Loan_ID
             FROM loan_application
-            WHERE User_ID = '{$_SESSION['id']}'
-            AND Status = 'Approved'";
+            INNER JOIN loan
+            ON loan.LoanApp_ID = loan_application.LoanApp_ID
+            WHERE loan_application.User_ID = '{$_SESSION['id']}'
+              AND loan_application.Status = 'Approved'";
         } else if ($_POST["loansFilter"] == 3){
             $s = "SELECT * 
             FROM loan_application
@@ -26,10 +29,12 @@
             AND Status = 'Pending'";
         }
     } else{
-        $s = "SELECT * 
+        $s = "SELECT loan_application.*, loan.Loan_ID
             FROM loan_application
-            WHERE User_ID = '{$_SESSION['id']}'
-            AND Status = 'Approved'";
+            INNER JOIN loan
+            ON loan.LoanApp_ID = loan_application.LoanApp_ID
+            WHERE loan_application.User_ID = '{$_SESSION['id']}'
+              AND loan_application.Status = 'Approved'";
     }
     
     
@@ -106,13 +111,14 @@
 
                 $lender_ir = "SELECT Interest_Rate FROM lender_interest_rates
                 WHERE Lender_ID = '" . $row["Lender_ID"] . "' AND Tenure_ID = '" . $row["Tenure_ID"] . "'";
-                $paysched = "SELECT Frequency FROM payment_sched
+                $paysched = "SELECT * FROM payment_sched
                 WHERE Schedule_ID = '" . $row["Schedule_ID"] . "'";
                 $tenure = "SELECT * FROM tenure 
                 WHERE Tenure_ID = '" . $row["Tenure_ID"] . "'";
                 $lender = "SELECT * FROM lender 
                 WHERE Lender_ID = '" . $row["Lender_ID"] . "'";
-
+                
+               
                 $modalId = "infoModal_" . $index;
                 $overlayId = "overlay_" . $index;
                 
@@ -166,7 +172,24 @@
 
             <div class="centered_column">
                 <div class="row">
-                    <button onclick="openModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">More Info</button>
+                    <?php if($row['Status'] == 'Approved') {
+                        $jsonloanDetails = json_encode($loanDetails);
+                        $jsonrowDetails = json_encode($row);
+                        ?>
+                        
+                        <form action="userloanDetails_page.php" method="post">
+                            <input type="hidden" name="rowDetails" value="<?php echo htmlspecialchars($jsonrowDetails); ?>">
+                            <input type="hidden" name="loanDetails" value="<?php echo htmlspecialchars($jsonloanDetails); ?>">
+                            
+                            <button type="submit">More Info</button>
+                        </form>
+                    <?php
+                        } else{
+                    ?>
+                        <button onclick="openModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">More Info</button>
+                    <?php 
+                        }
+                    ?>
                 </div>
             </div>
 
@@ -226,6 +249,8 @@
         $resultLender= mysqli_query($con, $lender);
         $lenderName = mysqli_fetch_array($resultLender);
 
+
+
         $interest_payable = ($amt_borrowed * $ir_result["Interest_Rate"]);
         
         $ir_result["Interest_Rate"] = 100 * $ir_result["Interest_Rate"];
@@ -262,11 +287,13 @@
             'monthly_interest' => $monthly_interest,
             'monthly_payable' => $monthly_payable,
             'total_payable' => $total_payable,
+            'payment_ID' => $sched_result["Schedule_ID"],
             'payment_schedule' => $sched_result["Frequency"],
             'loan_tenure' => $selectedTenure["Duration"],
+            'lender_ID' => $lenderName["Lender_Name"],
             'lender_name' => $lenderName["Lender_Name"],
             'lender_email' => $lenderName["Email"],
-            'lender_contact' => $lenderName["Contact_Number"]
+            'lender_contact' => $lenderName["Contact_Number"],
         ];
     }
 

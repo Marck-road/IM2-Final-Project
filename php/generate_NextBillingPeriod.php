@@ -40,7 +40,7 @@
             $excess = true;
         }
             // if approve, need to check if naa pay balance nabilin
-            if(checkBalance($con, $loan_id, $status)){
+            if(checkBalance($con, $loan_id, $loanDetails)){
                 // if ever naa, calculate next pay date and generate new bill period.
                 create_billPeriod($con, $loan_id, $loanDetails, $payment_details, $excess, $bp_details);
 
@@ -107,7 +107,10 @@ function checkBalance($con, $loan_id, $loanDetails){
 
         // removes commas since it causes errors
         $loanBP_Amt = str_replace(',', '', $loanBP_Amt);
-        $endDate = date('Y-m-d H:i:s', $endDateTimestamp);
+
+        $startDateTimestamp = strtotime($startTimestamp);
+        $startDate = date('M d, Y', $startDateTimestamp);
+        $endDate = date('M d, Y', $endDateTimestamp);
 
         //subtract amt of next billing period if there is excess
         if($excess){
@@ -115,7 +118,7 @@ function checkBalance($con, $loan_id, $loanDetails){
         }
 
         $regBP= "INSERT INTO loanbilling_period (Loan_ID, Amount, Date_start, Date_end) 
-        VALUES('$loan_id', '$loanBP_Amt', '$startTimestamp', '$endDate')";
+        VALUES('$loan_id', '$loanBP_Amt', '$startDate', '$endDate')";
         mysqli_query($con, $regBP);
     }
 ?>

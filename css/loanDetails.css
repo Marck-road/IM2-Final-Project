@@ -1,0 +1,116 @@
+body{
+    background-color: #F6F1F1;
+}
+
+.List_header{
+    display: flex;
+    align-items: center;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    border-radius: 8px;
+}
+
+
+h1{
+    margin-right: 10px;
+}
+
+.ListView{
+    margin-top: 100px;
+    padding-left: 30px;
+    padding-right: 30px; 
+    padding-bottom: 30px;
+    background-color: #F6F1F1;
+}
+
+.loan_container {
+    display: flex;
+    background-color: #AFD3E2;
+    margin-top: 20px;
+}
+
+.company_logo{
+    max-width: 20%;
+    height: 100px;
+    margin-right: 10px;
+}
+
+.lender_name{
+    font-size: 36px;
+}
+
+.column {
+    flex: 1;
+    padding: 10px;
+}
+
+.centered_column {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.row_value {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.row {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+h3{
+    text-align: center;
+}
+
+p{
+    font-size: 18px;
+}
+
+/* #details{
+    justify-content: center;
+    padding-left: 10px;
+} */
+
+button {
+    background-color: #146C94;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover{
+    background-color: #19A7CE;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    transition: display 0.3s ease;
+}
+
+.button-container {
+    text-align: center; /* Center-align the button container */
+}

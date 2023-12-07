@@ -181,6 +181,7 @@
                 
                 $userDetails = getUserDetails($con, $row["User_ID"]);
                 $loanDetails = calculateLoanDetails($con, $row["Loan_Amt"], $lender_ir, $selectTenure, $paysched);
+                $loanBalance = checkBalance($con, $row["Loan_ID"], $loanDetails)
             
             
         ?>
@@ -195,7 +196,7 @@
                     <?php echo $userDetails['userFname'];?> <?php echo $userDetails['userMname'];?></h2>
                 </div>
                 <div class="row">
-                    <p>Amount Repaid:: ₱0.00/₱<?php echo $row['Loan_Amt'];?></p>
+                    <p>Amount Repaid: ₱<?php echo number_format($loanBalance['totalPaid'], 2, '.', ',');?> / ₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ',');?></p>
                 </div>
             </div>
 
@@ -276,6 +277,40 @@
 </html>
 
 <?php
+    function checkBalance($con, $loan_id, $loanDetails){
+        $totalPayable = $loanDetails['total_payable'];
+    
+        // Fetch all payments linked to loanbilling_period that is linked to the specified loan_id
+        $sql = "SELECT SUM(Amount_Paid) AS totalPaid
+                FROM payment
+                INNER JOIN loanbilling_period ON payment.LBPeriod_ID = loanbilling_period.LBPeriod_ID
+                WHERE loanbilling_period.Loan_ID = $loan_id";
+    
+        $result = mysqli_query($con, $sql);
+    
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            $totalPaid = $row['totalPaid'];
+    
+            // Calculate the balance
+            $balance = $totalPayable - $totalPaid;
+
+            if($totalPaid == NULL){
+                $totalPaid = 0;
+            }
+    
+            // Return the calculated balance
+            return [
+                'balance' => $balance,
+                'totalPaid' => $totalPaid,
+            ];
+        } else {
+            // Handle query error
+            echo "Error in query: " . mysqli_error($con);
+            return false;
+        }
+    }
+
     function calculateLoanDetails($con, $amt_borrowed, $lender_ir, $selectTenure, $paysched)
     {
         $ir_query = mysqli_query($con, $lender_ir);
