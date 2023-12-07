@@ -52,6 +52,7 @@
     <script src="../js/modal.js"></script>
 </head>
 <body>
+<div class="wrapper">
     <nav>
         <div class="navbar">
             <div class="logo">
