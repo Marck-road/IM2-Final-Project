@@ -187,15 +187,21 @@
                     <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
                 </div>
 
-                <div class="errors">
+                <div class="success">
                     <?php
                         $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
-                        if(strpos($fullUrl, "pass=error") == true) {
-                            echo "Application Successfully Sent!";
+                        if(strpos($fullUrl, "success=register") == true) {
+                            echo "Application Successfully Sent! ";
                             echo "Please wait for an email from us for any updates
                             regarding your application!";
                         }
+                    ?>
+                </div>
+
+                <div class="errors">
+                    <?php
+                        $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
                         if(strpos($fullUrl, "duplicate=error") == true) {
                             echo "Email already taken";

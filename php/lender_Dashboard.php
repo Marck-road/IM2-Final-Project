@@ -137,7 +137,7 @@
 
         <div class="ListView">
         <div class="List_header">
-            <h1>My Loans</h1> 
+            <h1>My Active Loans</h1> 
             <form id="filterForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                 <input type="hidden" name="amt_borrowed" value="<?php echo $amt_borrowed; ?>">
                 <input type="hidden" name="tenure" value="<?php echo $tenure; ?>">

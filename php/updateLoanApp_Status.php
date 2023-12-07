@@ -20,6 +20,8 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $loanAppID = $_POST['loanAppID'];
         $status = $_POST['status']; 
+        $loanDetails = json_decode($_POST['loanDetails'], true);
+        $userDetails = json_decode($_POST['userDetails'], true);
 
         $con = mysqli_connect('localhost', 'root', 'Furina de Fontaine');  //Change according to your settings
         mysqli_select_db($con, 'loanapp');
@@ -28,7 +30,7 @@
         if (!empty($loanAppID) && !empty($status)) {
             if (updateLoanStatus($con, $loanAppID, $status)) {
                 if($status == "Approved"){
-                    createLoan_Entity($con, $loanAppID);
+                    createLoan_Entity($con, $loanAppID, $loanDetails);
                 }
                 header('location:lender_ViewOffers.php?updateStatus=success');
             } else {
@@ -40,8 +42,44 @@
         }
     }
 
-    function createLoan_Entity($con, $loanAppID) {
+    function createLoan_Entity($con, $loanAppID, $loanDetails) {
         $reg= "INSERT INTO loan (LoanApp_ID) VALUES($loanAppID)";
         mysqli_query($con, $reg);
+
+        // initialize first loan billing period only
+        $currentTimestamp = time();
+        $currentTimestamp = date('Y-m-d H:i:s', $currentTimestamp);
+        $endDateTimestamp = time();
+        $loanBP_Amt = $loanDetails['monthly_payable'];
+
+        $sql = "SELECT Loan_ID FROM loan
+                WHERE LoanApp_ID = $loanAppID";
+        $result = mysqli_query($con, $sql);
+        $loan_id = mysqli_fetch_array($result);
+
+        if($loanDetails['payment_schedule'] == 1){
+            $loanBP_Amt =  $loanDetails['monthly_payable'] / 4;
+            $endDateTimestamp = strtotime('+1 week', $currentTimestamp);
+        } else if ($loanDetails['payment_schedule'] == 2){
+            $loanBP_Amt =  $loanDetails['monthly_payable'] / 2;
+            $endDateTimestamp = strtotime('+15 days', $currentTimestamp);
+        } else if ($loanDetails['payment_schedule'] == 3){
+            $loanBP_Amt =  $loanDetails['monthly_payable'];
+            $endDateTimestamp = strtotime('+1 month', $currentTimestamp);
+        } else if ($loanDetails['payment_schedule'] == 4){
+            $loanBP_Amt = $loanDetails['monthly_payable'] * 4;
+            $endDateTimestamp = strtotime('+4 months', $currentTimestamp);
+        }
+
+        // removes commas since it causes errors
+        $loanBP_Amt = str_replace(',', '', $loanBP_Amt);
+        $endDate = date('Y-m-d H:i:s', $endDateTimestamp);
+        
+        echo $currentTimestamp;
+        echo $endDate;
+
+        $regBP= "INSERT INTO loanbilling_period (Loan_ID, Amount, Date_start, Date_end) 
+        VALUES('$loan_id[Loan_ID]', '$loanBP_Amt', '$currentTimestamp', '$endDate')";
+        mysqli_query($con, $regBP);
     }
 ?>

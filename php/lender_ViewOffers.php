@@ -118,6 +118,9 @@
                 
                 $userDetails = getUserDetails($con, $row["User_ID"]);
                 $loanDetails = calculateLoanDetails($con, $row["Loan_Amt"], $lender_ir, $tenure, $paysched, $lender);
+                $jsonLoanDetails = json_encode($loanDetails);
+                $jsonUserDetails = json_encode($userDetails);
+
             
             
         ?>
@@ -192,6 +195,9 @@
                 
                 <form method="post" action="updateLoanApp_Status.php">
                     <input type="hidden" name="loanAppID" value="<?php echo $row['LoanApp_ID']; ?>">
+                    <input type="hidden" name="loanDetails" value="<?php echo htmlspecialchars($jsonLoanDetails); ?>">
+                    <input type="hidden" name="userDetails" value="<?php echo htmlspecialchars($jsonUserDetails); ?>">
+
                     <div class="button-container">
                         <button type="submit" name="status" value="Denied">Deny</button>
                         <button type="submit" name="status" value="Approved">Approve</button>
