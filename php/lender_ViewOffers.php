@@ -8,28 +8,28 @@
         if($_POST["loansFilter"] == 1){
             $s = "SELECT * 
             FROM loan_application
-            WHERE User_ID = '{$_SESSION['id']}'";
+            WHERE Lender_ID = '{$_SESSION['id']}'";
         } else if ($_POST["loansFilter"] == 2){
             $s = "SELECT * 
             FROM loan_application
-            WHERE User_ID = '{$_SESSION['id']}'
+            WHERE Lender_ID = '{$_SESSION['id']}'
             AND Status = 'Approved'";
         } else if ($_POST["loansFilter"] == 3){
             $s = "SELECT * 
             FROM loan_application
-            WHERE User_ID = '{$_SESSION['id']}'
+            WHERE Lender_ID = '{$_SESSION['id']}'
             AND Status = 'Denied'";
         } else if ($_POST["loansFilter"] == 4){
             $s = "SELECT * 
             FROM loan_application
-            WHERE User_ID = '{$_SESSION['id']}'
+            WHERE Lender_ID = '{$_SESSION['id']}'
             AND Status = 'Pending'";
         }
     } else{
         $s = "SELECT * 
             FROM loan_application
-            WHERE User_ID = '{$_SESSION['id']}'
-            AND Status = 'Approved'";
+            WHERE Lender_ID = '{$_SESSION['id']}'
+            AND Status = 'Pending'";
     }
     
     
@@ -42,7 +42,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Loans</title>
+    <title>Loan Offers</title>
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/viewLoans.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,8 +58,8 @@
                 <a href="#"><img src="../images/ldaddy.png" class="logo"></a>
             </div>
             <ul class="menu">
-                <li><a href="borrower_Dashboard.php">Home</a></li>
-                <li><a href="viewLoans.php">View Loans</a></li>
+                <li><a href="lender_Dashboard.php">Home</a></li>
+                <li><a href="lender_ViewOffers.php">New Offers</a></li>
                 <li><a href="About Us/About Us.html">Contact Us</a></li>
                 <li><a href="#footer">About Us</a></li>
                 <li><a href="#footer">FAQs</a></li>
@@ -79,13 +79,13 @@
     
     <div class="ListView">
         <div class="List_header">
-            <h1>My Loans</h1> 
+            <h1>Company's Loan Offers</h1> 
             <form id="filterForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                 <select name="loansFilter" id="loansFilter" onchange="submitForm()">
                     <option value="1" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '1') ? 'selected' : ''; ?>>All</option>
-                    <option value="2" <?php echo (!isset($_POST['loansFilter']) || (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '2')) ? 'selected' : ''; ?>>Approved</option>
+                    <option value="2" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '2') ? 'selected' : ''; ?>>Approved</option>
                     <option value="3" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '3') ? 'selected' : ''; ?>>Denied</option>
-                    <option value="4" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '4') ? 'selected' : ''; ?>>Pending</option>
+                    <option value="4" <?php echo (!isset($_POST['loansFilter']) || (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '4')) ? 'selected' : ''; ?>>Pending</option>
                 </select>
             </form>
         </div>
@@ -94,7 +94,7 @@
             if($num == 0){?>
                 <div class="noResults">
                     <i class="fa-solid fa-kiwi-bird" id="kiwi"></i></i>
-                    <p class="noText"></p>-No Loans Found-</p>
+                    <p class="noText"></p>-No Loan Offers Yet-</p>
                 </div>
             <?php
             } else{
@@ -116,6 +116,7 @@
                 $modalId = "infoModal_" . $index;
                 $overlayId = "overlay_" . $index;
                 
+                $userDetails = getUserDetails($con, $row["User_ID"]);
                 $loanDetails = calculateLoanDetails($con, $row["Loan_Amt"], $lender_ir, $tenure, $paysched, $lender);
             
             
@@ -127,7 +128,7 @@
 
             <div class="column">
                 <div class="row">
-                    <h2><?php echo $loanDetails['lender_name'];?></h2>
+                    <h2><?php echo $userDetails['userLname'];?>, <?php echo $userDetails['userFname'];?> <?php echo $userDetails['userMname'];?></h2>
                 </div>
                 <div class="row">
                     <p>Loan Amount: ₱<?php echo $row['Loan_Amt'];?></p>
@@ -175,22 +176,28 @@
             <div id="<?php echo $modalId; ?>" class="modal">
                 <h2>
                     <div class="row">
-                        <?php echo $loanDetails['lender_name'];?>
+                        <?php echo $userDetails['userLname'];?>, <?php echo $userDetails['userFname'];?> <?php echo $userDetails['userMname'];?> 
                     </div>
                 </h2>
 
-                <p>Email Address: <?php echo $loanDetails['lender_email']; ?></p>
-                <p>Contact Number: <?php echo $loanDetails['lender_contact']; ?></p>
+                <p>Email Address: <?php echo $userDetails['userEmail']; ?></p>
+                <p>Contact Number: <?php echo $userDetails['userContact']; ?></p>
                 <p>Loan Amount: ₱<?php echo number_format($row['Loan_Amt'], 2, '.', ','); ?></p>
                 <p>Tenure Selected: <?php echo $loanDetails['loan_tenure'];?></p>
-                <p>Payment Schedule: <?php echo $loanDetails['payment_schedule'];?></p>
+                <p>Payment Schedule Selected: <?php echo $loanDetails['payment_schedule'];?></p>
                 <p>Interest: <?php echo number_format($loanDetails['ir_result'], 2, '.', ','); ?>%</p>
                 <p>Interest Payable: ₱<?php echo number_format($loanDetails['interest_payable'], 2, '.', ','); ?></p>
                 <p>Monthly Payment: ₱<?php echo $loanDetails['monthly_payable'];?></p>
                 <p>Total Payable: ₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ','); ?></p>
                 
+                <form method="post" action="updateLoanApp_Status.php">
+                    <input type="hidden" name="loanAppID" value="<?php echo $row['LoanApp_ID']; ?>">
+                    <div class="button-container">
+                        <button type="submit" name="status" value="Denied">Deny</button>
+                        <button type="submit" name="status" value="Approved">Approve</button>
+                    </div>
+                </form>
             
-                <button onclick="closeModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">Close</button> 
             </div>
 
         </div>
@@ -267,6 +274,23 @@
             'lender_name' => $lenderName["Lender_Name"],
             'lender_email' => $lenderName["Email"],
             'lender_contact' => $lenderName["Contact_Number"]
+        ];
+    }
+
+    function getUserDetails($con, $user_id){
+        $s = "SELECT * FROM user 
+                WHERE User_ID = $user_id";
+
+        $user_query = mysqli_query($con, $s);
+        $user = mysqli_fetch_array($user_query);
+
+        return[
+            'userEmail' => $user['Email'],
+            'userFname' => $user['First_Name'],
+            'userMname' => $user['Middle_Name'],
+            'userLname' => $user['Last_Name'],
+            'userMI'=> $user['Monthly_Income'],
+            'userContact'=> $user['Contact_Number']
         ];
     }
 

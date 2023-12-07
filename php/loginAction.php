@@ -48,7 +48,7 @@ if($num != 0){
             $_SESSION['email'] = $row['Email'];
         }
         if($num == 1){  
-            // header('location:borrower_Dashboard.php');
+            header('location:lender_Dashboard.php');
         } else{
             header("location:../html/Loginpage.html?login=error");
         }

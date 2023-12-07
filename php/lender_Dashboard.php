@@ -5,33 +5,30 @@
     mysqli_select_db($con, 'loanapp');
 
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
-        if($_POST["loansFilter"] == 1){
-            $s = "SELECT * 
-            FROM loan_application
-            WHERE User_ID = '{$_SESSION['id']}'";
-        } else if ($_POST["loansFilter"] == 2){
-            $s = "SELECT * 
-            FROM loan_application
-            WHERE User_ID = '{$_SESSION['id']}'
-            AND Status = 'Approved'";
-        } else if ($_POST["loansFilter"] == 3){
-            $s = "SELECT * 
-            FROM loan_application
-            WHERE User_ID = '{$_SESSION['id']}'
-            AND Status = 'Denied'";
-        } else if ($_POST["loansFilter"] == 4){
-            $s = "SELECT * 
-            FROM loan_application
-            WHERE User_ID = '{$_SESSION['id']}'
-            AND Status = 'Pending'";
-        }
+        $amt_borrowed = $_POST["amt_borrowed"];
+        $tenure = $_POST["tenure"];
+        $pay_schedule = $_POST["pay_sched"];
     } else{
-        $s = "SELECT * 
-            FROM loan_application
-            WHERE User_ID = '{$_SESSION['id']}'
-            AND Status = 'Approved'";
+        $amt_borrowed = 0;
+        $tenure = 6;
+        $pay_schedule = 5;
     }
-    
+
+    $s = "SELECT * FROM loan
+      INNER JOIN loan_application ON loan_application.LoanApp_ID = loan.LoanApp_ID
+      WHERE loan_application.Lender_ID = '{$_SESSION['id']}'";
+
+    if ($tenure != 6) {
+        $s .= " AND loan_application.Tenure_ID = $tenure";
+    }
+
+    if ($amt_borrowed != 0 && $amt_borrowed != NULL) {
+        $s .= " AND loan_application.Loan_amt = $amt_borrowed";
+    }
+
+    if ($pay_schedule != 5) {
+        $s .= " AND loan_application.Schedule_ID = $pay_schedule";
+    }
     
 
     $result = mysqli_query($con, $s);
@@ -42,9 +39,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Loans</title>
+    <title>Lender Dashboard</title>
+    <link rel="stylesheet" href="../css/hamburgerstyle.css">
     <link rel="stylesheet" href="../css/navbar.css">
-    <link rel="stylesheet" href="../css/viewLoans.css">
+    <link rel="stylesheet" href="../css/slideshow.css">
+    <link rel="stylesheet" href="../css/searchBar.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/lenderDashboard.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -58,8 +59,8 @@
                 <a href="#"><img src="../images/ldaddy.png" class="logo"></a>
             </div>
             <ul class="menu">
-                <li><a href="borrower_Dashboard.php">Home</a></li>
-                <li><a href="viewLoans.php">View Loans</a></li>
+                <li><a href="#">Home</a></li>
+                <li><a href="lender_ViewOffers.php">New Offers</a></li>
                 <li><a href="About Us/About Us.html">Contact Us</a></li>
                 <li><a href="#footer">About Us</a></li>
                 <li><a href="#footer">FAQs</a></li>
@@ -76,14 +77,76 @@
     </nav>
 
     
-    
-    <div class="ListView">
+
+
+    <div class="slideshow-container">
+        <div class = "dot-container">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+        <div class="mySlides fade">
+            <img src="../images/slideshow1.png" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="../images/slideshow2.png" style="width:100%">
+        </div>
+        <div class="mySlides fade">
+            <img src="../images/slideshow3.png" style="width:100%">
+        </div>
+
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        
+    </div>
+
+    <div class="main-container">
+        <div class= "SearchView">
+            <p class="adv_label">Advanced Search</p>
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+
+                <label for="amt_borrowed">Loan Amount</label>
+                <input type="number" name="amt_borrowed" id="amt_borrowed" value="<?php echo isset($_POST['amt_borrowed']) ? $_POST['amt_borrowed'] : '0'; ?>" step="any"><br>
+
+                <label for="tenure">Tenure:</label>
+                <select name="tenure" id="tenure">
+                    <option value="1" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '1') ? 'selected' : ''; ?>>1 Month</option>
+                    <option value="2" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '2') ? 'selected' : ''; ?>>3 Months</option>
+                    <option value="3" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '3') ? 'selected' : ''; ?>>6 Months</option>
+                    <option value="4" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '4') ? 'selected' : ''; ?>>1 Year</option>
+                    <option value="5" <?php echo (isset($_POST['tenure']) && $_POST['tenure'] == '5') ? 'selected' : ''; ?>>2 Years</option>
+                    <option value="6" <?php echo (!isset($_POST['tenure']) || (isset($_POST['tenure']) && $_POST['tenure'] == '6')) ? 'selected' : ''; ?>>All</option>
+                </select>
+
+
+                <label for="pay_sched">Payment Schedule:</label>
+                <select name="pay_sched" id="pay_sched">
+                    <option value="1" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '1') ? 'selected' : ''; ?>>Weekly</option>
+                    <option value="2" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '2') ? 'selected' : ''; ?>>Semi-Monthly</option>
+                    <option value="3" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '3') ? 'selected' : ''; ?>>Monthly</option>
+                    <option value="4" <?php echo (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '4') ? 'selected' : ''; ?>>Quarterly</option>
+                    <option value="5" <?php echo (!isset($_POST['pay_sched']) || (isset($_POST['pay_sched']) && $_POST['pay_sched'] == '5')) ? 'selected' : ''; ?>>All</option>
+                </select>
+
+                      <br>
+                    <div class="button-container">
+                        <input type="submit" value="Submit"> 
+                    </div>
+            </form>
+        </div>
+
+        <div class="ListView">
         <div class="List_header">
             <h1>My Loans</h1> 
             <form id="filterForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <input type="hidden" name="amt_borrowed" value="<?php echo $amt_borrowed; ?>">
+                <input type="hidden" name="tenure" value="<?php echo $tenure; ?>">
+                <input type="hidden" name="pay_sched" value="<?php echo $pay_schedule; ?>">
+                            
+            
                 <select name="loansFilter" id="loansFilter" onchange="submitForm()">
                     <option value="1" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '1') ? 'selected' : ''; ?>>All</option>
-                    <option value="2" <?php echo (!isset($_POST['loansFilter']) || (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '2')) ? 'selected' : ''; ?>>Approved</option>
+                    <option value="2" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '2') ? 'selected' : ''; ?>>Approved</option>
                     <option value="3" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '3') ? 'selected' : ''; ?>>Denied</option>
                     <option value="4" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '4') ? 'selected' : ''; ?>>Pending</option>
                 </select>
@@ -94,7 +157,7 @@
             if($num == 0){?>
                 <div class="noResults">
                     <i class="fa-solid fa-kiwi-bird" id="kiwi"></i></i>
-                    <p class="noText"></p>-No Loans Found-</p>
+                    <p class="noText"></p>-No Transaction Found-</p>
                 </div>
             <?php
             } else{
@@ -108,7 +171,7 @@
                 WHERE Lender_ID = '" . $row["Lender_ID"] . "' AND Tenure_ID = '" . $row["Tenure_ID"] . "'";
                 $paysched = "SELECT Frequency FROM payment_sched
                 WHERE Schedule_ID = '" . $row["Schedule_ID"] . "'";
-                $tenure = "SELECT * FROM tenure 
+                $selectTenure = "SELECT * FROM tenure 
                 WHERE Tenure_ID = '" . $row["Tenure_ID"] . "'";
                 $lender = "SELECT * FROM lender 
                 WHERE Lender_ID = '" . $row["Lender_ID"] . "'";
@@ -116,7 +179,8 @@
                 $modalId = "infoModal_" . $index;
                 $overlayId = "overlay_" . $index;
                 
-                $loanDetails = calculateLoanDetails($con, $row["Loan_Amt"], $lender_ir, $tenure, $paysched, $lender);
+                $userDetails = getUserDetails($con, $row["User_ID"]);
+                $loanDetails = calculateLoanDetails($con, $row["Loan_Amt"], $lender_ir, $selectTenure, $paysched);
             
             
         ?>
@@ -127,22 +191,29 @@
 
             <div class="column">
                 <div class="row">
-                    <h2><?php echo $loanDetails['lender_name'];?></h2>
+                    <h2><?php echo $userDetails['userLname'];?>, 
+                    <?php echo $userDetails['userFname'];?> <?php echo $userDetails['userMname'];?></h2>
                 </div>
                 <div class="row">
-                    <p>Loan Amount: ₱<?php echo $row['Loan_Amt'];?></p>
+                    <p>Amount Repaid:: ₱0.00/₱<?php echo $row['Loan_Amt'];?></p>
                 </div>
             </div>
 
             <div class="column">
                 <div class="row">
-                    <h3>Interest Rate</h3>
+                    <h3>Amount Borrowed</h3>
                 </div>
                 <div class="row_value">
-                    <p><?php echo $loanDetails['monthly_interest'];?>%</p>
+                    <p>₱<?php echo $row['Loan_Amt'];?></p>
                 </div>
+            </div>
+
+            <div class="column">
                 <div class="row">
-                    <h3>per month</h3>
+                    <h3>Payment Schedule</h3>
+                </div>
+                <div class="row_value">
+                    <p><?php echo $loanDetails['payment_schedule'];?></p>
                 </div>
             </div>
 
@@ -155,14 +226,6 @@
                 </div>
             </div>
 
-            <div class="column">
-                <div class="row">
-                    <h3>Status</h3>
-                </div>
-                <div class="row_value">
-                    <p><?php echo $row['Status'];?></p>
-                </div>
-            </div>
 
             <div class="centered_column">
                 <div class="row">
@@ -175,12 +238,13 @@
             <div id="<?php echo $modalId; ?>" class="modal">
                 <h2>
                     <div class="row">
-                        <?php echo $loanDetails['lender_name'];?>
+                    <?php echo $userDetails['userLname'];?>, 
+                    <?php echo $userDetails['userFname'];?> <?php echo $userDetails['userMname'];?>
                     </div>
                 </h2>
 
-                <p>Email Address: <?php echo $loanDetails['lender_email']; ?></p>
-                <p>Contact Number: <?php echo $loanDetails['lender_contact']; ?></p>
+                <p>Email Address: <?php echo $userDetails['userEmail']; ?></p>
+                <p>Contact Number: <?php echo $userDetails['userContact']; ?></p>
                 <p>Loan Amount: ₱<?php echo number_format($row['Loan_Amt'], 2, '.', ','); ?></p>
                 <p>Tenure Selected: <?php echo $loanDetails['loan_tenure'];?></p>
                 <p>Payment Schedule: <?php echo $loanDetails['payment_schedule'];?></p>
@@ -203,16 +267,16 @@
     
     </div>
 
+    </div>
 
     <script src="https://kit.fontawesome.com/e140ca9b66.js" crossorigin="anonymous"></script>       
-    <script src="../js/slideshow.js"></script>
     <script src="../js/viewLoans.js"></script>
-
-    </body>
+    <script src="../js/slideshow.js"></script>
+</body>
 </html>
 
 <?php
-    function calculateLoanDetails($con, $amt_borrowed, $lender_ir, $tenure, $paysched, $lender)
+    function calculateLoanDetails($con, $amt_borrowed, $lender_ir, $selectTenure, $paysched)
     {
         $ir_query = mysqli_query($con, $lender_ir);
         $ir_result = mysqli_fetch_array($ir_query);
@@ -220,18 +284,16 @@
         $sched_query = mysqli_query($con, $paysched);
         $sched_result = mysqli_fetch_array($sched_query);
 
-        $resultTenure = mysqli_query($con, $tenure);
-        $selectedTenure = mysqli_fetch_array($resultTenure);
+        $tenure_query = mysqli_query($con, $selectTenure);
+        $tenure_result = mysqli_fetch_array($tenure_query);
 
-        $resultLender= mysqli_query($con, $lender);
-        $lenderName = mysqli_fetch_array($resultLender);
 
         $interest_payable = ($amt_borrowed * $ir_result["Interest_Rate"]);
         
         $ir_result["Interest_Rate"] = 100 * $ir_result["Interest_Rate"];
         $total_payable = $interest_payable + $amt_borrowed;
     
-        switch ($selectedTenure["Tenure_ID"]) {
+        switch ($tenure_result["Tenure_ID"]) {
             case 1:
                 $monthly_interest = $ir_result["Interest_Rate"];
                 $monthly_payable = number_format($total_payable, 2, '.', ',');
@@ -262,11 +324,25 @@
             'monthly_interest' => $monthly_interest,
             'monthly_payable' => $monthly_payable,
             'total_payable' => $total_payable,
-            'payment_schedule' => $sched_result["Frequency"],
-            'loan_tenure' => $selectedTenure["Duration"],
-            'lender_name' => $lenderName["Lender_Name"],
-            'lender_email' => $lenderName["Email"],
-            'lender_contact' => $lenderName["Contact_Number"]
+            'loan_tenure' => $tenure_result["Duration"],
+            'payment_schedule' => $sched_result["Frequency"]
+        ];
+    }
+
+    function getUserDetails($con, $user_id){
+        $s = "SELECT * FROM user 
+                WHERE User_ID = $user_id";
+
+        $user_query = mysqli_query($con, $s);
+        $user = mysqli_fetch_array($user_query);
+
+        return[
+            'userEmail' => $user['Email'],
+            'userFname' => $user['First_Name'],
+            'userMname' => $user['Middle_Name'],
+            'userLname' => $user['Last_Name'],
+            'userMI'=> $user['Monthly_Income'],
+            'userContact'=> $user['Contact_Number']
         ];
     }
 

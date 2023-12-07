@@ -229,10 +229,11 @@
                     <p>Monthly Payment: ₱<?php echo $loanDetails['monthly_payable'];?></p>
                     <p>Total Payable: ₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ','); ?></p>
                     
-                
-                    <button onclick="closeModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">Close</button>
-                    <button onclick="closeOpenModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">Apply Now</button>
-                   
+                    <div class="button-container">
+                        <button onclick="closeModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">Close</button>
+                        <button onclick="closeOpenModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">Apply Now</button>
+                    </div>
+                    
                 </div>
 
                 <div id="<?php echo $modalId; ?>apply" class="modal">

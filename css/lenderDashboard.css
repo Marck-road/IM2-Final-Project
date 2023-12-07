@@ -27,7 +27,6 @@ h1{
 }
 
 .ListView{
-    margin-top: 100px;
     padding-left: 30px;
     padding-right: 30px; 
     padding-bottom: 30px;
@@ -127,8 +126,4 @@ button:hover{
     display: inline-flex;
     font-size: 200px;
     color:#146C94;
-}
-
-.button-container {
-    text-align: center; /* Center-align the button container */
 }
