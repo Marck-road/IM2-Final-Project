@@ -33,7 +33,7 @@ CREATE TABLE `payment` (
   PRIMARY KEY (`Payment_ID`),
   KEY `LBPeriod_ID_idx` (`LBPeriod_ID`),
   CONSTRAINT `LBPeriod_ID` FOREIGN KEY (`LBPeriod_ID`) REFERENCES `loanbilling_period` (`LBPeriod_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,6 +42,7 @@ CREATE TABLE `payment` (
 
 LOCK TABLES `payment` WRITE;
 /*!40000 ALTER TABLE `payment` DISABLE KEYS */;
+INSERT INTO `payment` VALUES (3,1,3067,_binary 'OIP.jpg','BDO','Pending','2023-12-08 01:11:34');
 /*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-07 23:00:35
+-- Dump completed on 2023-12-08 10:55:30
