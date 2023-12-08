@@ -234,8 +234,8 @@
             <div id="sendPaymentOverlay" class="overlay" onclick="closeModal('sendPaymentModal', 'sendPaymentOverlay')"></div>
             <div id="sendPaymentModal" class="modal">
                     <h2>
-                    <input type="hidden" name="LBPeriod_id" value="<?php echo $currentBP['currentBP_ID']?>">
-                        <div class="row">
+                        <input type="hidden" name="LBPeriod_id" value="<?php echo $currentBP['currentBP_ID']?>">
+                        <div class="row" id="modalHeader">
                             Submit Payment
                         </div>
                         

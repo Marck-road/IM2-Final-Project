@@ -112,6 +112,7 @@ button:hover{
 }
 
 .button-container {
+    margin-top: 10px;
     text-align: center; 
 }
 
@@ -186,3 +187,49 @@ button{
     z-index: 99;
     transition: display 0.3s ease;
   }
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+input[type="number"], input[type="text"], input[type="file"]
+select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.form-item {
+    flex: 1;
+    margin-right: 20px; /* Adjust the margin as needed */
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.info-item {
+    flex: 1;
+    margin-right: 10px;
+}
+
+h2{
+    text-align: center;
+}
+
+#modalHeader{
+    display:contents;
+}

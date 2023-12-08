@@ -36,7 +36,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Borrower Dashboard</title>
-    <link rel="stylesheet" href="../css/hamburgerstyle.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/slideshow.css">
     <link rel="stylesheet" href="../css/searchBar.css">
@@ -195,7 +194,7 @@
                 <div class="centered_column">
    
                     <div class="row">
-                        <button onclick="openModal('<?php echo $modalId; ?>apply', '<?php echo $overlayId; ?>')">Apply Now</button>
+                        <button onclick="openModal('<?php echo $modalId; ?>apply', '<?php echo $overlayId; ?>apply')">Apply Now</button>
                     </div>
                
                     <div class="row">
@@ -204,14 +203,17 @@
                 </div>
 
                 <div id="<?php echo $overlayId; ?>" class="overlay" onclick="closeModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')"></div>
-                
+                <div id="<?php echo $overlayId; ?>apply" class="overlay" onclick="closeModal('<?php echo $modalId; ?>apply', '<?php echo $overlayId; ?>apply')"></div>
                 <div id="<?php echo $modalId; ?>" class="modal">
-                    <h2>
-                        <div class="row">
-                            <?php echo $row['Lender_Name'];?>
-                        </div>
-                    </h2>
 
+                
+                <h2>
+                    <div class="row" id="row_header">Company Info</div>
+                    <div class="row" id="company_name">
+                        <?php echo $row['Lender_Name'];?>
+                    </div>
+                </h2>
+                    
 
                     <?php 
                         $getTenure = "SELECT * FROM tenure WHERE Tenure_ID = $tenure";
@@ -220,16 +222,60 @@
                         $selectedTenure = mysqli_fetch_array($resultTenure);
                     ?>
 
-                    <p>Email Address: <?php echo $row['Email']; ?></p>
-                    <p>Contact Number: <?php echo $row['Contact_Number']; ?></p>
-                    <p>Minimum Salary Required: ₱<?php echo number_format($row['MinSalary_Required'], 2, '.', ','); ?></p>
-                    <p>Loan Amount: ₱<?php echo number_format($amt_borrowed, 2, '.', ','); ?></p>
-                    <p>Tenure Selected: <?php echo $selectedTenure['Duration'];?></p>
-                    <p>Interest: <?php echo number_format($loanDetails['ir_result'], 2, '.', ','); ?>%</p>
-                    <p>Interest Payable: ₱<?php echo number_format($loanDetails['interest_payable'], 2, '.', ','); ?></p>
-                    <p>Monthly Payment: ₱<?php echo $loanDetails['monthly_payable'];?></p>
-                    <p>Total Payable: ₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ','); ?></p>
-                    
+                    <div class="info-row">
+                        <div class="info-item">
+                            <label for="email">Email Address:</label>
+                            <input type="text" value="<?php echo $row['Email']; ?>" readonly>
+                        </div>]
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-item">
+                            <label for="contact">Contact Number:</label>
+                            <input type="text" value="<?php echo $row['Contact_Number']; ?>" readonly>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-item">
+                            <label for="min_salary">Minimum Salary Required:</label>
+                            <input type="text" value="₱<?php echo number_format($row['MinSalary_Required'], 2, '.', ','); ?>" readonly>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-item">
+                            <label for="loan_amount">Loan Amount:</label>
+                            <input type="text" value="₱<?php echo number_format($amt_borrowed, 2, '.', ','); ?>" readonly>
+                        </div>
+                        <div class="info-item">
+                            <label for="tenure">Tenure Selected:</label>
+                            <input type="text" value="<?php echo $selectedTenure['Duration'];?>" readonly>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-item">
+                            <label for="interest">Interest:</label>
+                            <input type="text" value="<?php echo number_format($loanDetails['ir_result'], 2, '.', ','); ?>%" readonly>
+                        </div>
+                        <div class="info-item">
+                            <label for="monthly_payment">Monthly Payment:</label>
+                            <input type="text" value="₱<?php echo $loanDetails['monthly_payable'];?>" readonly>
+                        </div>
+                        
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-item">
+                            <label for="interest_payable">Interest Payable:</label>
+                            <input type="text" value="₱<?php echo number_format($loanDetails['interest_payable'], 2, '.', ','); ?>" readonly>
+                        </div>
+                        <div class="info-item">
+                            <label for="total_payable">Total Payable:</label>
+                            <input type="text" value="₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ','); ?>" readonly>
+                        </div>
+                    </div>
                     <div class="button-container">
                         <button onclick="closeModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">Close</button>
                         <button onclick="closeOpenModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">Apply Now</button>
@@ -238,23 +284,20 @@
                 </div>
 
                 <div id="<?php echo $modalId; ?>apply" class="modal">
-                    <h2>
-                        <div class="row">
-                            APPLY NOW
-                        </div>
+                <h2>
+                    <div class="row" id="row_header">APPLY NOW</div>
+                    <div class="row" id="company_name">
                         <?php echo $row['Lender_Name'];?>
-                    </h2>
+                    </div>
+                </h2>
 
                     
                     <form id="loanConfirmationForm" method="post" action="applyLoan.php">
-
                         <?php 
                             $getTenure = "SELECT * FROM tenure WHERE Tenure_ID = $tenure";
                             $resultTenure = mysqli_query($con, $getTenure);
-
                             $selectedTenure = mysqli_fetch_array($resultTenure);
                         ?>
-
                             <label for="amt_borrowed">Loan Amount</label>
                             <input type="number" name="amt_borrowed" id="amt_borrowed" value="<?php echo $amt_borrowed?>" step="any" readonly><br>
 
@@ -274,28 +317,66 @@
                                 <option value="3" <?php echo ($pay_schedule == '3') ? 'selected' : ''; ?>>Monthly</option>
                                 <option value="4" <?php echo ($pay_schedule == '4') ? 'selected' : ''; ?>>Quarterly</option>
                             </select>
-                                <br>
-
-                            Confirm Details:
-                            <p>Loan Amount: ₱<?php echo number_format($amt_borrowed, 2, '.', ','); ?></p>
-                            <p>Tenure Selected: <?php echo $selectedTenure['Duration'];?></p>
-                            <p>Payment Schedule: <?php echo $loanDetails['payment_schedule'];?></p>
-                            <p>Interest: <?php echo number_format($loanDetails['ir_result'], 2, '.', ','); ?>%</p>
-                            <p>Interest Payable: ₱<?php echo number_format($loanDetails['interest_payable'], 2, '.', ','); ?></p>
-                            <p>Monthly Payment: ₱<?php echo $loanDetails['monthly_payable'];?></p>
-                            <p>Total Payable: ₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ','); ?></p>
-                            
-                            <!-- hiddedn values to be submitted -->
-                            <input type="hidden" name="userID" value="<?php echo $_SESSION['id']; ?>">
-                            <input type="hidden" name="lenderID" value="<?php echo $row['Lender_ID']; ?>">
-                            <input type="hidden" name="scheduleID" value="<?php echo $pay_schedule; ?>">
-                            <input type="hidden" name="tenureID" value="<?php echo $tenure; ?>">
-                            <input type="hidden" name="loanAmt" value="<?php echo $amt_borrowed; ?>">
                                 
-                            <div class="button-container">
-                                <button type="button" onclick="closeModal('<?php echo $modalId; ?>apply', '<?php echo $overlayId; ?>')">Cancel</button>
-                                <button>Confirm</button> 
+                            
+                            <hr class="divider">
+
+                            <h3>Confirm Details:</h3>
+              
+                            <div class="form-row">
+                                <div class="form-item">
+                                    <label for="amt_borrowed">Loan Amount</label>
+                                    <input type="text" value="₱<?php echo number_format($amt_borrowed, 2, '.', ',');?>" step="any" readonly>
+                                </div>
                             </div>
+
+                            <div class="form-row">
+                                <div class="form-item">
+                                    <label for="tenure">Tenure Selected</label>
+                                    <input type="text" value="<?php echo $selectedTenure['Duration'];?>">
+                                </div>
+                                <div class="form-item">
+                                    <label for="pay_sched">Payment Schedule</label>
+                                    <input type="text" value="<?php echo $loanDetails['payment_schedule'];?>">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-item">
+                                    <label for="interest">Interest</label>
+                                    <input type="text" value="<?php echo number_format($loanDetails['ir_result'], 2, '.', ','); ?>%">
+                                </div>
+                                <div class="form-item">
+                                    <label for="interest_payable">Interest Payable</label>
+                                    <input type="text" value="₱<?php echo number_format($loanDetails['interest_payable'], 2, '.', ','); ?>">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-item">
+                                    <label for="monthly_payment">Monthly Payment</label>
+                                    <input type="text" value="₱<?php echo $loanDetails['monthly_payable'];?>">
+                                </div>
+                                <div class="form-item">
+                                    <label for="total_payable">Total Payable</label>
+                                    <input type="text" value="₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ','); ?>">
+                                </div>
+                            </div>
+
+                              
+                            
+                                <!-- hiddedn values to be submitted -->
+                                <input type="hidden" name="userID" value="<?php echo $_SESSION['id']; ?>">
+                                <input type="hidden" name="lenderID" value="<?php echo $row['Lender_ID']; ?>">
+                                <input type="hidden" name="scheduleID" value="<?php echo $pay_schedule; ?>">
+                                <input type="hidden" name="tenureID" value="<?php echo $tenure; ?>">
+                                <input type="hidden" name="loanAmt" value="<?php echo $amt_borrowed; ?>">
+                                    
+                                <div class="button-container">
+                                    <button id ="submitModal" type="button" onclick="closeModal('<?php echo $modalId; ?>apply', '<?php echo $overlayId; ?>apply')">Cancel</button>
+                                    <button id ="submitModal">Confirm</button> 
+                                </div>
+
                     </form>
                 </div>
 
@@ -305,7 +386,7 @@
 
                         if(strpos($fullUrl, "success=application") == true) {
                             echo '<script>';
-                                echo 'openModal("successModal", "successOverlay");';
+                                echo 'openSuccessModal("successModal", "successOverlay");';
                             echo '</script>';
                             ?>
                                 
@@ -323,7 +404,9 @@
                         lender through email for more discussion and follow-ups. You will
                         be notified if your loan is approved! 
                     </div>
-                    <button id="successBtn" type="button" onclick="closeModal('successModal', 'successOverlay')">Okay</button>
+                    <div class="row">
+                        <button id="successBtn" type="button" onclick="closeModal('successModal', 'successOverlay')">Okay</button>
+                    </div>
                 </div>           
             
 

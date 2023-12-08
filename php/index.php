@@ -36,7 +36,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to LoanDaddy</title>
-    <link rel="stylesheet" href="../css/hamburgerstyle.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/slideshow.css">
     <link rel="stylesheet" href="../css/searchBar.css">

@@ -1,0 +1,123 @@
+<?php
+    session_start();
+
+    $con = mysqli_connect('localhost', 'root', 'Furina de Fontaine');  //Change according to your settings
+    mysqli_select_db($con, 'loanapp');
+
+    $s = "SELECT Lender_ID, Lender_Name, Description, Contact_Number,
+    Email, MinSalary_Required, MinLoan_Amt, MaxLoan_Amt
+    FROM lender 
+    WHERE Verified_at IS NULL";
+
+    $result = mysqli_query($con, $s);
+?>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History</title>
+    <link rel="stylesheet" href="../css/navbar.css">\
+    <link rel="stylesheet" href="../css/transHistory.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+    <script src="../js/modal.js"></script>
+</head>
+<body>
+
+        <nav>
+            <div class="navbar">
+                <div class="logo">
+                    <a href="../php/index.php"><img src="../images/ldaddy.png" class="logo"></a>
+                </div>
+                <div class="navbar-center">
+                    <h1>ADMIN DASHBOARD</h1>
+                </div>
+                <ul class="menu">
+                </ul>
+            </div>
+        </nav>  
+    
+
+    <div class="main-container">
+        <h1 class="page_header">Lender Applicants</h1>
+
+        <?php
+       
+            if (mysqli_num_rows($result) > 0) {
+        ?>
+
+        <table id="table">
+            <tr>
+                <th>Lender ID</th>
+                <th>Lender Name</th>
+                <th>Description</th>
+                <th>Contact Number</th>
+                <th>Email</th>
+                <th>MinSalary_Required</th>
+                <th>MinLoan_Amt</th>
+                <th>MaxLoan_Amt</th>
+            </tr>
+
+            <?php
+                while($row = mysqli_fetch_array($result)) {
+            ?>
+
+            <tr>
+                <td><?php echo $row['Lender_ID'];?></td>
+                <td><?php echo $row['Lender_Name'];?></td>
+                <td><?php echo $row['Description'];?></td>
+                <td><?php echo $row['Contact Number'];?></td>
+                <td><?php echo $row['Email'];?></td>
+                <td><?php echo $row['MinSalary_Required'];?></td>
+                <td><?php echo $row['MinLoan_Amt'];?></td>
+                <td><?php echo $row['MaxLoan_Amt Number'];?></td>
+
+                <td class="approveButtons">
+                <?php if ($row['Status'] == 'Pending'): ?>
+                    <form action="lender_vertification.php" method="post">
+                                <input type="hidden" name="Payment_ID" value="<?php echo $row['Payment_ID']?>">
+                                <input type="hidden" name="BillingPeriod_id" value="<?php echo $LBPeriod_id?>">
+                                <input type="hidden" name="status" value="<?php echo $row['Status']?>">
+                                <input type="hidden" name="loanDetails" value="<?php echo htmlspecialchars($jsonloanDetails); ?>">
+                                <input type="hidden" name="userDetails" value="<?php echo htmlspecialchars($jsonUserDetails); ?>">
+
+                        <button type="submit" name="status" value="Failed" onclick="return confirm('Confirm you have not received the money?')" id="updatePayBtn">
+                            <i id="failButton" class="fa-solid fa-circle-xmark"></i>
+                        </button> 
+                        <button type="submit" name="status" value="Success" onclick="return confirm('Confirm you have received the money?')" id="updatePayBtn">
+                            <i id="successButton" class="fa-solid fa-circle-check"></i>
+                        </button>
+                    </form>
+                <?php elseif ($row['Status'] == 'Success'): ?>
+                    <i class="fa-solid fa-check" id="approved"></i></i>
+                <?php elseif ($row['Status'] == 'Failed'): ?>
+                    <i class="fa-solid fa-xmark" id="denied"></i>
+                <?php endif; ?>
+            </td>
+
+            </tr>
+
+            <?php
+                }
+            ?>
+        </table>
+
+        <?php
+            } else {
+                echo '<p>No Applicants found.</p>';
+            }
+        ?>
+    </div>
+
+    <?php
+        include '../html/footer.html';
+    ?>
+
+    <script src="https://kit.fontawesome.com/e140ca9b66.js" crossorigin="anonymous"></script>       
+    
+</body>
+</html>
+

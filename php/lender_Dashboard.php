@@ -8,6 +8,7 @@
         $amt_borrowed = $_POST["amt_borrowed"];
         $tenure = $_POST["tenure"];
         $pay_schedule = $_POST["pay_sched"];
+
     } else{
         $amt_borrowed = 0;
         $tenure = 6;
@@ -29,6 +30,24 @@
     if ($pay_schedule != 5) {
         $s .= " AND loan_application.Schedule_ID = $pay_schedule";
     }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST"){
+        if($_POST["loansFilter"] == 1){
+            $s .= " ORDER BY loan.Created_at DESC";
+        } else if ($_POST["loansFilter"] == 2){
+            $s .= " ORDER BY loan.Created_at ASC";
+        } else if ($_POST["loansFilter"] == 3){
+            $s .= " AND loanReference_ID != NULL";
+        } else if ($_POST["loansFilter"] == 4){
+            $s .= " AND loan.Status = 'OnHold'";
+        } else if ($_POST["loansFilter"] == 5){
+            $s .= " AND loan.Status = 'Open'";
+        } else if ($_POST["loansFilter"] == 6){
+            $s .= " AND loan.Status = 'Closed'";
+        }
+    }
+
+   
     
 
     $result = mysqli_query($con, $s);
@@ -40,7 +59,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lender Dashboard</title>
-    <link rel="stylesheet" href="../css/hamburgerstyle.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/slideshow.css">
     <link rel="stylesheet" href="../css/searchBar.css">
@@ -146,10 +164,12 @@
                             
             
                 <select name="loansFilter" id="loansFilter" onchange="submitForm()">
-                    <option value="1" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '1') ? 'selected' : ''; ?>>All</option>
-                    <option value="2" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '2') ? 'selected' : ''; ?>>Approved</option>
-                    <option value="3" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '3') ? 'selected' : ''; ?>>Denied</option>
-                    <option value="4" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '4') ? 'selected' : ''; ?>>Pending</option>
+                    <option value="1" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '1') ? 'selected' : ''; ?>>Sort Descending</option>
+                    <option value="2" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '2') ? 'selected' : ''; ?>>Sort Ascending</option>
+                    <option value="3" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '3') ? 'selected' : ''; ?>>Restructured Loans</option>
+                    <option value="4" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '4') ? 'selected' : ''; ?>>OnHold</option>
+                    <option value="5" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '5') ? 'selected' : ''; ?>>Open</option>
+                    <option value="6" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '6') ? 'selected' : ''; ?>>Closed</option>
                 </select>
             </form>
         </div>

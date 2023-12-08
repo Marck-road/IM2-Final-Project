@@ -1,14 +1,14 @@
 <?php
-    $conn = mysqli_connect('localhost', 'root', '');
-    mysqli_select_db($conn, 'loanapp');
+    $con = mysqli_connect('localhost', 'root', 'Furina de Fontaine');
+    mysqli_select_db($con, 'loanapp');
 
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+    if ($con->connect_error) {
+        die("Connection failed: " . $cnn->connect_error);
     }
 
     $sql = "SELECT COUNT(*) AS notification_count FROM notification WHERE is_read = 0";
 
-    $result = $conn->query($sql);
+    $result = $con->query($sql);
 
     if ($result && $result->num_rows > 0) {
         $row = $result->fetch_assoc();
@@ -17,7 +17,7 @@
         $notificationCount = 0;
     }
 
-    $conn->close();
+    $con->close();
 ?>
 
 <!DOCTYPE html>
@@ -67,13 +67,13 @@
             <?php } ?>
 
             <?php if ($notificationCount > 0) { ?>
-                <a href="../html/lenderApplicants.html" class="box">
+                <a href="admin_lenderApplicants" class="box">
                     <span class="notif-badge"><?php echo $notificationCount; ?></span>
                     <img src="../images/lender.png" alt="Lender Applicants">
                     <h3>Lender Applicants</h3>
                 </a>
             <?php } else { ?>
-                <a href="../html/lenderApplicants.html" class="box">
+                <a href="admin_lenderApplicants.php" class="box">
                     <img src="../images/lender.png" alt="Lender Applicants">
                     <h3>Lender Applicants</h3>
                 </a>

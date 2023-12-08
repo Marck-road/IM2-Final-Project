@@ -55,7 +55,7 @@
         }
         
         // if approve, need to check if naa pay balance nabilin
-        if(checkBalance($con, $loan_id, $loanDetails)){
+        if(checkBalance($con, $loan_id, $loanDetails) > 0){
             // if ever naa, calculate next pay date and generate new bill period.
             create_billPeriod($con, $loan_id, $loanDetails, $payment_details, $excess, $bp_details);
             
@@ -69,9 +69,10 @@
 
             //Checks if it is a restructured account
             $restructuredSql = "SELECT * FROM loan WHERE Loan_ID = $loan_id";
-            mysqli_query($con, $closesql);
-            $restructuredRows = mysqli_fetch_array($restructuredRows);
+            $restructuredqry = mysqli_query($con, $restructuredSql); // Use $restructuredSql instead of $closesql
+            $restructuredRows = mysqli_fetch_array($restructuredqry);
             $restructuredID = $restructuredRows['LoanReference_ID'];
+
 
             if($restructuredRows['LoanReference_ID'] != NULL){
                 $closesql = "UPDATE loan
@@ -106,6 +107,7 @@ function checkBalance($con, $loan_id, $loanDetails){
         $balance = $totalPayable - $totalPaid;
 
         // Return the calculated balance
+        echo $balance;
         return $balance;
     } else {
         // Handle query error
