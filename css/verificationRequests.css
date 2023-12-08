@@ -45,19 +45,19 @@ h1 {
 .name {
     font-size: 18px;
     margin-bottom: 5px;
-    font-weight: bold; /* Adding bold font weight */
+    font-weight: bold; 
 }
 
 .email {
     font-size: 14px;
     color: black;
     margin-bottom: 15px;
-    font-weight: normal; /* Resetting the font weight to normal */
+    font-weight: normal; 
 }
 
 .email::before {
     content: 'Email: ';
-    font-weight: bold; /* Adding bold font weight to the word "Email" */
+    font-weight: bold;
 }
 
 .more-info-btn {
@@ -73,4 +73,8 @@ h1 {
 
 .more-info-btn:hover {
     background-color: #0056b3;
+}
+
+.more-info-link {
+    margin-left: auto;
 }
