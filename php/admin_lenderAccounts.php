@@ -15,9 +15,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lender Applicants</title>
+    <title>Lender Accounts</title>
     <link rel="stylesheet" href="../css/navbar.css">
-    <link rel="stylesheet" href="../css/adminActivityLog.css">
     <link rel="stylesheet" href="../css/transHistory.css">
     <link rel="stylesheet" href="../css/adminTable.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,7 +33,7 @@
                     <a href="admindashboard.php"><img src="../images/ldaddy.png" class="logo"></a>
                 </div>
                 <div class="navbar-center">
-                    <h1>LENDER APPLICANTS</h1>
+                    <h1>LENDER ACCOUNTS</h1>
                 </div>
                 <ul class="menu">
                 </ul>
@@ -43,7 +42,7 @@
     
 
     <div class="main-container">
-        <h1 class="page_header">Lender Applicants</h1>
+        <h1 class="page_header">Lender Accounts</h1>
 
         <div class="success">
             <?php
@@ -77,7 +76,6 @@
                 <th>MinSalary_Required</th>
                 <th>MinLoan_Amt</th>
                 <th>MaxLoan_Amt</th>
-                <th>Action</th>
                 
             </tr>
 
@@ -95,20 +93,6 @@
                 <td><?php echo $row['MinLoan_Amt'];?></td>
                 <td><?php echo $row['MaxLoan_Amt'];?></td>
                 
-                
-
-                <td class="approveButtons">
-                    <form action="lender_verification.php" method="post">
-                    <input type="hidden" name="Lender_ID" value="<?php echo $row['Lender_ID']?>">
-
-                        <button type="submit" name="status" value="0" onclick="return confirm('Confirm Denial of Lender?')" id="updatePayBtn">
-                            <i id="failButton" class="fa-solid fa-circle-xmark"></i>
-                        </button> 
-                        <button type="submit" name="status" value="1" onclick="return confirm('Confirm Approval of Lender?')" id="updatePayBtn">
-                            <i id="successButton" class="fa-solid fa-circle-check"></i>
-                        </button>
-                    </form>
-                </td>
 
             </tr>
 

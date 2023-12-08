@@ -1,3 +1,16 @@
+<?php
+    session_start();
+
+    $con = mysqli_connect('localhost', 'root', 'Furina de Fontaine');  //Change according to your settings
+    mysqli_select_db($con, 'loanapp');
+
+    $search = isset($_GET['search']) ? $_GET['search'] : '';
+    $sql = "SELECT User_ID, First_Name, Last_Name, Email, Contact_Number, Employment_Status, Created_at FROM user WHERE CONCAT(First_Name, ' ', Last_Name) LIKE '%$search%'";
+    $result = $con->query($sql);
+
+    $result = mysqli_query($con, $sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -18,7 +31,7 @@
         <nav>
             <div class="navbar">
                 <div class="logo">
-                    <a href="../php/index.php"><img src="../images/ldaddy.png" class="logo"></a>
+                    <a href="admindashboard.php"><img src="../images/ldaddy.png" class="logo"></a>
                 </div>
                 <div class="navbar-center">
                     <h1>USER ACCOUNTS</h1>
@@ -35,45 +48,55 @@
             </form>
         </div>
 
-    <table>
-        <thead>
+        <?php
+        
+        if (mysqli_num_rows($result) > 0) {
+        ?>
+                <table id="table">
             <tr>
                 <th>User ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
+                <th>Contact Number</th>
+                <th>Employment Status</th>
                 <th>Created at</th>
+                
             </tr>
-        </thead>
-        <tbody>
-            
+
             <?php
-                $conn = mysqli_connect('localhost', 'root', '');
-                mysqli_select_db($conn, 'loanapp');
-
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
-
-                $search = isset($_GET['search']) ? $_GET['search'] : '';
-                $sql = "SELECT User_ID, First_Name, Last_Name, Email, Created_at FROM user WHERE CONCAT(First_Name, ' ', Last_Name) LIKE '%$search%'";
-                $result = $conn->query($sql);
-
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . $row["User_ID"]. "</td>";
-                        echo "<td>" . $row["First_Name"]. "</td>";
-                        echo "<td>" . $row["Last_Name"]. "</td>";
-                        echo "<td>" . $row["Email"]. "</td>";
-                        echo "<td>" . $row["Created_at"]. "</td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='5'>No results found for '$search'</td></tr>";
-                }
-                $conn->close();
+                while($row = mysqli_fetch_array($result)) {
             ?>
-        </tbody>
+
+            <tr>
+                <td><?php echo $row["User_ID"];?></td>
+                <td><?php echo $row["First_Name"];?></td>
+                <td><?php echo $row["Last_Name"];?></td>
+                <td><?php echo $row["Email"];?></td>
+                <td><?php echo $row['Contact_Number'];?></td>
+                <td><?php echo $row['Employment_Status'];?></td>
+                <td><?php echo $row["Created_at"];?></td>
+            </tr>
+
+            <?php
+                }
+            ?>
+        </table>
+
+
+        <?php
+            } else {
+        ?>
+                <div class="noResults">
+                    <i class="fa-solid fa-kiwi-bird" id="kiwi"></i></i>
+                    <p class="noText"></p>-No User Found-</p>
+                </div>
+
+        <?php
+            }
+        ?>
+
+
+      
     </table>
 </html>

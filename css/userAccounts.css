@@ -69,3 +69,37 @@ th{
 table tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
+
+i{
+    font-size: 18px;
+}
+
+#failButton:hover{
+    color: rgb(162, 40, 40);
+    cursor: pointer;
+}
+
+#successButton:hover{
+    color: rgb(39, 160, 39);
+    cursor: pointer;
+}
+
+#failButton, #successButton, #approved, #denied{
+    text-align: center;
+    font-size: 32px;
+    padding: 5px;
+    color: #146C94;
+    transition: 0.5s ease-in;
+    background-color: none;
+} 
+
+button{
+    background-color: #f9f9f9;
+    
+}
+
+button:hover{
+    background-color: #f9f9f9;
+
+}
+

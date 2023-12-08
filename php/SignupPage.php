@@ -145,20 +145,25 @@
                     <?php
                         $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
+                        echo '<p id="failMsg">Email already taken</p>';
+                        
+                        
+                            
+                        
                         if(strpos($fullUrl, "pass=error") == true) {
-                            echo "Passwords does not match";
+                            echo '<p id="failMsg">Passwords does not match</p>';
                         }
 
                         if(strpos($fullUrl, "duplicate=error") == true) {
-                            echo "Email already taken";
+                            echo '<p id="failMsg">Email already taken</p>';
                         }
 
                         if(strpos($fullUrl, "empty=error") == true) {
-                            echo "Please fill in all the fields";
+                            echo '<p id="failMsg">Please fill in all the fields</p>';
                         }
 
                         if(strpos($fullUrl, "email=error") == true) {
-                            echo "Not valid email";
+                            echo '<p id="failMsg">Not valid email</p>';
                         }
                     ?>
                 </div>

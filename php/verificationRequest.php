@@ -1,12 +1,34 @@
+<?php
+    session_start();
+
+    $con = mysqli_connect('localhost', 'root', 'Furina de Fontaine');  //Change according to your settings
+    mysqli_select_db($con, 'loanapp');
+
+    $search = isset($_GET['search']) ? $_GET['search'] : '';
+    $sql = "SELECT * FROM user 
+    WHERE CONCAT(First_Name, ' ', Last_Name) LIKE '%$search%'
+    AND Account_Status = 'Pending'";
+    $result = $con->query($sql);
+
+    $result = mysqli_query($con, $sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Verification Requests</title>
+        <link rel="stylesheet" href="../css/loginpage.css">
         <link rel="stylesheet" href="../css/navbar.css">
-        <link rel="stylesheet" href="../css/verificationRequests.css">
+        <link rel="stylesheet" href="../css/userAccounts.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..."
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
     </head>
+
     <body>
         <nav>
             <div class="navbar">
@@ -14,47 +36,139 @@
                     <a href="admindashboard.php"><img src="../images/ldaddy.png" class="logo"></a>
                 </div>
                 <div class="navbar-center">
-                    <h1>VERIFICATION REQUEST</h1>
+                    <h1>VERIFICATION REQUESTS</h1>
                 </div>
                 <ul class="menu">
                 </ul>
             </div>
-        </nav>       
+        </nav>
+        
+        <div class="search-user">
+            <form method="GET">
+                <input type="text" class="search-input" name="search" placeholder="Search User">
+                <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
 
-        <div class="container">
         <?php
-            $conn = mysqli_connect('localhost', 'root', '');
-            mysqli_select_db($conn, 'loanapp');
+        
+        if (mysqli_num_rows($result) > 0) {
+        ?>
+                <table id="table">
+            <tr>
+                <th>User ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Contact Number</th>
+                <th>Employment Status</th>
+                <th>Income Document</th>
+                <th>Valid ID 1</th>
+                <th>Valid ID 2</th>
+                <th>Utility Bill</th>
+                <th>Action</th>
+                
+            </tr>
 
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
+            <?php
+                while($row = mysqli_fetch_array($result)) {
+            ?>
 
-            $query = "SELECT * FROM verification_requests WHERE status = 'pending'";
-            $result = mysqli_query($conn, $query);
+            <tr>
+                <td><?php echo $row["User_ID"];?></td>
+                <td><?php echo $row["First_Name"];?></td>
+                <td><?php echo $row["Last_Name"];?></td>
+                <td><?php echo $row["Email"];?></td>
+                <td><?php echo $row['Contact_Number'];?></td>
+                <td><?php echo $row['Employment_Status'];?></td>
+                <td>
+                <?php
+                    $imageData = $row['Income_Document'];
+                    $imageBase64 = base64_encode($imageData);
+                    $imageType = "image/jpeg";
 
-            if(mysqli_num_rows($result) > 0) {
-                while($row = mysqli_fetch_assoc($result)) {
-                    $name = $row['name'];
-                    $email = $row['email']; 
-                    
-                    echo "<div class='rectangle'>";
-                    echo "<img src='../images/temp.png' alt='Profile'>";
-                    echo "<div class='name-email'>";
-                    echo "<div class='name'>$name</div>";
-                    echo "<div class='email'>$email</div>";
-                    echo "</div>";
-                    echo "<a href='../php/userProfile.php' class='more-info-link'>";
-                    echo "<button class='more-info-btn'>More Info</button>";
-                    echo "</a>";
-                    echo "</div>";
+                    if ($imageData) {
+                        echo '<img src="data:' . $imageType . ';base64,' . $imageBase64 . '" alt="Screenshot">';
+                    } else {
+                        echo 'No image available';
+                    }
+                ?>
+                </td>
+                <td>
+                <?php
+                    $imageData = $row['ValidID_1'];
+                    $imageBase64 = base64_encode($imageData);
+                    $imageType = "image/jpeg";
+
+                    if ($imageData) {
+                        echo '<img src="data:' . $imageType . ';base64,' . $imageBase64 . '" alt="Screenshot">';
+                    } else {
+                        echo 'No image available';
+                    }
+                ?>
+                </td>
+                <td>
+                <?php
+                    $imageData = $row['ValidID_2'];
+                    $imageBase64 = base64_encode($imageData);
+                    $imageType = "image/jpeg";
+
+                    if ($imageData) {
+                        echo '<img src="data:' . $imageType . ';base64,' . $imageBase64 . '" alt="Screenshot">';
+                    } else {
+                        echo 'No image available';
+                    }
+                ?>
+                </td>
+                <td>
+                <?php
+                    $imageData = $row['Utility_Bill'];
+                    $imageBase64 = base64_encode($imageData);
+                    $imageType = "image/jpeg";
+
+                    if ($imageData) {
+                        echo '<img src="data:' . $imageType . ';base64,' . $imageBase64 . '" alt="Screenshot">';
+                    } else {
+                        echo 'No image available';
+                    }
+                ?>
+                </td>
+
+
+
+                <td class="approveButtons">
+                    <form action="verifyAccount.php" method="post">
+                    <input type="hidden" name="User_ID" value="<?php echo $row['User_ID']?>">
+
+                        <button type="submit" name="status" value="0" onclick="return confirm('Deny Verification of User?')" id="updatePayBtn">
+                            <i id="failButton" class="fa-solid fa-circle-xmark"></i>
+                        </button> 
+                        <button type="submit" name="status" value="1" onclick="return confirm('Approve Verification of User?')" id="updatePayBtn">
+                            <i id="successButton" class="fa-solid fa-circle-check"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+
+            <?php
                 }
+            ?>
+        </table>
+
+
+        <?php
             } else {
-                echo "<p>No pending verification requests.</p>";
+        ?>
+                <div class="noResults">
+                    <i class="fa-solid fa-kiwi-bird" id="kiwi"></i></i>
+                    <p class="noText"></p>-No Lender Found-</p>
+                </div>
+
+        <?php
             }
         ?>
 
-        </div>
-
-    </body>
+<script src="https://kit.fontawesome.com/e140ca9b66.js" crossorigin="anonymous"></script> 
+      
+    </table>
 </html>
