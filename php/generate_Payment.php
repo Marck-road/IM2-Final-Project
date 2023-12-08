@@ -14,9 +14,11 @@
     $screenshot = $_POST['Screenshot'];
     $pay_channel = $_POST['PaymentChannel'];
 
+    echo $lbPeriod_id;
+
     $reg= " INSERT INTO payment (LBPeriod_ID, Amount_Paid, Screenshot, Payment_Channel) 
     VALUES ('$lbPeriod_id', '$amt_paid', '$screenshot', '$pay_channel')";
     mysqli_query($con, $reg);
-    // header('location:Loginpage.php?success=pay');
+    header('location:viewLoans.php?success=pay');
 
 ?>

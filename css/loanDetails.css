@@ -112,5 +112,77 @@ button:hover{
 }
 
 .button-container {
-    text-align: center; /* Center-align the button container */
+    text-align: center; 
 }
+
+button{
+    min-width: 200px
+}
+
+#colProgress{
+    align-items: center;
+}
+
+.circular-progress {
+    position: relative;
+    width: 150px;
+    height: 150px;
+  }
+  
+  .progress-bar {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #e0e0e0; /* Set the background color of the progress bar */
+    overflow: hidden;
+  }
+  
+  .progress {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #19A7CE; /* Set the color of the progress */
+    clip: rect(0, 50%, 100%, 0);
+  }
+  
+  .progress-mask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    clip: rect(0, 100%, 100%, 50%);
+  }
+  
+  .progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 12px;
+  }
+  
+  /* Add animation for the progress */
+  @keyframes fillProgress {
+    to {
+      transform: rotate(180deg);
+    }
+  }
+  
+  .progress-bar {
+    animation: fillProgress 2s ease-out forwards; /* Adjust the animation duration as needed */
+  }
+  
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    transition: display 0.3s ease;
+  }

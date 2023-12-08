@@ -14,7 +14,7 @@
     $loanAppDetails = json_decode($_POST['rowDetails'], true);
     $loanBalance = checkBalance($con, $loanAppDetails["Loan_ID"], $loanDetails);
     $loanDates = getTimestamps($con, $loanAppDetails["Loan_ID"], $loanDetails);
-
+    $currentBP = getCurrentBillingPeriod($con, $loanAppDetails["Loan_ID"]);
     
 ?>
 
@@ -25,6 +25,7 @@
     <title>My Loans</title>
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/loanDetails.css">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -102,29 +103,128 @@
         </div>
         
         <div class="loan_container">
+           
+            <div class="centered_column" id="colProgress">
+                <div class="row" id="details">
+                    <div class="circular-progress">
+                        <div class="progress-bar">
+                            <div class="progress"></div>
+                            <div class="progress-mask"></div>
+                        </div>
+                        <div class="progress-text">
+                        <p><?php echo round(($loanBalance['totalPaid'] / $loanDetails['total_payable']) * 100, 2); ?>%</p>
+                        </div>
+                    </div>
+
+                    <div class="centered_column">
+                            <p>Amount Repaid:<br>₱<?php echo number_format($loanBalance['totalPaid'], 2, '.', ',');?> / ₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ',');?></p>
+                 
+                    </div>
+
+                </div>
+             
+                    
+            </div>
+                
             <div class="column">
-            <div class="row" id="details">
-                <div class="column">
-                    <p>Amount Repaid:<br>₱<?php echo number_format($loanBalance['totalPaid'], 2, '.', ',');?> / ₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ',');?></p>
+                <div class="row">
+                    <div class="column">
+                        <p>Interest:<br><?php echo number_format($loanDetails['ir_result'], 2, '.', ','); ?>%</p>
+
+                    </div>
+                    <div class="column">
+                        <p>Interest Payable:<br>₱<?php echo number_format($loanDetails['interest_payable'], 2, '.', ','); ?></p>
+                    </div>
+                    <div class="column">
+                        <p>Monthly Interest:<br>₱<?php echo $loanDetails['monthly_interest'];?></p>
+                    </div>
                 </div>
-                <div class="column">
-                    <p>Interest:<br><?php echo number_format($loanDetails['ir_result'], 2, '.', ','); ?>%</p>
-                </div>
-                <div class="column">
-                    <p>Interest Payable:<br>₱<?php echo number_format($loanDetails['interest_payable'], 2, '.', ','); ?></p>
-                </div>
-                <div class="column">
-                    <p>Monthly Interest:<br>₱<?php echo $loanDetails['monthly_interest'];?></p>
-                </div>
-                <div class="column">
-                    <p>Monthly Payment:<br>₱<?php echo $loanDetails['monthly_payable'];?></p>
-                </div>
-                <div class="column">
-                    <p>Total Payable:<br>₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ','); ?></p>
+                <div class="row">
+                    <div class="column">
+                        <p>Monthly Payment:<br>₱<?php echo $loanDetails['monthly_payable'];?></p>
+                    </div>
+                    <div class="column">
+                        <p>Total Payable:<br>₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ','); ?></p>
+                    </div>
+
                 </div>
             </div>
-            </div>
+                
+            
+        
         </div>
+
+        <div class="loan_container">
+            <div class="column">
+                  
+                        <h2>Current Loan Billing Period<br></h2>
+                  
+                        <p>₱<?php echo number_format($currentBP['currentBP_paid'], 2, '.', ',');?> / ₱<?php echo number_format($currentBP['currentBP_amount'], 2, '.', ',');?></p>
+                   
+            </div>
+            <div class="column">
+                   
+                        <h2>Date Start<br></h2>
+                    
+                 
+                        <p><?php echo $currentBP['currentBP_dateStart']; ?></p>
+                   
+            </div>
+            <div class="column">
+                    
+                        <h2>Date End<br></h2>
+                        <p><?php echo $currentBP['currentBP_dateEnd']; ?></p>
+                    
+            </div>
+
+            <div class="column">
+                <div class="column">
+                    <a href="Loginpage.php">
+                        <div class="row">
+                            <button>View Transactions History</button>
+                        </div>
+                    </a>
+                </div>
+                <div class="column">
+                    <div class="row">
+                        <button onclick="openModal('sendPaymentModal', 'sendPaymentOverlay')">Send Payment</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sendPaymentOverlay" class="overlay" onclick="closeModal('sendPaymentModal', 'sendPaymentOverlay')"></div>
+            <div id="sendPaymentModal" class="modal">
+                    <h2>
+                        <div class="row">
+                            Submit Payment
+                        </div>
+                        
+                    </h2>
+
+                    
+                    <form id="submitPayment" method="post" action="generate_Payment.php">
+
+                            <label for="Amount_Paid">Amount Paid</label>
+                            <input type="text" name="Amount_Paid" id="Amount_Paid" placeholder="Enter Amount Paid"><br>
+                            <label for="PaymentChannel">Payment Channel</label>
+                            <input type="text" name="PaymentChannel" id="PaymentChannel" placeholder="Enter Payment Channel"><br>
+                            <label for="Screenshot">Screenshot</label>
+                            <input type="file" name="Screenshot" id="Screenshot" accept="image/*"><br>
+                           
+                            <!-- hidded values to be submitted -->
+                            <input type="hidden" name="LBPeriod_id" value="<?php echo $currentBP['currentBP_ID']?>">
+      
+                            <div class="button-container">
+                                <button type="button" onclick="closeModal('sendPaymentModal', 'sendPaymentOverlay')">Cancel</button>
+                                <button>Confirm</button> 
+                            </div>
+                    </form>
+            </div>
+
+
+
+        </div>
+
         
     
     </div>
@@ -135,9 +235,10 @@
         
             // Fetch all payments linked to loanbilling_period that is linked to the specified loan_id
             $sql = "SELECT SUM(Amount_Paid) AS totalPaid
-                    FROM payment
-                    INNER JOIN loanbilling_period ON payment.LBPeriod_ID = loanbilling_period.LBPeriod_ID
-                    WHERE loanbilling_period.Loan_ID = $loan_id";
+            FROM payment
+            INNER JOIN loanbilling_period ON payment.LBPeriod_ID = loanbilling_period.LBPeriod_ID
+            WHERE loanbilling_period.Loan_ID = $loan_id
+            AND payment.Status = 'Success'";
         
             $result = mysqli_query($con, $sql);
         
@@ -165,9 +266,9 @@
         }
 
         function getTimestamps($con, $loan_id, $loanDetails){
-           $sql = "SELECT Created_at, Updated_at FROM loan
-                    WHERE Loan_ID = $loan_id";
-        
+            $sql = "SELECT Created_at, Updated_at FROM loan
+                        WHERE Loan_ID = $loan_id";
+            
             $result = mysqli_query($con, $sql);
 
            
@@ -201,8 +302,51 @@
                 ];
             } 
         }
+
+        function getCurrentBillingPeriod($con, $loan_id){
+            $sql = "SELECT * FROM loanbilling_period
+            WHERE Loan_ID = $loan_id
+            AND Status = 'Open'";
+
+
+            $result = mysqli_query($con, $sql);
+            $row = mysqli_fetch_assoc($result);
+
+            $startDateTimestamp = strtotime($row['Date_start']);
+            $endDateTimestamp = strtotime($row['Date_end']);
+            $startDate = date('M d, Y', $startDateTimestamp);
+            $endDate = date('M d, Y', $endDateTimestamp);
+
+            $sql2 = "SELECT SUM(Amount_Paid) AS totalPaid
+            FROM payment
+            INNER JOIN loanbilling_period ON payment.LBPeriod_ID = loanbilling_period.LBPeriod_ID
+            WHERE loanbilling_period.LBPeriod_ID = {$row['Amount']}
+            AND payment.Status = 'Success'";
+
+        
+            $result2 = mysqli_query($con, $sql2);
+            $row2 = mysqli_fetch_assoc($result2);
+
+
+
+
+            return [
+                'currentBP_ID' => $row['LBPeriod_ID'],
+                'currentBP_amount' => $row['Amount'],
+                'currentBP_paid' => $row2['totalPaid'],
+                'currentBP_dateStart' => $startDate,
+                'currentBP_dateEnd' => $endDate
+            ];
+        }
     ?>
 
+    <script>
+        var totalPaidPercentage = <?php echo ($loanBalance['totalPaid'] / $loanDetails['total_payable']) * 100; ?>;
+        var progressElement = document.querySelector('.progress');
+
+        // Set the width of the progress bar based on the percentage
+        progressElement.style.width = totalPaidPercentage + '%';
+    </script>
 
     <script src="https://kit.fontawesome.com/e140ca9b66.js" crossorigin="anonymous"></script>  
     <script src="../js/viewLoans.js"></script>
