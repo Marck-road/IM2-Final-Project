@@ -29,39 +29,51 @@
         </nav>
         
         <div class="search-user">
-            <input type="text" class="search-input" placeholder="Search User">
-            <button class="search-btn"><i class="fas fa-search"></i></button>
+            <form method="GET">
+                <input type="text" class="search-input" name="search" placeholder="Search User">
+                <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+            </form>
         </div>
 
-        <div class="user-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Created_At</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>001</td>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>Php 5000</td>
-                        <td>2023-11-28</td>
-                    </tr>
-                    <tr>
-                        <td>002</td>
-                        <td>Jane</td>
-                        <td>Smith</td>
-                        <td>Php 8000</td>
-                        <td>2023-11-27</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <table>
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Created at</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <?php
+                $conn = mysqli_connect('localhost', 'root', '');
+                mysqli_select_db($conn, 'loanapp');
 
-    </body>
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+
+                $search = isset($_GET['search']) ? $_GET['search'] : '';
+                $sql = "SELECT User_ID, First_Name, Last_Name, Email, Created_at FROM user WHERE CONCAT(First_Name, ' ', Last_Name) LIKE '%$search%'";
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["User_ID"]. "</td>";
+                        echo "<td>" . $row["First_Name"]. "</td>";
+                        echo "<td>" . $row["Last_Name"]. "</td>";
+                        echo "<td>" . $row["Email"]. "</td>";
+                        echo "<td>" . $row["Created_at"]. "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='5'>No results found for '$search'</td></tr>";
+                }
+                $conn->close();
+            ?>
+        </tbody>
+    </table>
 </html>
