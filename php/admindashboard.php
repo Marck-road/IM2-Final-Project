@@ -111,12 +111,12 @@
                 <a href="../html/loanerAccounts.html" class="box">
                     <span class="notif-badge"><?php echo $notificationCount; ?></span>
                     <img src="../images/loaner.png" alt="Loaner Accounts">
-                    <h3>Loaner Accounts</h3>
+                    <h3>Lender Accounts</h3>
                 </a>
             <?php } else { ?>
                 <a href="../html/loanerAccounts.html" class="box">
                     <img src="../images/loaner.png" alt="Loaner Accounts">
-                    <h3>Loaner Accounts</h3>
+                    <h3>Lender Accounts</h3>
                 </a>
             <?php } ?>
             </div>

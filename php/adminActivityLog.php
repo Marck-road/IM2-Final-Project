@@ -1,3 +1,17 @@
+<?php
+    session_start();
+
+    $con = mysqli_connect('localhost', 'root', 'Furina de Fontaine');  //Change according to your settings
+    mysqli_select_db($con, 'loanapp');
+
+    $s = "SELECT *, loan.Status as loanStatus FROM loan INNER JOIN loan_application ON 
+    loan.LoanApp_ID = loan_application.LoanApp_ID";
+
+    $result = mysqli_query($con, $s);
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -5,6 +19,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Admin Activity Log</title>
         <link rel="stylesheet" href="../css/navbar.css">
+        <link rel="stylesheet" href="../css/adminTable.css">
         <link rel="stylesheet" href="../css/adminActivityLog.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..."
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -18,7 +33,7 @@
         <nav>
             <div class="navbar">
                 <div class="logo">
-                    <a href="../php/index.php"><img src="../images/ldaddy.png" class="logo"></a>
+                    <a href="admindashboard.php"><img src="../images/ldaddy.png" class="logo"></a>
                 </div>
                 <div class="navbar-center">
                     <h1>ACTIVITY LOG</h1>
@@ -48,6 +63,11 @@
         </div>
 
         <div class="loan-table">
+
+        <?php
+            if (mysqli_num_rows($result) > 0) {
+        ?>
+            
             <table>
                 <thead>
                     <tr>
@@ -58,23 +78,40 @@
                         <th>Created_At</th>
                     </tr>
                 </thead>
+                
+                <?php
+                    while($row = mysqli_fetch_array($result)) {
+                ?>
                 <tbody>
+
+
                     <tr>
-                        <td>001</td>
-                        <td>John Doe</td>
-                        <td>ABC Lender</td>
-                        <td>Php 5000</td>
-                        <td>2023-11-28</td>
-                    </tr>
-                    <tr>
-                        <td>002</td>
-                        <td>Jane Smith</td>
-                        <td>XYZ Bank</td>
-                        <td>Php 8000</td>
-                        <td>2023-11-27</td>
+                        <td><?php echo $row['Loan_ID'];?></td>
+                        <td><?php echo $row['User_ID'];?></td>
+                        <td><?php echo $row['Lender_ID'];?></td>
+                        <td><?php echo $row['Loan_Amt'];?></td>
+                        <td><?php echo $row['loanStatus'];?></td>
                     </tr>
                 </tbody>
+                <?php
+                }
+            ?>
+
             </table>
+
+            <?php
+            } else {
+                ?>
+                        <div class="noResults">
+                            <i class="fa-solid fa-kiwi-bird" id="kiwi"></i></i>
+                            <p class="noText"></p>-No Loans Found-</p>
+                        </div>
+
+                <?php
+
+                        
+                    }
+                ?>
         </div>
         
     </body>

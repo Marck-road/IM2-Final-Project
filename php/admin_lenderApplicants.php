@@ -17,7 +17,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction History</title>
-    <link rel="stylesheet" href="../css/navbar.css">\
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/adminActivityLog.css">
     <link rel="stylesheet" href="../css/transHistory.css">
     <link rel="stylesheet" href="../css/adminTable.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,12 +30,12 @@
 <body>
 
         <nav>
-            <div class="navbar">
+        <div class="navbar">
                 <div class="logo">
                     <a href="admindashboard.php"><img src="../images/ldaddy.png" class="logo"></a>
                 </div>
                 <div class="navbar-center">
-                    <h1>ADMIN DASHBOARD</h1>
+                    <h1>LENDER APPLICANTS</h1>
                 </div>
                 <ul class="menu">
                 </ul>
