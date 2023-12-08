@@ -59,7 +59,7 @@
             // if ever naa, calculate next pay date and generate new bill period.
             create_billPeriod($con, $loan_id, $loanDetails, $payment_details, $excess, $bp_details);
             
-            // header('location:lender_Dashboard.php?update=success');
+            header('location:lender_Dashboard.php?update=success');
         }else{
             // if ever wa nay balance, end it and change status of loan to closed
             $closesql = "UPDATE loan

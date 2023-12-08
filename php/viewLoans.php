@@ -6,12 +6,12 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
         if($_POST["loansFilter"] == 1){
-            $s = "SELECT loan_application.*, loan.Loan_ID
+            $s = "SELECT loan_application.*, loan.Loan_ID 
             FROM loan_application
             LEFT JOIN loan ON loan.LoanApp_ID = loan_application.LoanApp_ID
             WHERE User_ID = '{$_SESSION['id']}'";
         } else if ($_POST["loansFilter"] == 2){
-            $s = "SELECT loan_application.*, loan.Loan_ID
+            $s = "SELECT loan_application.*, loan.Loan_ID, loan.Status AS loanStatus
             FROM loan_application
             INNER JOIN loan
             ON loan.LoanApp_ID = loan_application.LoanApp_ID
@@ -29,7 +29,7 @@
             AND Status = 'Pending'";
         }
     } else{
-        $s = "SELECT loan_application.*, loan.Loan_ID
+        $s = "SELECT loan_application.*, loan.Loan_ID, loan.Status AS loanStatus
             FROM loan_application
             INNER JOIN loan
             ON loan.LoanApp_ID = loan_application.LoanApp_ID
@@ -177,7 +177,7 @@
                     <h3>Status</h3>
                 </div>
                 <div class="row_value">
-                    <p><?php echo $row['Status'];?></p>
+                    <p><?php echo $row['loanStatus'];?></p>
                 </div>
             </div>
 
@@ -191,7 +191,8 @@
                         <form action="borrower_loanDetails.php" method="post">
                             <input type="hidden" name="rowDetails" value="<?php echo htmlspecialchars($jsonrowDetails); ?>">
                             <input type="hidden" name="loanDetails" value="<?php echo htmlspecialchars($jsonloanDetails); ?>">
-                            
+                            <input type="hidden" name="loanStatus" value="<?php echo $row['loanStatus']?>">
+
                             <button type="submit">More Info</button>
                         </form>
                     <?php

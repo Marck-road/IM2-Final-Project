@@ -14,7 +14,7 @@
         $pay_schedule = 5;
     }
 
-    $s = "SELECT * FROM loan
+    $s = "SELECT *, loan.Status AS loanStatus FROM loan
       INNER JOIN loan_application ON loan_application.LoanApp_ID = loan.LoanApp_ID
       WHERE loan_application.Lender_ID = '{$_SESSION['id']}'";
 
@@ -215,19 +215,19 @@
 
             <div class="column">
                 <div class="row">
-                    <h3>Payment Schedule</h3>
+                    <h3>Tenure</h3>
                 </div>
                 <div class="row_value">
-                    <p><?php echo $loanDetails['payment_schedule'];?></p>
+                    <p><?php echo $loanDetails['loan_tenure'];?></p>
                 </div>
             </div>
 
             <div class="column">
                 <div class="row">
-                    <h3>Tenure</h3>
+                    <h3>Status</h3>
                 </div>
                 <div class="row_value">
-                    <p><?php echo $loanDetails['loan_tenure'];?></p>
+                    <p><?php echo $row['loanStatus'];?></p>
                 </div>
             </div>
 
@@ -239,7 +239,8 @@
                             <input type="hidden" name="rowDetails" value="<?php echo htmlspecialchars($jsonrowDetails); ?>">
                             <input type="hidden" name="loanDetails" value="<?php echo htmlspecialchars($jsonloanDetails); ?>">
                             <input type="hidden" name="userDetails" value="<?php echo htmlspecialchars($jsonUserDetails); ?>">
-                                
+                            <input type="hidden" name="loanStatus" value="<?php echo $row['loanStatus']?>">
+
                             <button type="submit">More Info</button>
                     </form>
                 </div>

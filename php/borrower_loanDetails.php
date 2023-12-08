@@ -14,7 +14,12 @@
     $loanAppDetails = json_decode($_POST['rowDetails'], true);
     $loanBalance = checkBalance($con, $loanAppDetails["Loan_ID"], $loanDetails);
     $loanDates = getTimestamps($con, $loanAppDetails["Loan_ID"], $loanDetails);
-    $currentBP = getCurrentBillingPeriod($con, $loanAppDetails["Loan_ID"]);
+    $loanStatus = ($_POST['loanStatus']);
+
+    if($loanStatus != 'Closed'){
+
+        $currentBP = getCurrentBillingPeriod($con, $loanAppDetails["Loan_ID"]);
+    }
     
 ?>
 
@@ -153,8 +158,33 @@
             
         
         </div>
+        
+        <?php
+            if($loanStatus == 'Closed'){   ?>
+            <div class="centered_column">
+            <form action="borrower_TransHistory.php" method="post" id="historyForm">
+                            <div class="row">
+                                <input type="hidden" name="Loan_id" value="<?php echo $loanAppDetails["Loan_ID"]?>">
+                                <input type="hidden" name="LBPeriod_id" value="<?php echo $currentBP['currentBP_ID']?>">
+                                <button type="button" onclick="submitForm()">View Transactions History</button>
+                            </div>
+                    </form>
+
+                    <script>
+                        function submitForm() {
+                            document.getElementById('historyForm').submit();
+                        }
+                    </script>
+            </div>
+                
+        <?php
+            } else {
+        ?>
+
+
 
         <div class="loan_container">
+
             <div class="column">
                   
                         <h2>Current Loan Billing Period<br></h2>
@@ -234,8 +264,10 @@
 
 
         </div>
-
-       
+        
+        <?php
+        }
+        ?>
 
         
     
