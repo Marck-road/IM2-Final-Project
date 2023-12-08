@@ -114,7 +114,7 @@
                     <h3>Lender Accounts</h3>
                 </a>
             <?php } else { ?>
-                <a href="../html/loanerAccounts.html" class="box">
+                <a href="admin_lenderAccounts.php" class="box">
                     <img src="../images/loaner.png" alt="Loaner Accounts">
                     <h3>Lender Accounts</h3>
                 </a>

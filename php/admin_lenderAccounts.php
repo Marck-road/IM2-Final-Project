@@ -6,8 +6,7 @@
 
     $s = "SELECT Lender_ID, Lender_Name, Description, Contact_Number,
     Email, MinSalary_Required, MinLoan_Amt, MaxLoan_Amt
-    FROM lender 
-    WHERE Verified_at IS NULL";
+    FROM lender";
 
     $result = mysqli_query($con, $s);
 ?>
@@ -16,7 +15,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transaction History</title>
+    <title>Lender Applicants</title>
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/adminActivityLog.css">
     <link rel="stylesheet" href="../css/transHistory.css">
