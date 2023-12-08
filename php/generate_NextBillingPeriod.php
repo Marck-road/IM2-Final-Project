@@ -11,11 +11,17 @@
 
     $payment_id = $_POST["Payment_ID"];
     $bp_id = $_POST["BillingPeriod_id"];
-    $loan_id = $_POST["Loan_ID"];
     $status = $_POST['status']; 
     $loanDetails = json_decode($_POST['loanDetails'], true);
     $userDetails = json_decode($_POST['userDetails'], true);
     $excess = false;
+
+    $loansql = "SELECT Loan_ID FROM loanbilling_period
+    WHERE LBPeriod_ID = $bp_id";
+
+    $result = mysqli_query($con, $loansql);
+    $loandetails = mysqli_fetch_array($result);
+    $loan_id = $loandetails["Loan_ID"];
 
     // Update payment status to approved or denied
     $sql = "UPDATE payment
@@ -34,25 +40,35 @@
     $bpresult = mysqli_query($con, $bpsql);
     $bp_details = mysqli_fetch_array($bpresult);
    
-    if($status == "Approved"){
+    if($status == "Success"){
         //if wa kaabot sa payment needed sa lbperiod, then dont do anything
-        if($payment_details['Amount_Paid'] > $bp_details['Amount']){
-            $excess = true;
-        }
-            // if approve, need to check if naa pay balance nabilin
-            if(checkBalance($con, $loan_id, $loanDetails)){
-                // if ever naa, calculate next pay date and generate new bill period.
-                create_billPeriod($con, $loan_id, $loanDetails, $payment_details, $excess, $bp_details);
-
-            }else{
-                // if ever wa nay balance, end it and change status of loan to closed
-                $closesql = "UPDATE loan
-                        SET Status = 'Closed'
-                        WHERE Loan_ID = $loan_id";
-                mysqli_query($con, $closesql);
+        if($payment_details['Amount_Paid'] >= $bp_details['Amount']){
+            //updates LBPeriod Status to closed if reached atleast amounts
+            $sql = "UPDATE loanbilling_period
+                SET Status = 'Closed'
+                WHERE LBPeriod_ID = $bp_id";
+                mysqli_query($con, $sql);
+            // then checks for any excess
+            if($payment_details['Amount_Paid'] > $bp_details['Amount']){
+                $excess = true;
             }
+        }
+        
+        // if approve, need to check if naa pay balance nabilin
+        if(checkBalance($con, $loan_id, $loanDetails)){
+            // if ever naa, calculate next pay date and generate new bill period.
+            create_billPeriod($con, $loan_id, $loanDetails, $payment_details, $excess, $bp_details);
+            
+            // header('location:lender_Dashboard.php?update=success');
+        }else{
+            // if ever wa nay balance, end it and change status of loan to closed
+            $closesql = "UPDATE loan
+                    SET Status = 'Closed'
+                    WHERE Loan_ID = $loan_id";
+            mysqli_query($con, $closesql);
+        }
     }else{
-        // header('location:lender_Dashboard.php?update=success');
+        header('location:lender_Dashboard.php?update=success');
     }
 
 function checkBalance($con, $loan_id, $loanDetails){
@@ -62,7 +78,8 @@ function checkBalance($con, $loan_id, $loanDetails){
     $sql = "SELECT SUM(Amount_Paid) AS totalPaid
             FROM payment
             INNER JOIN loanbilling_period ON payment.LBPeriod_ID = loanbilling_period.LBPeriod_ID
-            WHERE loanbilling_period.Loan_ID = $loan_id";
+            WHERE loanbilling_period.Loan_ID = $loan_id
+            AND payment.Status = 'Success'";
 
     $result = mysqli_query($con, $sql);
 
@@ -82,43 +99,46 @@ function checkBalance($con, $loan_id, $loanDetails){
     }
 }
     function create_billPeriod($con, $loan_id, $loanDetails, $payment_details, $excess, $bp_details){
-        $startTimestamp = $bp_details['Date_end'];
-        $endDateTimestamp = time();
+        $startDate = new DateTime($bp_details['Date_end']);
+        $endDate = new DateTime($bp_details['Date_end']);
+
         $loanBP_Amt = $loanDetails['monthly_payable'];
 
-        switch ($loanDetails['payment_schedule']) {
+        switch ($loanDetails['paysched_id']) {
             case 1:
                 $loanBP_Amt = $loanDetails['monthly_payable'] / 4;
-                $endDateTimestamp = strtotime('+1 week', $startTimestamp);
+                $endDate->modify('+1 week');
                 break;
             case 2:
                 $loanBP_Amt = $loanDetails['monthly_payable'] / 2;
-                $endDateTimestamp = strtotime('+15 days', $startTimestamp);
+                $endDate->modify('+15 days');
                 break;
             case 3:
                 $loanBP_Amt = $loanDetails['monthly_payable'];
-                $endDateTimestamp = strtotime('+1 month', $startTimestamp);
+                $endDate->modify('+1 month');
                 break;
             case 4:
                 $loanBP_Amt = $loanDetails['monthly_payable'] * 4;
-                $endDateTimestamp = strtotime('+4 months', $startTimestamp);
+                $endDate->modify('+4 months');
                 break;
         }
 
-        // removes commas since it causes errors
+      
+        
+      
         $loanBP_Amt = str_replace(',', '', $loanBP_Amt);
-
-        $startDateTimestamp = strtotime($startTimestamp);
-        $startDate = date('M d, Y', $startDateTimestamp);
-        $endDate = date('M d, Y', $endDateTimestamp);
-
+             
+        $startDateTimestamp = $startDate->format('Y-m-d H:i:s');
+        $endDateTimestamp = $endDate->format('Y-m-d H:i:s');
+        
         //subtract amt of next billing period if there is excess
         if($excess){
-            $loanBP_Amt = $loanBP_Amt - ($loanBP_Amt - $payment_details['Amount_Paid']); 
+            $loanBP_Amt = $loanBP_Amt - ($payment_details['Amount_Paid']- $loanBP_Amt); 
         }
-
+        
+        
         $regBP= "INSERT INTO loanbilling_period (Loan_ID, Amount, Date_start, Date_end) 
-        VALUES('$loan_id', '$loanBP_Amt', '$startDate', '$endDate')";
+        VALUES('$loan_id', '$loanBP_Amt', '$startDateTimestamp', '$endDateTimestamp')";
         mysqli_query($con, $regBP);
     }
 ?>

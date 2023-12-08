@@ -11,7 +11,12 @@
         $status = 400; 
 
     $loanDetails = json_decode($_POST['loanDetails'], true);
+    $userDetails = json_decode($_POST['userDetails'], true);
     $loanAppDetails = json_decode($_POST['rowDetails'], true);
+
+    $jsonloanDetails = json_encode($loanDetails);
+    $jsonUserDetails = json_encode($userDetails);
+    
     $loanBalance = checkBalance($con, $loanAppDetails["Loan_ID"], $loanDetails);
     $loanDates = getTimestamps($con, $loanAppDetails["Loan_ID"], $loanDetails);
     $currentBP = getCurrentBillingPeriod($con, $loanAppDetails["Loan_ID"]);
@@ -22,7 +27,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Loans</title>
+    <title>Transaction History</title>
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/loanDetails.css">
     
@@ -33,17 +38,17 @@
     <script src="../js/modal.js"></script>
 </head>
 <body>
-    <nav>
+<nav>
         <div class="navbar">
             <div class="logo">
                 <a href="#"><img src="../images/ldaddy.png" class="logo"></a>
             </div>
             <ul class="menu">
-                <li><a href="borrower_Dashboard.php">Home</a></li>
-                <li><a href="viewLoans.php">View Loans</a></li>
+                <li><a href="lender_Dashboard.php">Home</a></li>
+                <li><a href="lender_ViewOffers.php">New Offers</a></li>
                 <li><a href="#footer">Contact Us</a></li>
-                <li><a href="AboutUsPage(Borrowers).php">About Us</a></li>
-                <li><a href="FAQsPage(Borrowers).php">FAQs</a></li>
+                <li><a href="AboutUsPage(Lenders).php">About Us</a></li>
+                <li><a href="FAQsPage(Lenders).php">FAQs</a></li>
                 <li class="user-profile">
                     <a class="dropdown"><i class="fa-solid fa-user"></i></a>
                         <div class="dropdown-content" id="dropdown-content">
@@ -67,14 +72,14 @@
             <div class="column">
                 <div class="row">
                     <img src="../images/slideshow2.png" alt="Company Logo" class="company_logo">
-                    <h2 class="lender_name" id="lender_name"><?php echo $loanDetails['lender_name']; ?></h2>
+                    <h2 class="borrower_name" id="borrower_name"><?php echo $userDetails['userLname']; ?>, <?php echo $userDetails['userFname']; ?> <?php echo $userDetails['userMname']; ?></h2>
                 </div>
                 <div class="row" id="details">
                     <div class="column">
-                        <p>Email Address:<br><?php echo $loanDetails['lender_email']; ?></p>
+                        <p>Email Address:<br><?php echo $userDetails['userEmail']; ?></p>
                     </div>
                     <div class="column">
-                        <p>Contact Number:<br><?php echo $loanDetails['lender_contact']; ?></p>
+                        <p>Contact Number:<br><?php echo $userDetails['userContact']; ?></p>
 
                     </div>
                     <div class="column">
@@ -179,9 +184,10 @@
 
             <div class="column">
                 <div class="column">
-                    <form action="borrower_TransHistory.php" method="post" id="historyForm">
+                    <form action="lender_TransHistory.php" method="post" id="historyForm">
                             <div class="row">
-                                <input type="hidden" name="Loan_id" value="<?php echo $loanAppDetails["Loan_ID"]?>">
+                                <input type="hidden" name="loanDetails" value="<?php echo htmlspecialchars($jsonloanDetails); ?>">
+                                <input type="hidden" name="userDetails" value="<?php echo htmlspecialchars($jsonUserDetails); ?>">
                                 <input type="hidden" name="LBPeriod_id" value="<?php echo $currentBP['currentBP_ID']?>">
                                 <button type="button" onclick="submitForm()">View Transactions History</button>
                             </div>
@@ -196,7 +202,7 @@
                 </div>
                 <div class="column">
                     <div class="row">
-                        <button onclick="openModal('sendPaymentModal', 'sendPaymentOverlay')">Send Payment</button>
+                        <button onclick="openModal('sendPaymentModal', 'sendPaymentOverlay')">Create Restructured Account</button>
                     </div>
                 </div>
             </div>

@@ -170,7 +170,7 @@
 
                 $lender_ir = "SELECT Interest_Rate FROM lender_interest_rates
                 WHERE Lender_ID = '" . $row["Lender_ID"] . "' AND Tenure_ID = '" . $row["Tenure_ID"] . "'";
-                $paysched = "SELECT Frequency FROM payment_sched
+                $paysched = "SELECT * FROM payment_sched
                 WHERE Schedule_ID = '" . $row["Schedule_ID"] . "'";
                 $selectTenure = "SELECT * FROM tenure 
                 WHERE Tenure_ID = '" . $row["Tenure_ID"] . "'";
@@ -182,8 +182,11 @@
                 
                 $userDetails = getUserDetails($con, $row["User_ID"]);
                 $loanDetails = calculateLoanDetails($con, $row["Loan_Amt"], $lender_ir, $selectTenure, $paysched);
-                $loanBalance = checkBalance($con, $row["Loan_ID"], $loanDetails)
-            
+                $loanBalance = checkBalance($con, $row["Loan_ID"], $loanDetails);
+                
+                $jsonloanDetails = json_encode($loanDetails);
+                $jsonUserDetails = json_encode($userDetails);
+                $jsonrowDetails = json_encode($row);
             
         ?>
         <div class="loan_container">
@@ -228,10 +231,17 @@
                 </div>
             </div>
 
+           
 
             <div class="centered_column">
                 <div class="row">
-                    <button onclick="openModal('<?php echo $modalId; ?>', '<?php echo $overlayId; ?>')">More Info</button>
+                    <form action="lender_loanDetails.php" method="post">
+                            <input type="hidden" name="rowDetails" value="<?php echo htmlspecialchars($jsonrowDetails); ?>">
+                            <input type="hidden" name="loanDetails" value="<?php echo htmlspecialchars($jsonloanDetails); ?>">
+                            <input type="hidden" name="userDetails" value="<?php echo htmlspecialchars($jsonUserDetails); ?>">
+                                
+                            <button type="submit">More Info</button>
+                    </form>
                 </div>
             </div>
 
@@ -289,7 +299,8 @@
         $sql = "SELECT SUM(Amount_Paid) AS totalPaid
                 FROM payment
                 INNER JOIN loanbilling_period ON payment.LBPeriod_ID = loanbilling_period.LBPeriod_ID
-                WHERE loanbilling_period.Loan_ID = $loan_id";
+                WHERE loanbilling_period.Loan_ID = $loan_id
+                AND payment.Status = 'Success'";
     
         $result = mysqli_query($con, $sql);
     
@@ -365,7 +376,8 @@
             'monthly_payable' => $monthly_payable,
             'total_payable' => $total_payable,
             'loan_tenure' => $tenure_result["Duration"],
-            'payment_schedule' => $sched_result["Frequency"]
+            'payment_schedule' => $sched_result["Frequency"],
+            'paysched_id' => $sched_result["Schedule_ID"]
         ];
     }
 

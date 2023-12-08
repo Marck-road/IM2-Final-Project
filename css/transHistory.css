@@ -17,8 +17,9 @@ body {
 
 table {
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 10px;
     max-width: 100%;
+    font-size: 18px;
 }
 table, th, td {
     border: 1px solid #146C94;
@@ -33,10 +34,33 @@ th{
     color: #F6F1F1;
 }
 
-td{
-    background-color: #AFD3E2;
-}
-
 .page_header{
     margin-top: 200px;
+}
+
+
+#failButton, #successButton, #approved{
+    text-align: center;
+    font-size: 32px;
+    padding: 5px;
+    color: #146C94;
+    transition: 0.5s ease-in;
+} 
+
+
+#failButton:hover{
+    color: rgb(162, 40, 40);
+    cursor: pointer;
+}
+
+#successButton:hover{
+    color: rgb(39, 160, 39);
+    cursor: pointer;
+}
+
+#updatePayBtn{
+    background-color: transparent;
+        border: none;
+        padding: 0; /* Remove padding to reduce space around the icon */
+        cursor: pointer;
 }

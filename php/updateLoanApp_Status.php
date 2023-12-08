@@ -49,7 +49,7 @@
         // initialize first loan billing period only
         $currentTimestamp = time();
         $currentTimestamp = date('Y-m-d H:i:s', $currentTimestamp);
-        $endDateTimestamp = time();
+        $endDate = new DateTime($currentTimestamp);
         $loanBP_Amt = $loanDetails['monthly_payable'];
 
         $sql = "SELECT Loan_ID FROM loan
@@ -59,27 +59,25 @@
 
         if($loanDetails['payment_schedule'] == 1){
             $loanBP_Amt =  $loanDetails['monthly_payable'] / 4;
-            $endDateTimestamp = strtotime('+1 week', $currentTimestamp);
+            $endDate->modify('+1 week');
         } else if ($loanDetails['payment_schedule'] == 2){
             $loanBP_Amt =  $loanDetails['monthly_payable'] / 2;
-            $endDateTimestamp = strtotime('+15 days', $currentTimestamp);
+            $endDate->modify('+15 days');
         } else if ($loanDetails['payment_schedule'] == 3){
             $loanBP_Amt =  $loanDetails['monthly_payable'];
-            $endDateTimestamp = strtotime('+1 month', $currentTimestamp);
+            $endDate->modify('+1 month');
         } else if ($loanDetails['payment_schedule'] == 4){
             $loanBP_Amt = $loanDetails['monthly_payable'] * 4;
-            $endDateTimestamp = strtotime('+4 months', $currentTimestamp);
+            $endDate->modify('+4 months');
         }
 
         // removes commas since it causes errors
         $loanBP_Amt = str_replace(',', '', $loanBP_Amt);
-        $endDate = date('Y-m-d H:i:s', $endDateTimestamp);
+        $endDateTimestamp = $endDate->format('Y-m-d H:i:s');
         
-        echo $currentTimestamp;
-        echo $endDate;
 
         $regBP= "INSERT INTO loanbilling_period (Loan_ID, Amount, Date_start, Date_end) 
-        VALUES('$loan_id[Loan_ID]', '$loanBP_Amt', '$currentTimestamp', '$endDate')";
+        VALUES('$loan_id[Loan_ID]', '$loanBP_Amt', '$currentTimestamp', '$endDateTimestamp')";
         mysqli_query($con, $regBP);
     }
 ?>
