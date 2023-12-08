@@ -340,11 +340,10 @@
     </div>
 
     <?php
-        include '../html/footer.html';
+        include '../html/footer(Borrowers).html';
     ?>
 
     <script src="https://kit.fontawesome.com/e140ca9b66.js" crossorigin="anonymous"></script>       
-    
     <script src="../js/slideshow.js"></script>
 </body>
 </html>
