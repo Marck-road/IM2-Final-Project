@@ -1,3 +1,8 @@
+h1{
+    color: white;
+    padding-right: 260px;
+}
+
 .dashboard {
     display: flex;
     flex-direction: column; 
