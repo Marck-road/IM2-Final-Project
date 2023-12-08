@@ -41,9 +41,9 @@
             <ul class="menu">
                 <li><a href="borrower_Dashboard.php">Home</a></li>
                 <li><a href="viewLoans.php">View Loans</a></li>
-                <li><a href="About Us/About Us.html">Contact Us</a></li>
-                <li><a href="#footer">About Us</a></li>
-                <li><a href="#footer">FAQs</a></li>
+                <li><a href="#footer">Contact Us</a></li>
+                <li><a href="AboutUsPage(Borrowers).php">About Us</a></li>
+                <li><a href="FAQsPage(Borrowers).php">FAQs</a></li>
                 <li class="user-profile">
                     <a class="dropdown"><i class="fa-solid fa-user"></i></a>
                         <div class="dropdown-content" id="dropdown-content">
@@ -179,11 +179,19 @@
 
             <div class="column">
                 <div class="column">
-                    <a href="Loginpage.php">
-                        <div class="row">
-                            <button>View Transactions History</button>
-                        </div>
-                    </a>
+                    <form action="borrower_TransHistory.php" method="post" id="historyForm">
+                            <div class="row">
+                                <input type="hidden" name="LBPeriod_id" value="<?php echo $currentBP['currentBP_ID']?>">
+                                <button type="button" onclick="submitForm()">View Transactions History</button>
+                            </div>
+                    </form>
+
+                    <script>
+                        function submitForm() {
+                            document.getElementById('historyForm').submit();
+                        }
+                    </script>
+                    
                 </div>
                 <div class="column">
                     <div class="row">
@@ -195,6 +203,7 @@
             <div id="sendPaymentOverlay" class="overlay" onclick="closeModal('sendPaymentModal', 'sendPaymentOverlay')"></div>
             <div id="sendPaymentModal" class="modal">
                     <h2>
+                    <input type="hidden" name="LBPeriod_id" value="<?php echo $currentBP['currentBP_ID']?>">
                         <div class="row">
                             Submit Payment
                         </div>
@@ -225,9 +234,15 @@
 
         </div>
 
+       
+
         
     
     </div>
+
+    <?php
+            include '../html/footer(Borrowers).html';
+        ?>
 
     <?php
         function checkBalance($con, $loan_id, $loanDetails){
@@ -344,12 +359,12 @@
         var totalPaidPercentage = <?php echo ($loanBalance['totalPaid'] / $loanDetails['total_payable']) * 100; ?>;
         var progressElement = document.querySelector('.progress');
 
-        // Set the width of the progress bar based on the percentage
         progressElement.style.width = totalPaidPercentage + '%';
     </script>
 
+        
+
     <script src="https://kit.fontawesome.com/e140ca9b66.js" crossorigin="anonymous"></script>  
-    <script src="../js/viewLoans.js"></script>
 
     </body>
 </html>

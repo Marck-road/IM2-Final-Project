@@ -61,10 +61,10 @@
     <nav>
         <div class="navbar">
             <div class="logo">
-                <a href="#"><img src="../images/ldaddy.png" class="logo"></a>
+                <a href="borrower_Dashboard.php"><img src="../images/ldaddy.png" class="logo"></a>
             </div>
             <ul class="menu">
-                <li><a href="#">Home</a></li>
+                <li><a href="borrower_Dashboard.php">Home</a></li>
                 <li><a href="viewLoans.php">View Loans</a></li>
                 <li><a href="#footer">Contact Us</a></li>
                 <li><a href="AboutUsPage(Borrowers).php">About Us</a></li>
@@ -180,7 +180,7 @@
                         $jsonrowDetails = json_encode($row);
                         ?>
                         
-                        <form action="userloanDetails_page.php" method="post">
+                        <form action="borrower_loanDetails.php" method="post">
                             <input type="hidden" name="rowDetails" value="<?php echo htmlspecialchars($jsonrowDetails); ?>">
                             <input type="hidden" name="loanDetails" value="<?php echo htmlspecialchars($jsonloanDetails); ?>">
                             
