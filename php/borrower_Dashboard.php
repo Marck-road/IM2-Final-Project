@@ -25,7 +25,7 @@
         AND $amt_borrowed >= MinLoan_Amt
         AND $amt_borrowed <= MaxLoan_Amt
         AND lender_interest_rates.Interest_Rate <= $interest_rate
-        -- AND lender.Verified_at != NULL
+        AND lender.Verified_at IS NOT NULL
         ";
 
     $result = mysqli_query($con, $s);

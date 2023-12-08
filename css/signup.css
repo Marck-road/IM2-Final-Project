@@ -123,6 +123,17 @@ input.invalid {
 
 }
 
+#failMsg{
+    color: red;
+    font-size: 14px;
+    text-align: center;
+}
+
+#updateSuccessMsg,
+#denySuccessMsg,#failMsg {
+    animation: fadeOut 5s forwards;
+}
+
 .step {
     height: 15px;
     width: 15px;

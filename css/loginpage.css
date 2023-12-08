@@ -94,3 +94,17 @@ p{
     font-size: 12px;
     font-weight: bolder;
 }
+
+#updateSuccessMsg,
+#denySuccessMsg {
+    animation: fadeOut 5s forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

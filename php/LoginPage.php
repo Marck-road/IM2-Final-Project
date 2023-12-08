@@ -40,8 +40,8 @@
                     <?php
                         $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
-                        if(strpos($fullUrl, "success=register") == true) {
-                            echo "Successfully registered account";
+                        if(strpos($fullUrl, "update=success") == true) {
+                            echo '<p id="updateSuccessMsg">Successfully registered account</p>';
                         }
                     ?>
                 </div>

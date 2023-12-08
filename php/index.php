@@ -25,7 +25,8 @@
         AND lender_payment_scheds.Schedule_ID = $pay_schedule
         AND $amt_borrowed >= MinLoan_Amt
         AND $amt_borrowed <= MaxLoan_Amt
-        AND lender_interest_rates.Interest_Rate <= $interest_rate 
+        AND lender_interest_rates.Interest_Rate <= $interest_rate
+        AND lender.Verified_at IS NOT NULL
         ";
 
     $result = mysqli_query($con, $s);

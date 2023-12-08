@@ -121,6 +121,20 @@ p{
     line-height: 18px;
 }
 
+#updateSuccessMsg,
+#denySuccessMsg {
+    animation: fadeOut 5s forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
 hr{
     color: #15133C;
     border-color: #15133C;

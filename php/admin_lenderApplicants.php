@@ -19,6 +19,7 @@
     <title>Transaction History</title>
     <link rel="stylesheet" href="../css/navbar.css">\
     <link rel="stylesheet" href="../css/transHistory.css">
+    <link rel="stylesheet" href="../css/adminTable.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -30,7 +31,7 @@
         <nav>
             <div class="navbar">
                 <div class="logo">
-                    <a href="../php/index.php"><img src="../images/ldaddy.png" class="logo"></a>
+                    <a href="admindashboard.php"><img src="../images/ldaddy.png" class="logo"></a>
                 </div>
                 <div class="navbar-center">
                     <h1>ADMIN DASHBOARD</h1>
@@ -43,6 +44,23 @@
 
     <div class="main-container">
         <h1 class="page_header">Lender Applicants</h1>
+
+        <div class="success">
+            <?php
+                $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+                if(strpos($fullUrl, "update=success") == true) {
+                    echo '<p id="updateSuccessMsg">Successfully Verified Lender</p>';
+                }
+
+                if(strpos($fullUrl, "deny=success") == true) {
+                    echo '<p id="denySuccessMsg">Successfully Denied Lender</p>';
+                }
+            ?>
+        </div>
+
+
+
 
         <?php
        
@@ -59,6 +77,8 @@
                 <th>MinSalary_Required</th>
                 <th>MinLoan_Amt</th>
                 <th>MaxLoan_Amt</th>
+                <th>Action</th>
+                
             </tr>
 
             <?php
@@ -69,34 +89,26 @@
                 <td><?php echo $row['Lender_ID'];?></td>
                 <td><?php echo $row['Lender_Name'];?></td>
                 <td><?php echo $row['Description'];?></td>
-                <td><?php echo $row['Contact Number'];?></td>
+                <td><?php echo $row['Contact_Number'];?></td>
                 <td><?php echo $row['Email'];?></td>
                 <td><?php echo $row['MinSalary_Required'];?></td>
                 <td><?php echo $row['MinLoan_Amt'];?></td>
-                <td><?php echo $row['MaxLoan_Amt Number'];?></td>
+                <td><?php echo $row['MaxLoan_Amt'];?></td>
+                
+                
 
                 <td class="approveButtons">
-                <?php if ($row['Status'] == 'Pending'): ?>
-                    <form action="lender_vertification.php" method="post">
-                                <input type="hidden" name="Payment_ID" value="<?php echo $row['Payment_ID']?>">
-                                <input type="hidden" name="BillingPeriod_id" value="<?php echo $LBPeriod_id?>">
-                                <input type="hidden" name="status" value="<?php echo $row['Status']?>">
-                                <input type="hidden" name="loanDetails" value="<?php echo htmlspecialchars($jsonloanDetails); ?>">
-                                <input type="hidden" name="userDetails" value="<?php echo htmlspecialchars($jsonUserDetails); ?>">
+                    <form action="lender_verification.php" method="post">
+                    <input type="hidden" name="Lender_ID" value="<?php echo $row['Lender_ID']?>">
 
-                        <button type="submit" name="status" value="Failed" onclick="return confirm('Confirm you have not received the money?')" id="updatePayBtn">
+                        <button type="submit" name="status" value="0" onclick="return confirm('Confirm Denial of Lender?')" id="updatePayBtn">
                             <i id="failButton" class="fa-solid fa-circle-xmark"></i>
                         </button> 
-                        <button type="submit" name="status" value="Success" onclick="return confirm('Confirm you have received the money?')" id="updatePayBtn">
+                        <button type="submit" name="status" value="1" onclick="return confirm('Confirm Approval of Lender?')" id="updatePayBtn">
                             <i id="successButton" class="fa-solid fa-circle-check"></i>
                         </button>
                     </form>
-                <?php elseif ($row['Status'] == 'Success'): ?>
-                    <i class="fa-solid fa-check" id="approved"></i></i>
-                <?php elseif ($row['Status'] == 'Failed'): ?>
-                    <i class="fa-solid fa-xmark" id="denied"></i>
-                <?php endif; ?>
-            </td>
+                </td>
 
             </tr>
 
@@ -107,17 +119,23 @@
 
         <?php
             } else {
-                echo '<p>No Applicants found.</p>';
+        ?>
+                <div class="noResults">
+                    <i class="fa-solid fa-kiwi-bird" id="kiwi"></i></i>
+                    <p class="noText"></p>-No Lender Found-</p>
+                </div>
+
+        <?php
+
+                
             }
         ?>
     </div>
 
-    <?php
-        include '../html/footer.html';
-    ?>
+   
 
     <script src="https://kit.fontawesome.com/e140ca9b66.js" crossorigin="anonymous"></script>       
-    
+
 </body>
 </html>
 
