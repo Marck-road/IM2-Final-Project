@@ -4,14 +4,18 @@
     $con = mysqli_connect('localhost', 'root', 'Furina de Fontaine');  //Change according to your settings
     mysqli_select_db($con, 'loanapp');
 
+    $flag = 0;
+
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
         if($_POST["loansFilter"] == 1){
+            $flag = 1;
             $s = "SELECT loan_application.*, loan.Loan_ID 
             FROM loan_application
             LEFT JOIN loan ON loan.LoanApp_ID = loan_application.LoanApp_ID
             WHERE User_ID = '{$_SESSION['id']}'
             ORDER BY Created_at DESC";
         } else if ($_POST["loansFilter"] == 2){
+            $flag = 2;
             $s = "SELECT loan_application.*, loan.Loan_ID, loan.Status AS loanStatus
             FROM loan_application
             INNER JOIN loan
@@ -20,19 +24,32 @@
               AND loan_application.Status = 'Approved'
               ORDER BY Created_at DESC";
         } else if ($_POST["loansFilter"] == 3){
+            $flag = 3;
             $s = "SELECT * 
             FROM loan_application
             WHERE User_ID = '{$_SESSION['id']}'
             AND Status = 'Denied'
             ORDER BY Created_at DESC";
         } else if ($_POST["loansFilter"] == 4){
+            $flag = 4;
             $s = "SELECT * 
             FROM loan_application
             WHERE User_ID = '{$_SESSION['id']}'
             AND Status = 'Pending'
             ORDER BY Created_at DESC";
+        } else if ($_POST["loansFilter"] == 5){
+            $flag = 5;
+            $s = "SELECT loan_application.*, loan.Loan_ID, loan.LoanReference_ID, loan.Status AS loanStatus
+            FROM loan_application
+            INNER JOIN loan
+            ON loan.LoanApp_ID = loan_application.LoanApp_ID
+            WHERE loan_application.User_ID = 3
+              AND loan_application.Status = 'Approved'
+              AND loan.LoanReference_ID != 'NULL'
+              ORDER BY Created_at DESC";
         }
     } else{
+        $flag = 2;
         $s = "SELECT loan_application.*, loan.Loan_ID, loan.Status AS loanStatus
             FROM loan_application
             INNER JOIN loan
@@ -40,6 +57,8 @@
             WHERE loan_application.User_ID = '{$_SESSION['id']}'
               AND loan_application.Status = 'Approved'
               ORDER BY Created_at DESC";
+
+        
     }
     
     
@@ -99,6 +118,7 @@
                     <option value="2" <?php echo (!isset($_POST['loansFilter']) || (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '2')) ? 'selected' : ''; ?>>Approved</option>
                     <option value="3" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '3') ? 'selected' : ''; ?>>Denied</option>
                     <option value="4" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '4') ? 'selected' : ''; ?>>Pending</option>
+                    <option value="5" <?php echo (isset($_POST['loansFilter']) && $_POST['loansFilter'] == '5') ? 'selected' : ''; ?>>Restructured</option>
                 </select>
             </form>
         </div>
@@ -182,10 +202,21 @@
                     <h3>Status</h3>
                 </div>
 
-                
+            <?php if($flag == 2 && $flag != 1) { ?>
+                <div class="row_value">
+                    <p><?php echo $row['loanStatus'];?></p>
+                </div>
+            <?php 
+            } else{
+            ?>
                 <div class="row_value">
                     <p><?php echo $row['Status'];?></p>
                 </div>
+                <?php 
+            }
+            ?>
+                
+                
             </div>
 
             <div class="centered_column">
@@ -198,7 +229,13 @@
                         <form action="borrower_loanDetails.php" method="post">
                             <input type="hidden" name="rowDetails" value="<?php echo htmlspecialchars($jsonrowDetails); ?>">
                             <input type="hidden" name="loanDetails" value="<?php echo htmlspecialchars($jsonloanDetails); ?>">
-                            <input type="hidden" name="loanStatus" value="<?php echo $row['loanStatus']?>">
+                            <?php if($flag != 1) { ?>
+                                <input type="hidden" name="loanStatus" value="<?php echo $row['loanStatus']?>">
+                                
+                            <?php 
+                            }    
+                            ?>
+                            
 
                             <button type="submit">More Info</button>
                         </form>
