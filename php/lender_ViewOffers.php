@@ -8,28 +8,33 @@
         if($_POST["loansFilter"] == 1){
             $s = "SELECT * 
             FROM loan_application
-            WHERE Lender_ID = '{$_SESSION['id']}'";
+            WHERE Lender_ID = '{$_SESSION['id']}'
+            ORDER BY Created_at DESC";
         } else if ($_POST["loansFilter"] == 2){
             $s = "SELECT * 
             FROM loan_application
             WHERE Lender_ID = '{$_SESSION['id']}'
-            AND Status = 'Approved'";
+            AND Status = 'Approved'
+            ORDER BY Created_at DESC";
         } else if ($_POST["loansFilter"] == 3){
             $s = "SELECT * 
             FROM loan_application
             WHERE Lender_ID = '{$_SESSION['id']}'
-            AND Status = 'Denied'";
+            AND Status = 'Denied'
+            ORDER BY Created_at DESC";
         } else if ($_POST["loansFilter"] == 4){
             $s = "SELECT * 
             FROM loan_application
             WHERE Lender_ID = '{$_SESSION['id']}'
-            AND Status = 'Pending'";
+            AND Status = 'Pending'
+            ORDER BY Created_at DESC";
         }
     } else{
         $s = "SELECT * 
             FROM loan_application
             WHERE Lender_ID = '{$_SESSION['id']}'
-            AND Status = 'Pending'";
+            AND Status = 'Pending'
+            ORDER BY Created_at DESC";
     }
     
     

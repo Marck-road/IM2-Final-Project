@@ -66,6 +66,21 @@
                     SET Status = 'Closed'
                     WHERE Loan_ID = $loan_id";
             mysqli_query($con, $closesql);
+
+            //Checks if it is a restructured account
+            $restructuredSql = "SELECT * FROM loan WHERE Loan_ID = $loan_id";
+            mysqli_query($con, $closesql);
+            $restructuredRows = mysqli_fetch_array($restructuredRows);
+            $restructuredID = $restructuredRows['LoanReference_ID'];
+
+            if($restructuredRows['LoanReference_ID'] != NULL){
+                $closesql = "UPDATE loan
+                    SET Status = 'Closed'
+                    WHERE Loan_ID = $restructuredID";
+                mysqli_query($con, $closesql);
+            }
+
+            header('location:lender_Dashboard.php?update=success');
         }
     }else{
         header('location:lender_Dashboard.php?update=success');

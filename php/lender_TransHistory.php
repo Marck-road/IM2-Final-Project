@@ -127,7 +127,7 @@
                 <?php elseif ($row['Status'] == 'Success'): ?>
                     <i class="fa-solid fa-check" id="approved"></i></i>
                 <?php elseif ($row['Status'] == 'Failed'): ?>
-                    <i class="fa-solid fa-xmark"></i>
+                    <i class="fa-solid fa-xmark" id="denied"></i>
                 <?php endif; ?>
             </td>
 

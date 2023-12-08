@@ -10,11 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
 </head>
 <body>
-    <label class="hamburger_menu">
-        <input type="checkbox">
-    </label>
-
-
     <nav>
         <div class="navbar">
             <div class="logo">
@@ -35,9 +30,9 @@
             <form action="../php/loginAction.php" method="post">
                 <h3>Login</h3>
                 <label for="email">Username/Email</label>
-                <input type="text" id="email" placeholder="Enter email address" name="email"required>
+                <input type="text" id="email" placeholder="Enter email address" name="email" required>
                 <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter Password"  name="password">
+                <input type="password" id="password" placeholder="Enter Password"  name="password" required>
                 <div class="botton-container">
                     <button type="submit">Login</button>
                 </div>

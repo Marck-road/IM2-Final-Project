@@ -22,7 +22,7 @@
     $loanBalance = checkBalance($con, $loanAppDetails["Loan_ID"], $loanDetails);
     $loanDates = getTimestamps($con, $loanAppDetails["Loan_ID"], $loanDetails);
 
-    if($loanStatus != 'Closed'){
+    if($loanStatus != 'Closed' && $loanStatus != 'OnHold'){
 
         $currentBP = getCurrentBillingPeriod($con, $loanAppDetails["Loan_ID"]);
     }
@@ -164,7 +164,7 @@
         </div>
 
         <?php
-            if($loanStatus == 'Closed'){   ?>
+            if($loanStatus == 'Closed' || $loanStatus == 'OnHold'){   ?>
             <div class="centered_column">
             <form action="borrower_TransHistory.php" method="post" id="historyForm">
                             <div class="row">
@@ -228,36 +228,52 @@
                 </div>
                 <div class="column">
                     <div class="row">
-                        <button onclick="openModal('sendPaymentModal', 'sendPaymentOverlay')">Create Restructured Account</button>
+                        <button onclick="openModal('RestructureModal', 'RestructureOverlay')">Create Restructured Account</button>
                     </div>
                 </div>
             </div>
 
-            <div id="sendPaymentOverlay" class="overlay" onclick="closeModal('sendPaymentModal', 'sendPaymentOverlay')"></div>
-            <div id="sendPaymentModal" class="modal">
+            <div id="RestructureOverlay" class="overlay" onclick="closeModal('RestructureModal', 'RestructureOverlay')"></div>
+            <div id="RestructureModal" class="modal">
                     <h2>
                     <input type="hidden" name="LBPeriod_id" value="<?php echo $currentBP['currentBP_ID']?>">
                         <div class="row">
-                            Submit Payment
+                            Create Restructured Account
                         </div>
                         
                     </h2>
 
                     
-                    <form id="submitPayment" method="post" action="generate_Payment.php">
+                    <form id="submitPayment" method="post" action="Restructure.php">
 
-                            <label for="Amount_Paid">Amount Paid</label>
-                            <input type="text" name="Amount_Paid" id="Amount_Paid" placeholder="Enter Amount Paid"><br>
-                            <label for="PaymentChannel">Payment Channel</label>
-                            <input type="text" name="PaymentChannel" id="PaymentChannel" placeholder="Enter Payment Channel"><br>
-                            <label for="Screenshot">Screenshot</label>
-                            <input type="file" name="Screenshot" id="Screenshot" accept="image/*"><br>
+                            <label for="LoanAmt">Loan_Amt</label>
+                            <input type="number" name="LoanAmt" id="LoanAmt" value="<?php echo $loanDetails['total_payable']-$loanBalance['totalPaid']?>" readonly><br>
+                            <label for="Interest">Interest</label>
+                            <input type="number" name="Interest" id="Interest" value="0"><br>
+                            <label for="Tenure">Tenure:</label>
+                            <select name="Tenure" id="tenure">
+                                <option value="1">1 Month</option>
+                                <option value="2">3 Months</option>
+                                <option value="3">6 Months</option>
+                                <option value="4">1 Year</option>
+                                <option value="5">2 Years</option>
+                            </select>
+                            <label for="pay_sched">Schedule:</label>
+                            <select name="pay_sched" id="pay_sched">
+                                <option value="1">Weekly</option>
+                                <option value="2">Semi-Monthly</option>
+                                <option value="3">Monthly</option>
+                                <option value="4">Quarterly</option>
+                            </select>
+                            
                            
                             <!-- hidded values to be submitted -->
-                            <input type="hidden" name="LBPeriod_id" value="<?php echo $currentBP['currentBP_ID']?>">
-      
+                            <input type="hidden" name="Loan_id" value="<?php echo $loanAppDetails["Loan_ID"]?>">
+                            <input type="hidden" name="User_id" value="<?php echo $userDetails['userID']?>">
+                            <input type="hidden" name="Lender_id" value="<?php echo $_SESSION['id']?>">
+                            
                             <div class="button-container">
-                                <button type="button" onclick="closeModal('sendPaymentModal', 'sendPaymentOverlay')">Cancel</button>
+                                <button type="button" onclick="closeModal('RestructureModal', 'RestructureOverlay')">Cancel</button>
                                 <button>Confirm</button> 
                             </div>
                     </form>

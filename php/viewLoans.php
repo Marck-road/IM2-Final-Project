@@ -9,24 +9,28 @@
             $s = "SELECT loan_application.*, loan.Loan_ID 
             FROM loan_application
             LEFT JOIN loan ON loan.LoanApp_ID = loan_application.LoanApp_ID
-            WHERE User_ID = '{$_SESSION['id']}'";
+            WHERE User_ID = '{$_SESSION['id']}'
+            ORDER BY Created_at DESC";
         } else if ($_POST["loansFilter"] == 2){
             $s = "SELECT loan_application.*, loan.Loan_ID, loan.Status AS loanStatus
             FROM loan_application
             INNER JOIN loan
             ON loan.LoanApp_ID = loan_application.LoanApp_ID
             WHERE loan_application.User_ID = '{$_SESSION['id']}'
-              AND loan_application.Status = 'Approved'";
+              AND loan_application.Status = 'Approved'
+              ORDER BY Created_at DESC";
         } else if ($_POST["loansFilter"] == 3){
             $s = "SELECT * 
             FROM loan_application
             WHERE User_ID = '{$_SESSION['id']}'
-            AND Status = 'Denied'";
+            AND Status = 'Denied'
+            ORDER BY Created_at DESC";
         } else if ($_POST["loansFilter"] == 4){
             $s = "SELECT * 
             FROM loan_application
             WHERE User_ID = '{$_SESSION['id']}'
-            AND Status = 'Pending'";
+            AND Status = 'Pending'
+            ORDER BY Created_at DESC";
         }
     } else{
         $s = "SELECT loan_application.*, loan.Loan_ID, loan.Status AS loanStatus
@@ -34,7 +38,8 @@
             INNER JOIN loan
             ON loan.LoanApp_ID = loan_application.LoanApp_ID
             WHERE loan_application.User_ID = '{$_SESSION['id']}'
-              AND loan_application.Status = 'Approved'";
+              AND loan_application.Status = 'Approved'
+              ORDER BY Created_at DESC";
     }
     
     
@@ -176,8 +181,10 @@
                 <div class="row">
                     <h3>Status</h3>
                 </div>
+
+                
                 <div class="row_value">
-                    <p><?php echo $row['loanStatus'];?></p>
+                    <p><?php echo $row['Status'];?></p>
                 </div>
             </div>
 

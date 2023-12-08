@@ -390,6 +390,7 @@
         $user = mysqli_fetch_array($user_query);
 
         return[
+            'userID'=> $user['User_ID'],
             'userEmail' => $user['Email'],
             'userFname' => $user['First_Name'],
             'userMname' => $user['Middle_Name'],

@@ -16,7 +16,7 @@
     $loanDates = getTimestamps($con, $loanAppDetails["Loan_ID"], $loanDetails);
     $loanStatus = ($_POST['loanStatus']);
 
-    if($loanStatus != 'Closed'){
+    if($loanStatus != 'Closed' && $loanStatus != 'OnHold') {
 
         $currentBP = getCurrentBillingPeriod($con, $loanAppDetails["Loan_ID"]);
     }
@@ -160,7 +160,7 @@
         </div>
         
         <?php
-            if($loanStatus == 'Closed'){   ?>
+            if($loanStatus == 'Closed' || $loanStatus == 'OnHold'){   ?>
             <div class="centered_column">
             <form action="borrower_TransHistory.php" method="post" id="historyForm">
                             <div class="row">

@@ -17,7 +17,6 @@ mysqli_select_db($con, 'loanapp');
 $email= $_POST['email'];  
 $pass = $_POST['password']; 
 $final_hashed = md5($pass);
-$userType;
 
 $s = " select * from admin where username = '$email' && password = '$final_hashed'"; //data will be used
     
@@ -26,15 +25,21 @@ $num = mysqli_num_rows($result);
 
 if($num != 0){
     // if admin
+
     while($row = mysqli_fetch_array($result)){
         $_SESSION['SESSIONID_VALUE'] = session_id();
         $_SESSION['id'] = $row['username'];
     }
+
+    if($final_hashed != $row['password']){
+        header("location:Loginpage.php?password=error");
+    }
+
     if($num == 1){  
-        // header('location:borrower_Dashboard.php');
+        header('location:admindashboard.php');
         exit;
     } else{
-        header("location:../html/Loginpage.html?login=error");
+        header('location:../html/Loginpage.php?password=error');
         exit;
     }
 } else {
@@ -49,11 +54,17 @@ if($num != 0){
             $_SESSION['id'] = $row['Lender_ID'];
             $_SESSION['email'] = $row['Email'];
         }
+
+        if($final_hashed != $row['Password']){
+            header('location:Loginpage.php?password=error');
+        }
+
+
         if($num == 1){  
             header('location:lender_Dashboard.php');
             exit;
         } else{
-            header("location:../html/Loginpage.html?login=error");
+            header('location:Loginpage.php?password=error');
             exit;
         }
     } else{
@@ -81,12 +92,16 @@ if($num != 0){
                 $_SESSION['number'] = $row['Contact_Number'];
             }
 
+            if($final_hashed != $row['password']){
+                header('location:Loginpage.php?password=error');
+            }
+
             if($num == 1){  
                 header('location:borrower_Dashboard.php');
                 exit;
             
             } else{
-                header("location:../html/Loginpage.html?login=error");
+                header('location:Loginpage.php?password=error');
                 exit;
             }
             
@@ -99,4 +114,6 @@ if($num != 0){
     }
 }
 
+
+header("location:Loginpage.php?login=error");
 ?>

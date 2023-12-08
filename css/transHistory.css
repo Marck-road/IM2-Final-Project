@@ -39,7 +39,7 @@ th{
 }
 
 
-#failButton, #successButton, #approved{
+#failButton, #successButton, #approved, #denied{
     text-align: center;
     font-size: 32px;
     padding: 5px;
