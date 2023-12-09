@@ -173,7 +173,7 @@ button{
   }
   
   .progress-bar {
-    animation: fillProgress 2s ease-out forwards; /* Adjust the animation duration as needed */
+    animation: fillProgress 2s ease-out forwards; 
   }
   
   .overlay {

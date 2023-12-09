@@ -1,29 +1,62 @@
-h1{
-    color: white;
-    padding-right: 260px;
+/* Center the user-profile container */
+#container {
+    margin-top: 2%;
+    margin-left: 30%;
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 }
 
-.user-profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.container {
+    width: 80%; /* Adjust the width as needed */
+    max-width: 600px; /* Set a max-width to avoid stretching on larger screens */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Additional styling for buttons */
+.approve-btn,
+.getVerified,
+.Verified {
+    display: block; /* Ensure buttons are block-level elements */
+    margin: 0 auto; /* Center the buttons horizontally */
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+h1{
     text-align: center;
 }
 
-.profile-image {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 20px;
-    margin-top: 150px;
+a{
+    color: white;
+    text-decoration: none;
 }
 
-.profile-details {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.success{
+    text-align: center;
+    color: green;
+} 
+
+.fail{
+    text-align: center;
+    color: red;
 }
 
-.profile-info {
-    margin-bottom: 10px;
+#updateSuccessMsg,
+#denySuccessMsg,#failMsg {
+    animation: fadeOut 7s forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }

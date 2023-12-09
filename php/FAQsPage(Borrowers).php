@@ -1,3 +1,14 @@
+<?php
+    
+
+    session_start();
+    
+    if ($_SESSION['SESSIONID_VALUE'] != session_id()){
+        header('location: index.php');
+    }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +42,7 @@
                 <li class="user-profile">
                     <a class="dropdown"><i class="fa-solid fa-user"></i></a>
                         <div class="dropdown-content" id="dropdown-content">
-                            <a id="dp-option"><i class="fa-regular fa-user"></i> View Profile</a>
+                            <a href="borrower_profile.php" id="dp-option"><i class="fa-regular fa-user"></i> View Profile</a>
                             <a id="dp-option" href="logout.php" onclick="return confirm('Are you sure you want to logout?')"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                         </div>
                 </li>

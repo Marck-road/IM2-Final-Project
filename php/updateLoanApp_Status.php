@@ -1,4 +1,12 @@
 <?php
+    
+
+    session_start();
+    
+    if ($_SESSION['SESSIONID_VALUE'] != session_id()){
+        header('location: index.php');
+    }
+
 
     // Function to approve/deny loan
     function updateLoanStatus($con, $loanAppID, $status) {

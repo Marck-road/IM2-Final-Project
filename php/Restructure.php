@@ -1,5 +1,12 @@
 <?php
+    
+
     session_start();
+    
+    if ($_SESSION['SESSIONID_VALUE'] != session_id()){
+        header('location: index.php');
+    }
+
 
 
     $con = mysqli_connect('localhost', 'root', 'Furina de Fontaine');  //Change according to your settings

@@ -90,7 +90,8 @@
 
     <div class="main-container">
         <div class= "SearchView">
-            <p class="adv_label">Advanced Search</p>
+            <p class="adv_label">Advanced Search:</p>
+            
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
                 <label for="amt_borrowed">Loan Amount</label>

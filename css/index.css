@@ -162,7 +162,7 @@ label {
     font-weight: bold;
 }
 
-input[type="number"], input[type="text"], 
+input[type="number"], input[type="text"], input[type="email"],
 select {
     width: 100%;
     padding: 8px;
@@ -193,5 +193,14 @@ select {
     margin-right: 10px;
 }
 
-
+.adv_label{
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+}
  
+hr{
+    color: black;
+    border-color: black;
+    margin-bottom: 10px;
+    display: flex;
+}

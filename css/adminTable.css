@@ -97,3 +97,14 @@ th{
     font-size: 200px;
     color:#146C94;
 }
+
+.ppPic{
+    margin-top: 200px
+    ;
+}
+
+#container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

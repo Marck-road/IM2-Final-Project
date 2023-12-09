@@ -1,5 +1,11 @@
 <?php
+    
+
     session_start();
+    
+    if ($_SESSION['SESSIONID_VALUE'] != session_id()){
+        header('location: index.php');
+    }
 
     $con = mysqli_connect('localhost', 'root', 'Furina de Fontaine');  //Change according to your settings
     if (!$con) {
@@ -38,7 +44,7 @@
     <script src="../js/modal.js"></script>
 </head>
 <body>
-    <nav>
+<nav>
         <div class="navbar">
             <div class="logo">
                 <a href="#"><img src="../images/ldaddy.png" class="logo"></a>
@@ -52,7 +58,7 @@
                 <li class="user-profile">
                     <a class="dropdown"><i class="fa-solid fa-user"></i></a>
                         <div class="dropdown-content" id="dropdown-content">
-                            <a id="dp-option"><i class="fa-regular fa-user"></i> View Profile</a>
+                            <a href="borrower_profile.php" id="dp-option"><i class="fa-regular fa-user"></i> View Profile</a>
                             <a id="dp-option" href="logout.php" onclick="return confirm('Are you sure you want to logout?')"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                         </div>
                 </li>

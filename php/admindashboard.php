@@ -1,4 +1,11 @@
 <?php
+
+session_start();
+
+if ($_SESSION['SESSIONID_VALUE'] != session_id()){
+    header('location: index.php');
+}
+
     $con = mysqli_connect('localhost', 'root', 'Furina de Fontaine');
     mysqli_select_db($con, 'loanapp');
 
@@ -41,7 +48,7 @@
         <nav>
             <div class="navbar">
                 <div class="logo">
-                    <a href="../php/index.php"><img src="../images/ldaddy.png" class="logo"></a>
+                    <a href="#"><img src="../images/ldaddy.png" class="logo"></a>
                 </div>
                 <div class="navbar-center">
                     <h1>ADMIN DASHBOARD</h1>
