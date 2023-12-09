@@ -34,17 +34,20 @@
 <body>
 
         <nav>
-        <div class="navbar">
+        <nav>
+            <div class="navbar">
                 <div class="logo">
-                    <a href="admindashboard.php"><img src="../images/ldaddy.png" class="logo"></a>
+                    <a href="#"><img src="../images/ldaddy.png" class="logo"></a>
                 </div>
                 <div class="navbar-center">
-                    <h1>LENDER ACCOUNTS</h1>
+                    <h1>ADMIN DASHBOARD</h1>
                 </div>
                 <ul class="menu">
+                <a class="adminLogout" id="dp-option" href="logout.php" onclick="return confirm('Are you sure you want to logout?')"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                 </ul>
+                
             </div>
-        </nav>  
+        </nav> 
     
 
     <div class="main-container">

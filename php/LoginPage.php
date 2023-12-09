@@ -46,6 +46,21 @@
                     ?>
                 </div>
 
+                <div class="fail">
+                    <?php
+                        $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+                        if(strpos($fullUrl, "password=error") == true) {
+                            echo '<p id="failMsg">Incorrect Password</p>';
+                        }
+
+                        if(strpos($fullUrl, "login=error") == true) {
+                            echo '<p id="failMsg">Login failed</p>';
+                        }
+                    ?>
+                       
+                </div>
+
                 <p class="register_link">Don't have an account? <a href="SignupPage.php">Register now</a></p>
             </form>
         </div>

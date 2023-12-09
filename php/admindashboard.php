@@ -54,7 +54,9 @@ if ($_SESSION['SESSIONID_VALUE'] != session_id()){
                     <h1>ADMIN DASHBOARD</h1>
                 </div>
                 <ul class="menu">
+                <a class="adminLogout" id="dp-option" href="logout.php" onclick="return confirm('Are you sure you want to logout?')"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                 </ul>
+                
             </div>
         </nav>        
         
@@ -129,6 +131,7 @@ if ($_SESSION['SESSIONID_VALUE'] != session_id()){
             </div>
         </div>
     </div>        
+    <script src="https://kit.fontawesome.com/e140ca9b66.js" crossorigin="anonymous"></script>       
 
     </body>
 </html> 

@@ -111,12 +111,13 @@ if ($_SESSION['SESSIONID_VALUE'] != session_id()){
 
             <div class="row">
                 <div class="column">
-                        <button class="approve-btn" onClick="borrower_profile.php" type="button"><a href="borrower_profile.php">Cancel</a></button>
-               
-                </div>
-                <div class="column">
                     <button type="submit" class="getVerified">Submit</button>
                 </div>
+                <div class="column">
+                        <button class="approve-btn" onClick="borrower_profile.php" type="button"><a href="borrower_profile.php" id="cancelbtn">Cancel</a></button>
+    
+                </div>
+                
             </div>
         </form>
     </div>

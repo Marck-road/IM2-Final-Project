@@ -37,7 +37,7 @@
         $s .= " AND loan_application.Schedule_ID = $pay_schedule";
     }
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['loansFilter'])){
         if($_POST["loansFilter"] == 1){
             $s .= " ORDER BY loan.Created_at DESC";
         } else if ($_POST["loansFilter"] == 2){
@@ -92,7 +92,7 @@
                 <li class="user-profile">
                     <a class="dropdown"><i class="fa-solid fa-user"></i></a>
                         <div class="dropdown-content" id="dropdown-content">
-                            <a id="dp-option"><i class="fa-regular fa-user"></i> View Profile</a>
+                            <a id="dp-option" href="lender_profile.php"> <i class="fa-regular fa-user"></i> View Profile</a>
                             <a id="dp-option" href="logout.php" onclick="return confirm('Are you sure you want to logout?')"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                         </div>
                 </li>
@@ -235,7 +235,7 @@
                     <h3>Amount Borrowed</h3>
                 </div>
                 <div class="row_value">
-                    <p>₱<?php echo $row['Loan_Amt'];?></p>
+                    <p>₱<?php echo number_format($row['Loan_Amt'], 2, '.', ',')?></p>
                 </div>
             </div>
 

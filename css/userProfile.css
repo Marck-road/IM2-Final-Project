@@ -37,6 +37,11 @@ a{
     text-decoration: none;
 }
 
+#cancelbtn{
+    width: 100px;
+    cursor: pointer;
+}
+
 .success{
     text-align: center;
     color: green;

@@ -42,13 +42,13 @@
                 <li class="user-profile">
                     <a class="dropdown"><i class="fa-solid fa-user"></i></a>
                         <div class="dropdown-content" id="dropdown-content">
-                            <a id="dp-option"><i class="fa-regular fa-user"></i> View Profile</a>
+                            <a id="dp-option" href="lender_profile.php"> <i class="fa-regular fa-user"></i> View Profile</a>
                             <a id="dp-option" href="logout.php" onclick="return confirm('Are you sure you want to logout?')"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                         </div>
                 </li>
             </ul>
         </div>
-
+        
     </nav>
     
     <div class="content-container">
