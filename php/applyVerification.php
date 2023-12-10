@@ -20,9 +20,17 @@
 
     $accstatus = "Pending";
     $userId = $_SESSION["id"];
-
+    $income = $_POST['income'];
+    $valid1 = $_POST['valid1'];
+    $valid2 = $_POST['valid2'];
+    $utility = $_POST['utility'];
+    
     $sql = "UPDATE user
-        SET Account_Status = '$accstatus'
+        SET Account_Status = '$accstatus',
+            Income_Document = '$income',
+            ValidID_1 = '$valid1',
+            ValidID_2 = '$valid2',
+            Utility_Bill = '$utility'
         WHERE User_ID = $userId;";
     mysqli_query($con, $sql);
 

@@ -32,7 +32,7 @@
     <nav>
         <div class="navbar">
             <div class="logo">
-                <a href="#"><img src="../images/ldaddy.png" class="logo"></a>
+                <a href="index.php"><img src="../images/ldaddy.png" class="logo"></a>
             </div>
             <ul class="menu">
                 <li><a href="borrower_Dashboard.php">Home</a></li>

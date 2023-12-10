@@ -39,7 +39,7 @@
         <nav>
             <div class="navbar">
                 <div class="logo">
-                    <a href="#"><img src="../images/ldaddy.png" class="logo"></a>
+                    <a href="admindashboard.php"><img src="../images/ldaddy.png" class="logo"></a>
                 </div>
                 <div class="navbar-center">
                     <h1>ADMIN DASHBOARD</h1>

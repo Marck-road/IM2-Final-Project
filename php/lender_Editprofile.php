@@ -39,7 +39,7 @@ if ($_SESSION['SESSIONID_VALUE'] != session_id()){
     <nav>
         <div class="navbar">
             <div class="logo">
-                <a href="#"><img src="../images/ldaddy.png" class="logo"></a>
+                <a href="#lender_Dashboard.php"><img src="../images/ldaddy.png" class="logo"></a>
             </div>
             <ul class="menu">
                 <li><a href="lender_Dashboard.php">Home</a></li>

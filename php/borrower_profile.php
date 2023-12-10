@@ -65,46 +65,46 @@ if ($_SESSION['SESSIONID_VALUE'] != session_id()){
         <div class="form-item" >
                 <h1>User Profile</h1>
             
-                            <div class="form-row">
-                                <div class="form-item">
-                                    <label for="amt_borrowed">Name</label>
-                                    <input type="text" value="<?php echo $profileDetails['First_Name'];?> <?php echo $profileDetails['Middle_Name'];?> <?php echo $profileDetails['Last_Name'];?>" step="any" readonly>
-                                </div>
-                            </div>
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="amt_borrowed">Name</label>
+                            <input type="text" value="<?php echo $profileDetails['First_Name'];?> <?php echo $profileDetails['Middle_Name'];?> <?php echo $profileDetails['Last_Name'];?>" step="any" readonly>
+                        </div>
+                    </div>
 
-                            <div class="form-row">
-                                <div class="form-item">
-                                    <label for="tenure">Email</label>
-                                    <input type="text" value="<?php echo $profileDetails['Email'];?>" readonly>
-                                </div>
-                                <div class="form-item">
-                                    <label for="pay_sched">Phone Number</label>
-                                    <input type="text" value="<?php echo $profileDetails['Contact_Number'];?>" readonly>
-                                </div>
-                            </div>
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="tenure">Email</label>
+                            <input type="text" value="<?php echo $profileDetails['Email'];?>" readonly>
+                        </div>
+                        <div class="form-item">
+                            <label for="pay_sched">Phone Number</label>
+                            <input type="text" value="<?php echo $profileDetails['Contact_Number'];?>" readonly>
+                        </div>
+                    </div>
 
-                            <div class="form-row">
-                                <div class="form-item">
-                                    <label for="interest">Birthday</label>
-                                    <input type="text" value="<?php echo $profileDetails['Birthday'];?>" readonly>
-                                </div>
-                                <div class="form-item">
-                                    <label for="interest_payable">City</label>
-                                    <input type="text" value="<?php echo $profileDetails['City'];?>" readonly>
-                                </div>
-                            </div>
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="interest">Birthday</label>
+                            <input type="text" value="<?php echo $profileDetails['Birthday'];?>" readonly>
+                        </div>
+                        <div class="form-item">
+                            <label for="interest_payable">City</label>
+                            <input type="text" value="<?php echo $profileDetails['City'];?>" readonly>
+                        </div>
+                    </div>
 
-                            <div class="form-row">
-                                <div class="form-item">
-                                    <label for="monthly_payment">ZIP_Code</label>
-                                    <input type="text" value="<?php echo $profileDetails['ZIP_Code'];?>" readonly>
-                                </div>
-                                <div class="form-item">
-                                    <label for="total_payable">Employment Status</label>
-                                    <input type="text" value="<?php echo $profileDetails['Employment_Status']; ?>" readonly>
-                                </div>
-                            </div>
-                            <div>
+                    <div class="form-row">
+                        <div class="form-item">
+                            <label for="monthly_payment">ZIP_Code</label>
+                            <input type="text" value="<?php echo $profileDetails['ZIP_Code'];?>" readonly>
+                        </div>
+                        <div class="form-item">
+                            <label for="total_payable">Employment Status</label>
+                            <input type="text" value="<?php echo $profileDetails['Employment_Status']; ?>" readonly>
+                        </div>
+                    </div>
+                    <div>
 
                 <div class="row">
                     <div class="column">

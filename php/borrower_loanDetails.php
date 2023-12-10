@@ -82,32 +82,35 @@
                 </div>
                 <div class="row" id="details">
                     <div class="column">
-                        <p>Email Address:<br><?php echo $loanDetails['lender_email']; ?></p>
+                        <label for="monthly_payment">Email Address:</label>
+                        <input type="text" value="<?php echo $loanDetails['lender_email']; ?>%" readonly>
+                      
                     </div>
                     <div class="column">
-                        <p>Contact Number:<br><?php echo $loanDetails['lender_contact']; ?></p>
-
+                        <label for="monthly_payment">Contact Number:</label>
+                        <input type="text" value="<?php echo $loanDetails['lender_contact']; ?>" readonly>
                     </div>
                     <div class="column">
-                        <p>Loan Amount:<br>₱<?php echo number_format($loanAppDetails['Loan_Amt'], 2, '.', ','); ?></p>
-
+                        <label for="monthly_payment">Loan Amount:</label>
+                        <input type="text" value="₱<?php echo number_format($loanAppDetails['Loan_Amt'], 2, '.', ','); ?>" readonly>
                     </div>
                     <div class="column">
-                        <p>Tenure Selected:<br><?php echo $loanDetails['loan_tenure'];?></p>
-
+                        <label for="monthly_payment">Tenure Selected:</label>
+                        <input type="text" value="<?php echo $loanDetails['loan_tenure'];?>" readonly>
                     </div>
                     <div class="column">
-                        <p>Payment Schedule:<br><?php echo $loanDetails['payment_schedule'];?></p>
-                   
+                        <label for="monthly_payment">Payment Schedule:</label>
+                        <input type="text" value="<?php echo $loanDetails['payment_schedule'];?>" readonly>
                     </div>
                 </div>
                 <div class="row" id="details">
                     <div class="column">
-                        <p>Start Date:<br><?php echo $loanDates['startDate'];?></p>
+                    <label for="monthly_payment">Start Date:</label>
+                        <input type="text" value="<?php echo $loanDates['startDate'];?>" readonly>
                     </div>
                     <div class="column">
-                        <p>End Date:<br><?php echo $loanDates['endDate'];?></p>
-                   
+                    <label for="monthly_payment">End Date:</label>
+                        <input type="text" value="<?php echo $loanDates['endDate'];?>" readonly>
                     </div>
                 </div>
             </div>
@@ -140,22 +143,26 @@
             <div class="column">
                 <div class="row">
                     <div class="column">
-                        <p>Interest:<br><?php echo number_format($loanDetails['ir_result'], 2, '.', ','); ?>%</p>
-
+                        <label for="monthly_payment">Interest:</label>
+                        <input type="text" value="<?php echo number_format($loanDetails['ir_result'], 2, '.', ','); ?>%" readonly>
                     </div>
                     <div class="column">
-                        <p>Interest Payable:<br>₱<?php echo number_format($loanDetails['interest_payable'], 2, '.', ','); ?></p>
+                    <label for="monthly_payment">Interest Payable:</label>
+                        <input type="text" value="₱<?php echo number_format($loanDetails['interest_payable'], 2, '.', ','); ?>" readonly>
                     </div>
                     <div class="column">
-                        <p>Monthly Interest:<br>₱<?php echo $loanDetails['monthly_interest'];?></p>
+                    <label for="monthly_payment">Monthly Interest:</label>
+                        <input type="text" value="₱<?php echo $loanDetails['monthly_interest'];?>" readonly>
                     </div>
                 </div>
                 <div class="row">
                     <div class="column">
-                        <p>Monthly Payment:<br>₱<?php echo $loanDetails['monthly_payable'];?></p>
+                    <label for="monthly_payment">Monthly Payment:</label>
+                        <input type="text" value="₱<?php echo $loanDetails['monthly_payable'];?>" readonly>
                     </div>
                     <div class="column">
-                        <p>Total Payable:<br>₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ','); ?></p>
+                    <label for="monthly_payment">Total Payable:</label>
+                        <input type="text" value="₱<?php echo number_format($loanDetails['total_payable'], 2, '.', ','); ?>" readonly>
                     </div>
 
                 </div>
@@ -192,25 +199,16 @@
         <div class="loan_container">
 
             <div class="column">
-                  
-                        <h2>Current Loan Billing Period<br></h2>
-                  
-                        <p>₱<?php echo number_format($currentBP['currentBP_paid'], 2, '.', ',');?> / ₱<?php echo number_format($currentBP['currentBP_amount'], 2, '.', ',');?></p>
-                   
+                <label for="monthly_payment"><h2>Current Loan Billing Period<br></h2></label>
+                <input type="text" value="₱<?php echo number_format($currentBP['currentBP_paid'], 2, '.', ',');?> / ₱<?php echo number_format($currentBP['currentBP_amount'], 2, '.', ',');?>" readonly>
             </div>
             <div class="column">
-                   
-                        <h2>Date Start<br></h2>
-                    
-                 
-                        <p><?php echo $currentBP['currentBP_dateStart']; ?></p>
-                   
+                <label for="monthly_payment"><h2>Date Start<br></h2></label>
+                <input type="text" value="<?php echo $currentBP['currentBP_dateStart']; ?>" readonly>
             </div>
             <div class="column">
-                    
-                        <h2>Date End<br></h2>
-                        <p><?php echo $currentBP['currentBP_dateEnd']; ?></p>
-                    
+                <label for="monthly_payment"><h2>Date End<br></h2></label>
+                <input type="text" value="<?php echo $currentBP['currentBP_dateEnd']; ?>" readonly>
             </div>
 
             <div class="column">
