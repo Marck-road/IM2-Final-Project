@@ -16,28 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `payment_sched`
+-- Table structure for table `tenure`
 --
 
-DROP TABLE IF EXISTS `payment_sched`;
+DROP TABLE IF EXISTS `tenure`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `payment_sched` (
-  `Schedule_ID` int NOT NULL AUTO_INCREMENT,
-  `Frequency` varchar(255) NOT NULL,
-  `Details` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`Schedule_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `tenure` (
+  `Tenure_ID` int NOT NULL AUTO_INCREMENT,
+  `Duration` varchar(255) NOT NULL,
+  PRIMARY KEY (`Tenure_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `payment_sched`
+-- Dumping data for table `tenure`
 --
 
-LOCK TABLES `payment_sched` WRITE;
-/*!40000 ALTER TABLE `payment_sched` DISABLE KEYS */;
-INSERT INTO `payment_sched` VALUES (1,'Weekly','Payment is made once every week'),(2,'Semi-Monthly','Payment is made on the 15th, and on the end of the month'),(3,'Monthly','Payment is made once a month'),(4,'Quarterly','Payment is made every quarter');
-/*!40000 ALTER TABLE `payment_sched` ENABLE KEYS */;
+LOCK TABLES `tenure` WRITE;
+/*!40000 ALTER TABLE `tenure` DISABLE KEYS */;
+INSERT INTO `tenure` VALUES (1,'1 Month'),(2,'3 Months'),(3,'6 Months'),(4,'1 Year'),(5,'2 Years');
+/*!40000 ALTER TABLE `tenure` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

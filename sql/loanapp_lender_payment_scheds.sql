@@ -16,28 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `payment_sched`
+-- Table structure for table `lender_payment_scheds`
 --
 
-DROP TABLE IF EXISTS `payment_sched`;
+DROP TABLE IF EXISTS `lender_payment_scheds`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `payment_sched` (
-  `Schedule_ID` int NOT NULL AUTO_INCREMENT,
-  `Frequency` varchar(255) NOT NULL,
-  `Details` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`Schedule_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `lender_payment_scheds` (
+  `LenderPS_ID` int NOT NULL AUTO_INCREMENT,
+  `Schedule_ID` int DEFAULT NULL,
+  `Lender_ID` int DEFAULT NULL,
+  PRIMARY KEY (`LenderPS_ID`),
+  KEY `Schedule_ID_idx` (`Schedule_ID`),
+  KEY `Lender_ID_idx` (`Lender_ID`),
+  CONSTRAINT `Lender_ID` FOREIGN KEY (`Lender_ID`) REFERENCES `lender` (`Lender_ID`),
+  CONSTRAINT `Schedule_ID` FOREIGN KEY (`Schedule_ID`) REFERENCES `payment_sched` (`Schedule_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `payment_sched`
+-- Dumping data for table `lender_payment_scheds`
 --
 
-LOCK TABLES `payment_sched` WRITE;
-/*!40000 ALTER TABLE `payment_sched` DISABLE KEYS */;
-INSERT INTO `payment_sched` VALUES (1,'Weekly','Payment is made once every week'),(2,'Semi-Monthly','Payment is made on the 15th, and on the end of the month'),(3,'Monthly','Payment is made once a month'),(4,'Quarterly','Payment is made every quarter');
-/*!40000 ALTER TABLE `payment_sched` ENABLE KEYS */;
+LOCK TABLES `lender_payment_scheds` WRITE;
+/*!40000 ALTER TABLE `lender_payment_scheds` DISABLE KEYS */;
+INSERT INTO `lender_payment_scheds` VALUES (1,1,1),(2,2,1),(3,3,1),(4,4,1),(5,2,2),(6,3,2),(7,1,3),(8,2,3),(9,3,3),(10,3,4),(11,2,5),(12,3,5),(13,2,6),(14,3,6),(15,2,7),(16,4,6),(17,1,8),(18,2,8),(19,3,8),(20,4,8),(21,3,7),(27,3,28);
+/*!40000 ALTER TABLE `lender_payment_scheds` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

@@ -16,28 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `payment_sched`
+-- Table structure for table `admin`
 --
 
-DROP TABLE IF EXISTS `payment_sched`;
+DROP TABLE IF EXISTS `admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `payment_sched` (
-  `Schedule_ID` int NOT NULL AUTO_INCREMENT,
-  `Frequency` varchar(255) NOT NULL,
-  `Details` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`Schedule_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `admin` (
+  `admin_ID` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`admin_ID`),
+  UNIQUE KEY `username_UNIQUE` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `payment_sched`
+-- Dumping data for table `admin`
 --
 
-LOCK TABLES `payment_sched` WRITE;
-/*!40000 ALTER TABLE `payment_sched` DISABLE KEYS */;
-INSERT INTO `payment_sched` VALUES (1,'Weekly','Payment is made once every week'),(2,'Semi-Monthly','Payment is made on the 15th, and on the end of the month'),(3,'Monthly','Payment is made once a month'),(4,'Quarterly','Payment is made every quarter');
-/*!40000 ALTER TABLE `payment_sched` ENABLE KEYS */;
+LOCK TABLES `admin` WRITE;
+/*!40000 ALTER TABLE `admin` DISABLE KEYS */;
+INSERT INTO `admin` VALUES (1,'admin1','81dc9bdb52d04dc20036dbd8313ed055'),(2,'admin2','81dc9bdb52d04dc20036dbd8313ed055'),(3,'admin3','81dc9bdb52d04dc20036dbd8313ed055');
+/*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

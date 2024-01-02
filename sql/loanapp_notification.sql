@@ -16,28 +16,37 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `payment_sched`
+-- Table structure for table `notification`
 --
 
-DROP TABLE IF EXISTS `payment_sched`;
+DROP TABLE IF EXISTS `notification`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `payment_sched` (
-  `Schedule_ID` int NOT NULL AUTO_INCREMENT,
-  `Frequency` varchar(255) NOT NULL,
-  `Details` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`Schedule_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `notification` (
+  `Notif_ID` int NOT NULL AUTO_INCREMENT,
+  `Source_ID` int NOT NULL,
+  `Recipient_ID` int NOT NULL,
+  `Notif_Title` varchar(255) NOT NULL,
+  `Notif_Message` varchar(255) NOT NULL,
+  `is_Read` tinyint(1) DEFAULT NULL,
+  `Created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Notif_ID`),
+  KEY `Source_ID` (`Source_ID`),
+  KEY `Recipient_ID` (`Recipient_ID`),
+  CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`Source_ID`) REFERENCES `user` (`User_ID`),
+  CONSTRAINT `notification_ibfk_2` FOREIGN KEY (`Source_ID`) REFERENCES `lender` (`Lender_ID`),
+  CONSTRAINT `notification_ibfk_3` FOREIGN KEY (`Recipient_ID`) REFERENCES `user` (`User_ID`),
+  CONSTRAINT `notification_ibfk_4` FOREIGN KEY (`Recipient_ID`) REFERENCES `lender` (`Lender_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `payment_sched`
+-- Dumping data for table `notification`
 --
 
-LOCK TABLES `payment_sched` WRITE;
-/*!40000 ALTER TABLE `payment_sched` DISABLE KEYS */;
-INSERT INTO `payment_sched` VALUES (1,'Weekly','Payment is made once every week'),(2,'Semi-Monthly','Payment is made on the 15th, and on the end of the month'),(3,'Monthly','Payment is made once a month'),(4,'Quarterly','Payment is made every quarter');
-/*!40000 ALTER TABLE `payment_sched` ENABLE KEYS */;
+LOCK TABLES `notification` WRITE;
+/*!40000 ALTER TABLE `notification` DISABLE KEYS */;
+/*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

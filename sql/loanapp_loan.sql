@@ -16,34 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `payment`
+-- Table structure for table `loan`
 --
 
-DROP TABLE IF EXISTS `payment`;
+DROP TABLE IF EXISTS `loan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `payment` (
-  `Payment_ID` int NOT NULL AUTO_INCREMENT,
-  `LBPeriod_ID` int DEFAULT NULL,
-  `Amount_Paid` float DEFAULT NULL,
-  `Screenshot` blob,
-  `Payment_Channel` varchar(255) DEFAULT NULL,
-  `Status` enum('Success','Failed','Pending') DEFAULT 'Pending',
+CREATE TABLE `loan` (
+  `Loan_ID` int NOT NULL AUTO_INCREMENT,
+  `LoanApp_ID` int DEFAULT NULL,
+  `LoanReference_ID` int DEFAULT NULL,
+  `Status` enum('Open','Closed','OnHold') DEFAULT 'Open',
   `Created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`Payment_ID`),
-  KEY `LBPeriod_ID_idx` (`LBPeriod_ID`),
-  CONSTRAINT `LBPeriod_ID` FOREIGN KEY (`LBPeriod_ID`) REFERENCES `loanbilling_period` (`LBPeriod_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `Updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Loan_ID`),
+  UNIQUE KEY `LoanApp_ID_UNIQUE` (`LoanApp_ID`),
+  UNIQUE KEY `LoanReference_ID_UNIQUE` (`LoanReference_ID`),
+  KEY `LoanReference_ID_idx` (`LoanReference_ID`),
+  CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`LoanApp_ID`) REFERENCES `loan_application` (`LoanApp_ID`),
+  CONSTRAINT `LoanReference_ID` FOREIGN KEY (`LoanReference_ID`) REFERENCES `loan` (`Loan_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `payment`
+-- Dumping data for table `loan`
 --
 
-LOCK TABLES `payment` WRITE;
-/*!40000 ALTER TABLE `payment` DISABLE KEYS */;
-INSERT INTO `payment` VALUES (1,67,50000,_binary 'PXL_20230813_074035280.MP.jpg','BDO','Success','2023-12-09 05:58:36'),(2,68,10000000,'','sdf','Failed','2023-12-09 05:58:58'),(3,66,80000,'','adf','Success','2023-12-09 06:00:46'),(4,70,2044.67,_binary 'LoanDaddy (1).png','G Cash','Success','2023-12-09 06:54:22'),(5,71,24000,_binary '20230701_180616.jpg','BDO','Success','2023-12-09 06:56:56'),(6,72,17716,_binary 'LoanDaddy (1).png','BDO','Success','2023-12-09 06:59:47'),(7,68,3067,_binary 'LoanDaddy (1).png','BDO','Pending','2023-12-10 04:26:19'),(8,74,6134,_binary 'LoanDaddyLogo.png','BDO','Success','2023-12-16 16:59:52');
-/*!40000 ALTER TABLE `payment` ENABLE KEYS */;
+LOCK TABLES `loan` WRITE;
+/*!40000 ALTER TABLE `loan` DISABLE KEYS */;
+INSERT INTO `loan` VALUES (55,58,NULL,'Closed','2023-12-09 05:57:36','2023-12-09 05:57:36'),(56,60,NULL,'Closed','2023-12-09 05:57:38','2023-12-09 05:57:38'),(57,59,NULL,'Open','2023-12-09 05:57:40','2023-12-09 05:57:40'),(58,61,NULL,'Closed','2023-12-09 06:46:23','2023-12-09 06:46:23'),(59,62,56,'Closed','2023-12-09 06:58:26','2023-12-09 06:58:26'),(61,63,NULL,'Open','2023-12-10 04:27:51','2023-12-10 04:27:51'),(62,64,NULL,'Open','2023-12-16 16:56:45','2023-12-16 16:56:45');
+/*!40000 ALTER TABLE `loan` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
